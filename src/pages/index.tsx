@@ -15,13 +15,11 @@ const Home: NextPage = () => {
       </Head>
       <main className="container mx-auto flex flex-col gap-12 p-4">
         <nav className="flex items-center justify-between">
-          <div className="text-2xl font-extrabold uppercase text-sky-500 md:text-4xl">
+          <div className="text-2xl font-extrabold uppercase md:text-4xl">
             Stark
           </div>
           <Link href="/sign-in">
-            <Button variant="custom" className="font-bold">
-              Get Started
-            </Button>
+            <Button className="font-bold">Get Started</Button>
           </Link>
         </nav>
 
@@ -39,9 +37,7 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <Button variant="custom" className="font-bold">
-              Start For Free
-            </Button>
+            <Button className="font-bold">Start For Free</Button>
           </div>
           <Image
             src="/assets/exercise-1.webp"
@@ -65,9 +61,7 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <Button variant="custom" className="font-bold">
-              Read More
-            </Button>
+            <Button className="font-bold">Read More</Button>
           </div>
 
           <Image
@@ -80,7 +74,7 @@ const Home: NextPage = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-4 rounded bg-sky-100 p-4">
+        <div className="flex flex-col gap-4 rounded bg-slate-100 p-4">
           <h2>The Core Values We Live By</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="ga-4 flex flex-col">
@@ -125,9 +119,7 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <Button variant="custom" className="font-bold">
-              Read More
-            </Button>
+            <Button className="font-bold">Read More</Button>
           </div>
 
           <Image
@@ -151,7 +143,7 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <Button variant="custom" className="font-bold">
+            <Button className="font-bold">
               Read More
             </Button>
           </div>
@@ -167,7 +159,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2 rounded bg-sky-100 p-4">
+          <div className="flex flex-col gap-2 rounded bg-slate-100 p-4">
             <h3 className="text-lg font-semibold md:text-xl">
               Have Complete Peace Of Mind with Our Free Migration
             </h3>
@@ -177,7 +169,7 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <div className="custom-button w-32 font-bold">Read More</div>
+            <Button className="font-bold">Read More</Button>
           </div>
           <div className="flex flex-col items-center justify-center gap-4 p-4">
             <h3>
@@ -208,7 +200,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      <footer className="mx-auto flex items-center justify-center gap-4 bg-sky-100 p-4">
+      <footer className="mx-auto flex items-center justify-center gap-4 bg-slate-900 text-slate-50 p-4">
         <p>Product</p>
         <p>Quick Links</p>
         <p>Source</p>

@@ -4,12 +4,6 @@
 
 @layer base {
   html {
-    @apply text-neutral-800;
-  }
-}
-
-@layer components {
-  .custom-button {
-    @apply rounded p-2 bg-sky-800 text-sky-100;
+    @apply text-slate-900;
   }
 }
