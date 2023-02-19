@@ -2,7 +2,8 @@ import { type NextPage } from "next";
 import Image from "next/image";
 import Head from "next/head";
 
-import { AspectRatio } from "src/components/ui/aspect-ratio";
+import Link from "next/link";
+import { Button } from "src/components/ui/button";
 
 const Home: NextPage = () => {
   return (
@@ -17,7 +18,11 @@ const Home: NextPage = () => {
           <div className="text-2xl font-extrabold uppercase text-sky-500 md:text-4xl">
             Stark
           </div>
-          <div className="custom-button font-bold">Get Started</div>
+          <Link href="/sign-in">
+            <Button variant="custom" className="font-bold">
+              Get Started
+            </Button>
+          </Link>
         </nav>
 
         <div className="flex flex-col gap-4">
@@ -34,19 +39,18 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <div className="custom-button w-32 font-bold">Start For Free</div>
+            <Button variant="custom" className="font-bold">
+              Start For Free
+            </Button>
           </div>
-          <AspectRatio
-            ratio={16 / 9}
-            className="mx-auto h-64 w-64 md:h-80 md:w-80"
-          >
-            <Image
-              src="/assets/exercise-1.webp"
-              fill
-              className="object-cover"
-              alt="Exercise 1"
-            />
-          </AspectRatio>
+          <Image
+            src="/assets/exercise-1.webp"
+            className="mx-auto object-cover"
+            alt="Exercise 1"
+            priority={true}
+            width={300}
+            height={300}
+          />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -61,20 +65,19 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <div className="custom-button w-32 font-bold">Read More</div>
+            <Button variant="custom" className="font-bold">
+              Read More
+            </Button>
           </div>
 
-          <AspectRatio
-            ratio={16 / 9}
-            className="mx-auto h-64 w-64 md:h-80 md:w-80"
-          >
-            <Image
-              src="/assets/exercise-2.webp"
-              fill
-              className="object-cover"
-              alt="Exercise 2"
-            />
-          </AspectRatio>
+          <Image
+            src="/assets/exercise-2.webp"
+            className="mx-auto object-cover"
+            alt="Exercise 2"
+            priority={true}
+            width={300}
+            height={300}
+          />
         </div>
 
         <div className="flex flex-col gap-4 rounded bg-sky-100 p-4">
@@ -122,20 +125,19 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <div className="custom-button w-32 font-bold">Read More</div>
+            <Button variant="custom" className="font-bold">
+              Read More
+            </Button>
           </div>
 
-          <AspectRatio
-            ratio={16 / 9}
-            className="mx-auto h-64 w-64 md:h-80 md:w-80"
-          >
-            <Image
-              src="/assets/exercise-3.webp"
-              fill
-              className="object-cover"
-              alt="Exercise 3"
-            />
-          </AspectRatio>
+          <Image
+            src="/assets/exercise-3.webp"
+            className="mx-auto object-cover"
+            alt="Exercise 3"
+            priority={true}
+            width={300}
+            height={300}
+          />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -149,20 +151,19 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <div className="custom-button w-32 font-bold">Read More</div>
+            <Button variant="custom" className="font-bold">
+              Read More
+            </Button>
           </div>
 
-          <AspectRatio
-            ratio={16 / 9}
-            className="mx-auto h-64 w-64 md:h-80 md:w-80"
-          >
-            <Image
-              src="/assets/exercise-4.webp"
-              fill
-              className="object-cover"
-              alt="Exercise 4"
-            />
-          </AspectRatio>
+          <Image
+            src="/assets/exercise-4.webp"
+            className="mx-auto object-cover"
+            alt="Exercise 4"
+            priority={true}
+            width={300}
+            height={300}
+          />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -192,6 +193,7 @@ const Home: NextPage = () => {
                 src="https://github.com/shadcn.png"
                 alt="Avatar"
                 className="rounded"
+                priority={true}
                 width={100}
                 height={100}
               />
@@ -206,7 +208,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      <footer className="mx-auto flex items-center justify-center gap-4 p-4 bg-sky-100">
+      <footer className="mx-auto flex items-center justify-center gap-4 bg-sky-100 p-4">
         <p>Product</p>
         <p>Quick Links</p>
         <p>Source</p>
