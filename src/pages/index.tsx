@@ -1,11 +1,25 @@
-import { type NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import Image from "next/image";
 import Head from "next/head";
+import { useSession, signIn, signOut } from "next-auth/react";
 
-import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "src/components/ui/dialog";
 import { Button } from "src/components/ui/button";
+import { ssgHelper } from "src/utils/ssg";
+import { api } from "src/utils/api";
 
 const Home: NextPage = () => {
+  const utils = api.useContext();
+  const { data: session } = useSession();
+  const user = utils.auth.getUserSession.getData();
+
   return (
     <>
       <Head>
@@ -18,9 +32,45 @@ const Home: NextPage = () => {
           <div className="text-2xl font-extrabold uppercase md:text-4xl">
             Stark
           </div>
-          <Link href="/sign-in">
-            <Button className="font-bold">Get Started</Button>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>{session ? "Account" : "Get Started"}</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>{session ? "Account" : "Sign In"}</DialogTitle>
+                <DialogDescription>
+                  {session ? "Time to Get Healthy" : "Join Stark with Discord"}
+                </DialogDescription>
+              </DialogHeader>
+              {session ? (
+                <div className="flex flex-col justify-center gap-4">
+                  <h3 className="self-center">Signed in as: {user?.name}</h3>
+                  <Button
+                    onClick={() =>
+                      void signOut({
+                        callbackUrl: "/",
+                      })
+                    }
+                  >
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-col justify-center gap-4">
+                  <Button
+                    onClick={() =>
+                      void signIn("discord", {
+                        callbackUrl: "/",
+                      })
+                    }
+                  >
+                    Discord
+                  </Button>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
         </nav>
 
         <div className="flex flex-col gap-4">
@@ -143,9 +193,7 @@ const Home: NextPage = () => {
               amet, qui minim labore adipisicing minim sint cillum sint
               consectetur cupidatat.
             </p>
-            <Button className="font-bold">
-              Read More
-            </Button>
+            <Button className="font-bold">Read More</Button>
           </div>
 
           <Image
@@ -200,7 +248,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      <footer className="mx-auto flex items-center justify-center gap-4 bg-slate-900 text-slate-50 p-4">
+      <footer className="mx-auto flex items-center justify-center gap-4">
         <p>Product</p>
         <p>Quick Links</p>
         <p>Source</p>
@@ -211,3 +259,25 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { ssg, session } = await ssgHelper(context);
+
+  if (session && session.user) {
+    await ssg.auth.getUserSession.prefetch();
+
+    return {
+      props: {
+        trpcState: ssg.dehydrate(),
+      },
+    };
+  } else {
+    return {
+      props: {
+        trpcState: ssg.dehydrate(),
+      },
+    };
+  }
+};

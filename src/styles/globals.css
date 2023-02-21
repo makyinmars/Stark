@@ -4,6 +4,6 @@
 
 @layer base {
   html {
-    @apply text-slate-900;
+    @apply bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600;
   }
 }
