@@ -14,6 +14,7 @@ import {
 import { Button } from "src/components/ui/button";
 import { ssgHelper } from "src/utils/ssg";
 import { api } from "src/utils/api";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const utils = api.useContext();
@@ -46,6 +47,9 @@ const Home: NextPage = () => {
               {session ? (
                 <div className="flex flex-col justify-center gap-4">
                   <h3 className="self-center">Signed in as: {user?.name}</h3>
+                  <Link href="/dashboard">
+                    <Button className="w-full">Dashboard</Button>
+                  </Link>
                   <Button
                     onClick={() =>
                       void signOut({
