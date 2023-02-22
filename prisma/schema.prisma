@@ -71,7 +71,8 @@ model Workout {
   name        String
   description String?
   copyCount   Int        @default(0)
-  time        Float
+  notes       String?
+  timer       Float      @default(0.0)
   exercises   Exercise[]
   user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String?

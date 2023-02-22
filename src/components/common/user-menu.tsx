@@ -1,0 +1,93 @@
+import Link from "next/link";
+import { Button } from "src/components/ui/button";
+import { signOut } from "next-auth/react";
+import {
+  Home,
+  CreditCard,
+  LogOut,
+  History,
+  User,
+  Dumbbell,
+  Crown,
+} from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "src/components/ui/dropdown-menu";
+import { api } from "src/utils/api";
+
+interface UserMenuProps {
+  children: React.ReactNode;
+}
+
+const UserMenu = ({ children }: UserMenuProps) => {
+  const utils = api.useContext();
+  const user = utils.auth.getUserSession.getData();
+  return (
+    <div className="container mx-auto flex flex-col gap-4 p-4">
+      <div className="flex items-center justify-between">
+        <Link href="/">
+          <Home size={24} />
+        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button>Account</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="mr-2 w-36">
+            <DropdownMenuLabel>
+              {user && user.name}
+              {`'`}s Account
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <CreditCard className="mr-2 h-4 w-4" />
+                <Link href="/dashboard">
+                  <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <History className="mr-2 h-4 w-4" />
+                <span>History</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Dumbbell className="mr-2 h-4 w-4" />
+                <span>Exercises</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Crown className="mr-2 h-4 w-4" />
+                <span>Upgrade</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span
+                onClick={() =>
+                  void signOut({
+                    callbackUrl: "/",
+                  })
+                }
+              >
+                Log out
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      {children}
+    </div>
+  );
+};
+
+export default UserMenu;

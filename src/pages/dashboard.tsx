@@ -2,81 +2,91 @@ import Head from "next/head";
 import type { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import {
-  Home,
-  CreditCard,
-  LogOut,
   History,
-  User,
-  Dumbbell,
-  Crown,
+  MoreHorizontal,
 } from "lucide-react";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "src/components/ui/dropdown-menu";
 import { Button } from "src/components/ui/button";
 import { ssgHelper } from "src/utils/ssg";
-import { api } from "src/utils/api";
+import UserMenu from "src/components/common/user-menu";
 
 const Dashboard = () => {
-  const utils = api.useContext();
-  const user = utils.auth.getUserSession.getData();
   return (
-    <div className="container mx-auto flex flex-col gap-4 p-4">
+    <>
       <Head>
         <title>Dashboard</title>
       </Head>
-      <div className="flex items-center justify-between">
-        <Link href="/">
-          <Home size={24} />
+      <UserMenu>
+        <h1 className="custom-h1">Start Workout</h1>
+
+        <h3 className="custom-h3">Quick Start</h3>
+        <Link href="/workout/create-workout">
+          <Button className="w-full">Start an Empty Workout</Button>
         </Link>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Account</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-2 w-36">
-            <DropdownMenuLabel>
-              {user && user.name}
-              {`'`}s Account
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard className="mr-2 h-4 w-4" />
-                <span>Dashboard</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <History className="mr-2 h-4 w-4" />
-                <span>History</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Dumbbell className="mr-2 h-4 w-4" />
-                <span>Exercises</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Crown className="mr-2 h-4 w-4" />
-                <span>Upgrade</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </div>
+
+        <h3 className="custom-h3">Workouts</h3>
+        <h4 className="custom-h4">My Workouts(4)</h4>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="rounded border border-gray-50 p-2">
+            <h5 className="custom-h5 flex items-center justify-between">
+              Chest and Triceps <MoreHorizontal size={16} />
+            </h5>
+            <p className="custom-subtle">Beach Press(Barbell)</p>
+            <p className="custom-subtle flex items-center gap-2">
+              <History size={16} /> Dec 13, 2022
+            </p>
+          </div>
+          <div className="rounded border border-gray-50 p-2">
+            <h5 className="custom-h5 flex items-center justify-between">
+              Chest and Triceps <MoreHorizontal size={16} />
+            </h5>
+            <p className="custom-subtle">Beach Press(Barbell)</p>
+            <p className="custom-subtle flex items-center gap-2">
+              <History size={16} /> Dec 13, 2022
+            </p>
+          </div>
+          <div className="rounded border border-gray-50 p-2">
+            <h5 className="custom-h5 flex items-center justify-between">
+              Chest and Triceps <MoreHorizontal size={16} />
+            </h5>
+            <p className="custom-subtle">Beach Press(Barbell)</p>
+            <p className="custom-subtle flex items-center gap-2">
+              <History size={16} /> Dec 13, 2022
+            </p>
+          </div>
+        </div>
+        <h4 className="custom-h4">Example Workouts(4)</h4>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="rounded border border-gray-50 p-2">
+            <h5 className="custom-h5 flex items-center justify-between">
+              Chest and Triceps <MoreHorizontal size={16} />
+            </h5>
+            <p className="custom-subtle">Beach Press(Barbell)</p>
+            <p className="custom-subtle flex items-center gap-2">
+              <History size={16} /> Dec 13, 2022
+            </p>
+          </div>
+          <div className="rounded border border-gray-50 p-2">
+            <h5 className="custom-h5 flex items-center justify-between">
+              Chest and Triceps <MoreHorizontal size={16} />
+            </h5>
+            <p className="custom-subtle">Beach Press(Barbell)</p>
+            <p className="custom-subtle flex items-center gap-2">
+              <History size={16} /> Dec 13, 2022
+            </p>
+          </div>
+          <div className="rounded border border-gray-50 p-2">
+            <h5 className="custom-h5 flex items-center justify-between">
+              Chest and Triceps <MoreHorizontal size={16} />
+            </h5>
+            <p className="custom-subtle">Beach Press(Barbell)</p>
+            <p className="custom-subtle flex items-center gap-2">
+              <History size={16} /> Dec 13, 2022
+            </p>
+          </div>
+        </div>
+      </UserMenu>
+    </>
   );
 };
 

@@ -4,6 +4,44 @@
 
 @layer base {
   html {
-    @apply bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600;
+    @apply bg-gradient-to-r from-stone-200 via-stone-300 to-stone-200;
+  }
+}
+
+@layer components {
+  .custom-h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+  }
+
+  .custom-h2 {
+    @apply scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700;
+  }
+
+  .custom-h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+
+  .custom-h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+
+  .custom-h5 {
+    @apply scroll-m-20 text-lg font-semibold tracking-tight;
+  }
+
+  .custom-p {
+    @apply leading-7 [&:not(:first-child)]:mt-3;
+  }
+
+  .custom-large {
+    @apply text-lg font-semibold text-slate-900 dark:text-slate-50;
+  }
+
+  .custom-small {
+    @apply text-sm font-medium leading-none;
+  }
+
+  .custom-subtle {
+    @apply text-sm text-slate-500 dark:text-slate-400;
   }
 }
