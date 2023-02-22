@@ -9,6 +9,7 @@ import {
   User,
   Dumbbell,
   Crown,
+  Zap,
 } from "lucide-react";
 
 import {
@@ -67,6 +68,10 @@ const UserMenu = ({ children }: UserMenuProps) => {
               <DropdownMenuItem>
                 <Crown className="mr-2 h-4 w-4" />
                 <span>Upgrade</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Zap className="mr-2 h-4 w-4" />
+                <span>Wishlist</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
