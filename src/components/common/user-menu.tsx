@@ -31,7 +31,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
   const utils = api.useContext();
   const user = utils.auth.getUserSession.getData();
   return (
-    <div className="container mx-auto flex flex-col gap-4 p-4">
+    <div className="container flex flex-col gap-4 p-4 mx-auto">
       <div className="flex items-center justify-between">
         <Link href="/">
           <Home size={24} />
@@ -48,35 +48,35 @@ const UserMenu = ({ children }: UserMenuProps) => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
+                <User className="w-4 h-4 mr-2" />
                 <span>Profile</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard className="mr-2 h-4 w-4" />
+                <CreditCard className="w-4 h-4 mr-2" />
                 <Link href="/dashboard">
                   <span>Dashboard</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <History className="mr-2 h-4 w-4" />
+                <History className="w-4 h-4 mr-2" />
                 <span>History</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Dumbbell className="mr-2 h-4 w-4" />
+                <Dumbbell className="w-4 h-4 mr-2" />
                 <span>Exercises</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Crown className="mr-2 h-4 w-4" />
+                <Crown className="w-4 h-4 mr-2" />
                 <span>Upgrade</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Zap className="mr-2 h-4 w-4" />
+                <Zap className="w-4 h-4 mr-2" />
                 <span>Wishlist</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="w-4 h-4 mr-2" />
               <span
                 onClick={() =>
                   void signOut({
