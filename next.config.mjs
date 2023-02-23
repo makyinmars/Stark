@@ -17,7 +17,7 @@ const config = {
    * @see https://github.com/vercel/next.js/issues/41980
    */
   images: {
-    domains: ["github.com"],
+    domains: ["github.com", "cdn.discordapp.com", "lh3.googleusercontent.com"],
   },
   i18n: {
     locales: ["en"],

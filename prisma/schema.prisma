@@ -64,6 +64,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   workout       Workout[]
+  followers     Follows[] @relation("follower")
+  following     Follows[] @relation("following")
 }
 
 model Workout {
@@ -102,4 +104,13 @@ model Set {
   weight     Float
   time       Float
   rest       Float
+}
+
+model Follows {
+  follower    User   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  followerId  String
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  followingId String
+
+  @@id([followerId, followingId])
 }

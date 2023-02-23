@@ -13,8 +13,9 @@ const CreateWorkout = () => {
     const interval = setInterval(() => {
       setTimer(new Date());
     }, 1000);
-
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (

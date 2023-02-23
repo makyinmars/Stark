@@ -48,8 +48,12 @@ const UserMenu = ({ children }: UserMenuProps) => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <User className="w-4 h-4 mr-2" />
-                <span>Profile</span>
+                {user && (
+                  <Link href={`/user/${user.id}`} className="flex items-center">
+                    <User className="w-4 h-4 mr-2" />
+                    <span>Profile</span>
+                  </Link>
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard className="w-4 h-4 mr-2" />
