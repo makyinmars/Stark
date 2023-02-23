@@ -4,6 +4,7 @@ import type {
 } from "next";
 import Image from "next/image";
 import Head from "next/head";
+import { MoreHorizontal, History, Copy } from "lucide-react";
 
 import { ssgHelper } from "src/utils/ssg";
 import { api } from "src/utils/api";
@@ -38,6 +39,8 @@ const User = ({
               <h3 className="self-center custom-h3">{user.name}</h3>
             </div>
 
+            <h4 className="self-center custom-h4">Workouts: (40)</h4>
+
             <div className="flex justify-around">
               <div className="p-2 border rounded border-gray-50">
                 <h5 className="flex items-center justify-between custom-h5">
@@ -50,6 +53,34 @@ const User = ({
                   Following
                 </h5>
                 <p className="text-center custom-subtle">20</p>
+              </div>
+            </div>
+
+            <h4 className="self-center custom-h4">Workout History</h4>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-2 border rounded border-gray-50">
+                <h5 className="flex items-center justify-between custom-h5">
+                  Chest and Triceps <MoreHorizontal size={16} />
+                </h5>
+                <p className="custom-subtle">Beach Press(Barbell)</p>
+                <p className="flex items-center gap-2 custom-subtle">
+                  <History size={16} /> Dec 13, 2022
+                </p>
+                <p className="flex items-center gap-2">
+                  <Copy size={16} /> Copy Workout
+                </p>
+              </div>
+              <div className="p-2 border rounded border-gray-50">
+                <h5 className="flex items-center justify-between custom-h5">
+                  Chest and Triceps <MoreHorizontal size={16} />
+                </h5>
+                <p className="custom-subtle">Beach Press(Barbell)</p>
+                <p className="flex items-center gap-2 custom-subtle">
+                  <History size={16} /> Dec 13, 2022
+                </p>
+                <p className="flex items-center gap-2">
+                  <Copy size={16} /> Copy Workout
+                </p>
               </div>
             </div>
           </UserMenu>

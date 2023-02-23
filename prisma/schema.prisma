@@ -89,7 +89,7 @@ model Exercise {
   equipment       String
   equipmentNeeded Boolean  @default(false)
   difficulty      String
-  time            Float
+  time            Float?
   image           String?
   workout         Workout? @relation(fields: [workoutId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   workoutId       String?

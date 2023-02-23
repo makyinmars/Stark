@@ -56,8 +56,8 @@ const UserMenu = ({ children }: UserMenuProps) => {
                 )}
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard className="w-4 h-4 mr-2" />
-                <Link href="/dashboard">
+                <Link href="/dashboard" className="flex items-center">
+                  <CreditCard className="w-4 h-4 mr-2" />
                   <span>Dashboard</span>
                 </Link>
               </DropdownMenuItem>
@@ -66,8 +66,10 @@ const UserMenu = ({ children }: UserMenuProps) => {
                 <span>History</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Dumbbell className="w-4 h-4 mr-2" />
-                <span>Exercises</span>
+                <Link href="/exercise" className="flex items-center">
+                  <Dumbbell className="w-4 h-4 mr-2" />
+                  <span>Exercises</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Crown className="w-4 h-4 mr-2" />

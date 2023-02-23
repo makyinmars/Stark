@@ -17,7 +17,12 @@ const config = {
    * @see https://github.com/vercel/next.js/issues/41980
    */
   images: {
-    domains: ["github.com", "cdn.discordapp.com", "lh3.googleusercontent.com"],
+    domains: [
+      "github.com",
+      "cdn.discordapp.com",
+      "lh3.googleusercontent.com",
+      "www.healthier.qld.gov.au",
+    ],
   },
   i18n: {
     locales: ["en"],
