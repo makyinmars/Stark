@@ -1,14 +1,19 @@
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { exercises, yogaExercises } from "src/data/exercises";
 
+const exerciseType = Prisma.validator<Prisma.ExerciseSelect>()({
+  type: true,
+});
+
 export const exerciseRouter = createTRPCRouter({
   createExercises: protectedProcedure.mutation(async ({ ctx }) => {
     // Create exercises with the data from src/data/exercises.ts
     // Use ctx.prisma.exercise.createMany to create multiple exercises at once
-    for (const exercise of yogaExercises) {
+    for (const exercise of exercises) {
       const newExercise = await ctx.prisma.exercise.createMany({
         data: {
           name: exercise.name,
@@ -18,7 +23,6 @@ export const exerciseRouter = createTRPCRouter({
           equipment: exercise.equipment,
           equipmentNeeded: exercise.equipmentNeeded,
           difficulty: exercise.difficulty,
-          image: exercise.image,
         },
       });
 
@@ -30,5 +34,34 @@ export const exerciseRouter = createTRPCRouter({
       }
       console.log("New exercise created!", newExercise);
     }
+  }),
+
+  getExercises: protectedProcedure.query(async ({ ctx }) => {
+    const exercises = await ctx.prisma.exercise.findMany();
+
+    if (exercises) {
+      return exercises;
+    }
+
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No exercises found",
+    });
+  }),
+
+  getExercisesTypes: protectedProcedure.query(async ({ ctx }) => {
+    const exercisesTypes = await ctx.prisma.exercise.findMany({
+      select: exerciseType,
+    });
+
+    if (exercisesTypes.length > 0) {
+      // Return unique exercise types from the exercises with a O(1) lookup
+      return [...new Set(exercisesTypes.map((exercise) => exercise.type))];
+    }
+
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No exercises found",
+    });
   }),
 });

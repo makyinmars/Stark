@@ -6,8 +6,11 @@ import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import { api } from "src/utils/api";
 import { ssgHelper } from "src/utils/ssg";
+import Exercises from "src/components/common/exercises";
 
 const Exercise = () => {
+  const utils = api.useContext();
+
   const createExercises = api.exercise.createExercises.useMutation();
 
   const onCreateExercises = async () => {
@@ -22,11 +25,7 @@ const Exercise = () => {
         <title>Exercise</title>
       </Head>
       <UserMenu>
-        <div>
-          <Button onClick={() => void onCreateExercises()}>
-            Create Exercises
-          </Button>
-        </div>
+        <Exercises />
       </UserMenu>
     </>
   );
@@ -41,7 +40,8 @@ export const getServerSideProps = async (
 
   if (session && session.user) {
     await ssg.auth.getUserSession.prefetch();
-
+    await ssg.exercise.getExercises.prefetch();
+    await ssg.exercise.getExercisesTypes.prefetch()
     return {
       props: {
         trpcState: ssg.dehydrate(),
