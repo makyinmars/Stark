@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    @apply bg-gradient-to-r from-stone-200 via-stone-300 to-stone-200;
-  }
-}
-
 @layer components {
   .custom-h1 {
     @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import Image from "next/image";
 
 import { cn } from "src/utils/tailwindcss";
 import { api } from "src/utils/api";
@@ -16,6 +17,7 @@ import {
   PopoverTrigger,
 } from "src/components/ui/popover";
 import { Button } from "src/components/ui/button";
+import { ScrollArea } from "src/components/ui/scroll-area";
 
 const Exercises = () => {
   const utils = api.useContext();
@@ -44,15 +46,15 @@ const Exercises = () => {
               >
                 {typeValue
                   ? exercisesTypes.find(
-                      (type) => type.toLowerCase() === typeValue
-                    )
-                  : "Select type..."}
+                    (type) => type.toLowerCase() === typeValue
+                  )
+                  : "Select body type..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
               <Command>
-                <CommandInput placeholder="Search exercise type..." />
+                <CommandInput placeholder="Search body type..." />
                 <CommandEmpty>No type found.</CommandEmpty>
                 <CommandGroup className="w-full">
                   {exercisesTypes.map((type) => (
@@ -88,15 +90,15 @@ const Exercises = () => {
               >
                 {muscleValue
                   ? exercisesMuscles.find(
-                      (muscle) => muscle.toLowerCase() === muscleValue
-                    )
-                  : "Select muscle..."}
+                    (muscle) => muscle.toLowerCase() === muscleValue
+                  )
+                  : "Select body muscle..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
               <Command>
-                <CommandInput placeholder="Search muscle..." />
+                <CommandInput placeholder="Search body muscle..." />
                 <CommandEmpty>No muscle exercises found.</CommandEmpty>
                 <CommandGroup className="w-full">
                   {exercisesMuscles.map((muscle) => (
@@ -122,43 +124,64 @@ const Exercises = () => {
               </Command>
             </PopoverContent>
           </Popover>
-          <Command>
+          <Command className="rounded border border-gray-200">
             <CommandInput placeholder="Search exercise..." />
             <CommandEmpty>No exercises found</CommandEmpty>
             <CommandGroup>
-              {exercises
-                .filter((exercise) => {
-                  if (typeValue && muscleValue) {
-                    return (
-                      exercise.type.toLowerCase() === typeValue &&
-                      exercise.muscle.toLowerCase() === muscleValue
-                    );
-                  } else if (typeValue) {
-                    return exercise.type.toLowerCase() === typeValue;
-                  } else {
-                    return exercise.muscle.toLowerCase() === muscleValue;
-                  }
-                })
-                .map((exercise) => (
-                  <CommandItem
-                    key={exercise.name}
-                    onSelect={(currentValue) => {
-                      setExerciseValue(
-                        currentValue === exerciseValue ? "" : currentValue
+              <ScrollArea className="h-[560px]">
+                {exercises
+                  .filter((exercise) => {
+                    if (typeValue && muscleValue) {
+                      return (
+                        exercise.type.toLowerCase() === typeValue &&
+                        exercise.muscle.toLowerCase() === muscleValue
                       );
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        exerciseValue === exercise.name
-                          ? "opacity-100"
-                          : "opacity-0"
+                    } else if (typeValue) {
+                      return exercise.type.toLowerCase() === typeValue;
+                    } else if (muscleValue) {
+                      return exercise.muscle.toLowerCase() === muscleValue;
+                    } else {
+                      return exercise;
+                    }
+                  })
+                  .map((exercise) => (
+                    <CommandItem
+                      key={exercise.name}
+                      onSelect={(currentValue) => {
+                        setExerciseValue(
+                          currentValue === exerciseValue ? "" : currentValue
+                        );
+                      }}
+                      className="flex gap-2"
+                    >
+                      {exerciseValue === exercise.name && (
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            exerciseValue === exercise.name
+                              ? "opacity-100"
+                              : "opacity-0"
+                          )}
+                        />
                       )}
-                    />
-                    {exercise.name}
-                  </CommandItem>
-                ))}
+                      {exercise.image ? (
+                        <Image
+                          src={exercise.image}
+                          width={95}
+                          height={70}
+                          alt={exercise.name}
+                          loading="lazy"
+                          className="rounded"
+                        />
+                      ) : (
+                        <p className="flex h-14 w-24 items-center justify-center rounded bg-slate-300">
+                          {exercise.name.charAt(0)}
+                        </p>
+                      )}
+                      {exercise.name}
+                    </CommandItem>
+                  ))}
+              </ScrollArea>
             </CommandGroup>
           </Command>
         </div>
