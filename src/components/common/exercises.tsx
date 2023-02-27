@@ -20,35 +20,40 @@ import { Button } from "src/components/ui/button";
 const Exercises = () => {
   const utils = api.useContext();
   const exercises = utils.exercise.getExercises.getData();
-  const exercisesTypes = utils.exercise.getExercisesTypes.getData();
+  const exercisesTypes = utils.exercise.getExercisesByTypes.getData();
+  const exercisesMuscles = utils.exercise.getExercisesByMuscles.getData();
 
-  const [open, setOpen] = useState(false);
+  const [openType, setOpenType] = useState(false);
+  const [openMuscle, setOpenMuscle] = useState(false);
+
   const [exerciseValue, setExerciseValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
+  const [muscleValue, setMuscleValue] = useState("");
 
   return (
     <div className="flex flex-col gap-4">
-      {exercises && exercisesTypes ? (
+      {exercises && exercisesTypes && exercisesMuscles ? (
         <div className="flex flex-col gap-4">
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={openType} onOpenChange={setOpenType}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 role="combobox"
-                aria-expanded={open}
+                aria-expanded={openType}
                 className="w-full justify-between"
               >
                 {typeValue
-                  ? exercisesTypes.find((type) => type === typeValue)
-                  : "Select framework..."}
-                {typeValue && <span className="capitalize">{typeValue}</span>}
+                  ? exercisesTypes.find(
+                      (type) => type.toLowerCase() === typeValue
+                    )
+                  : "Select type..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
               <Command>
-                <CommandInput placeholder="Search framework..." />
-                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandInput placeholder="Search exercise type..." />
+                <CommandEmpty>No type found.</CommandEmpty>
                 <CommandGroup className="w-full">
                   {exercisesTypes.map((type) => (
                     <CommandItem
@@ -57,7 +62,7 @@ const Exercises = () => {
                         setTypeValue(
                           currentValue === typeValue ? "" : currentValue
                         );
-                        setOpen(false);
+                        setOpenType(false);
                       }}
                     >
                       <Check
@@ -73,12 +78,67 @@ const Exercises = () => {
               </Command>
             </PopoverContent>
           </Popover>
+          <Popover open={openMuscle} onOpenChange={setOpenMuscle}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openMuscle}
+                className="w-full justify-between"
+              >
+                {muscleValue
+                  ? exercisesMuscles.find(
+                      (muscle) => muscle.toLowerCase() === muscleValue
+                    )
+                  : "Select muscle..."}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Search muscle..." />
+                <CommandEmpty>No muscle exercises found.</CommandEmpty>
+                <CommandGroup className="w-full">
+                  {exercisesMuscles.map((muscle) => (
+                    <CommandItem
+                      key={muscle}
+                      onSelect={(currentValue) => {
+                        setMuscleValue(
+                          currentValue === muscleValue ? "" : currentValue
+                        );
+                        setOpenMuscle(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          muscleValue === muscle ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {muscle}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
           <Command>
             <CommandInput placeholder="Search exercise..." />
             <CommandEmpty>No exercises found</CommandEmpty>
             <CommandGroup>
               {exercises
-                .filter((exercise) => exercise.type.toLowerCase() === typeValue)
+                .filter((exercise) => {
+                  if (typeValue && muscleValue) {
+                    return (
+                      exercise.type.toLowerCase() === typeValue &&
+                      exercise.muscle.toLowerCase() === muscleValue
+                    );
+                  } else if (typeValue) {
+                    return exercise.type.toLowerCase() === typeValue;
+                  } else {
+                    return exercise.muscle.toLowerCase() === muscleValue;
+                  }
+                })
                 .map((exercise) => (
                   <CommandItem
                     key={exercise.name}
@@ -96,7 +156,7 @@ const Exercises = () => {
                           : "opacity-0"
                       )}
                     />
-                    {exercise.name} - {exercise.type}
+                    {exercise.name}
                   </CommandItem>
                 ))}
             </CommandGroup>
