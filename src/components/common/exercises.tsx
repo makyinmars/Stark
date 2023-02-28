@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Info } from "lucide-react";
 import Image from "next/image";
 
 import { cn } from "src/utils/tailwindcss";
@@ -18,6 +18,15 @@ import {
 } from "src/components/ui/popover";
 import { Button } from "src/components/ui/button";
 import { ScrollArea } from "src/components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 const Exercises = () => {
   const utils = api.useContext();
@@ -46,8 +55,8 @@ const Exercises = () => {
               >
                 {typeValue
                   ? exercisesTypes.find(
-                    (type) => type.toLowerCase() === typeValue
-                  )
+                      (type) => type.toLowerCase() === typeValue
+                    )
                   : "Select body type..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -90,8 +99,8 @@ const Exercises = () => {
               >
                 {muscleValue
                   ? exercisesMuscles.find(
-                    (muscle) => muscle.toLowerCase() === muscleValue
-                  )
+                      (muscle) => muscle.toLowerCase() === muscleValue
+                    )
                   : "Select body muscle..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -152,33 +161,70 @@ const Exercises = () => {
                           currentValue === exerciseValue ? "" : currentValue
                         );
                       }}
-                      className="flex gap-2"
+                      className="flex justify-between gap-2"
                     >
-                      {exerciseValue === exercise.name && (
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            exerciseValue === exercise.name
-                              ? "opacity-100"
-                              : "opacity-0"
+                      <div className="flex items-center gap-2">
+                        {exerciseValue === exercise.name && (
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              exerciseValue === exercise.name
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                        )}
+                        {exercise.image ? (
+                          <Image
+                            src={exercise.image}
+                            width={95}
+                            height={70}
+                            alt={exercise.name}
+                            loading="lazy"
+                            className="rounded"
+                          />
+                        ) : (
+                          <p className="flex h-14 w-24 items-center justify-center rounded bg-slate-300">
+                            {exercise.name.charAt(0)}
+                          </p>
+                        )}
+                        {exercise.name}
+                      </div>
+                      <Dialog>
+                        <DialogTrigger>
+                          <Info className="h-4 w-4" />
+                        </DialogTrigger>
+                        <DialogContent className="flex flex-col gap-2">
+                          <DialogTitle className="text-center">
+                            {exercise.name}
+                          </DialogTitle>
+                          {exercise.image && (
+                            <Image
+                              src={exercise.image}
+                              width={95}
+                              height={70}
+                              alt={exercise.name}
+                              loading="lazy"
+                              className="mx-auto h-full w-full rounded"
+                            />
                           )}
-                        />
-                      )}
-                      {exercise.image ? (
-                        <Image
-                          src={exercise.image}
-                          width={95}
-                          height={70}
-                          alt={exercise.name}
-                          loading="lazy"
-                          className="rounded"
-                        />
-                      ) : (
-                        <p className="flex h-14 w-24 items-center justify-center rounded bg-slate-300">
-                          {exercise.name.charAt(0)}
-                        </p>
-                      )}
-                      {exercise.name}
+                          <DialogDescription>
+                            <span className="font-semibold">Instructions:</span> {exercise.instructions}
+                          </DialogDescription>
+                          <DialogDescription>
+                            <span className="font-semibold">Equipment:</span> {exercise.equipment}
+                          </DialogDescription>
+                          <DialogDescription>
+                            <span className="font-semibold">Difficulty:</span> {exercise.difficulty}
+                          </DialogDescription>
+                          <DialogDescription>
+                            <span className="font-semibold">Muscle:</span> {exercise.muscle}
+                          </DialogDescription>
+                          <DialogDescription>
+                            <span className="font-semibold">Type:</span> {exercise.type}
+                          </DialogDescription>
+                        </DialogContent>
+                      </Dialog>
                     </CommandItem>
                   ))}
               </ScrollArea>
