@@ -334,7 +334,7 @@ export const yogaExercises = [
     instructions:
       "Stand with your feet hip-width apart and a dumbbell in each hand. Take a large step forward with your right foot and lower your body into a lunge position, keeping your left knee off the ground. As you lunge down, curl the dumbbells up towards your shoulders, keeping your elbows close to your body. Return to the starting position and repeat on the other side, stepping forward with your left foot and curling the dumbbells up towards your shoulders. Continue alternating sides with each repetition.",
     type: "Strength",
-    muscle: "Legs and Biceps",
+    muscle: "Legs",
     equipment: "Dumbbells",
     equipmentNeeded: true,
     difficulty: "Intermediate",
@@ -370,7 +370,7 @@ export const yogaExercises = [
     instructions:
       "Stand with your feet hip-width apart and a dumbbell in your right hand. Shift your weight onto your left foot and lift your right foot off the ground, balancing on your left foot. Keeping your back straight and your right arm straight down in front of you, hinge forward at the hips and lower the dumbbell towards the ground. Keep your left knee slightly bent and your right leg straight. Pause when the dumbbell is at knee height, then return to the starting position. Repeat for the desired number of repetitions before switching sides.",
     type: "Strength",
-    muscle: "Legs and Back",
+    muscle: "Back",
     equipment: "Bodyweight",
     equipmentNeeded: false,
     difficulty: "Intermediate",
@@ -382,7 +382,7 @@ export const yogaExercises = [
     instructions:
       "Stand with your feet hip-width apart and your arms extended straight out in front of you at shoulder height. Take a large step forward with your right foot and lower your body into a lunge position, keeping your left knee off the ground. As you lunge down, twist your torso to the right, bringing your left elbow across your body to meet your right knee. Return to the starting position and repeat on the other side, stepping forward with your left foot and twisting your torso to the left. Continue alternating sides with each repetition.",
     type: "Strength",
-    muscle: "Legs and Core",
+    muscle: "Core",
     equipment: "Bodyweight",
     equipmentNeeded: false,
     difficulty: "Intermediate",

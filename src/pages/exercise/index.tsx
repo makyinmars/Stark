@@ -1,5 +1,4 @@
 import type { GetServerSidePropsContext } from "next";
-import Image from "next/image";
 import Head from "next/head";
 
 import UserMenu from "src/components/common/user-menu";
@@ -15,6 +14,7 @@ const Exercise = () => {
 
   const onCreateExercises = async () => {
     try {
+      console.log("createExercises", createExercises);
       await createExercises.mutateAsync();
     } catch {}
   };
@@ -25,6 +25,9 @@ const Exercise = () => {
         <title>Exercise</title>
       </Head>
       <UserMenu>
+        {/* <Button onClick={() => void onCreateExercises()}> */}
+        {/*   Create Exercise */}
+        {/* </Button> */}
         <Exercises />
       </UserMenu>
     </>

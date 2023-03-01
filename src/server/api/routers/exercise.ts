@@ -30,6 +30,8 @@ export const exerciseRouter = createTRPCRouter({
         },
       });
 
+      console.log(newExercise);
+
       if (!newExercise) {
         throw new TRPCError({
           code: "BAD_REQUEST",

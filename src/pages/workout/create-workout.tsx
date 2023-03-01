@@ -1,26 +1,20 @@
 import Head from "next/head";
+import type { GetServerSidePropsContext } from "next";
 import Link from "next/link";
-import { useEffect } from "react";
 import { MoreHorizontal } from "lucide-react";
 
 import { getTimeOfDay } from "src/utils/date";
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
-import { useStopwatch } from "src/hooks/useStopwatch";
+import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
+import Exercises from "src/components/common/exercises";
+import { ssgHelper } from "src/utils/ssg";
+import { useWorkoutStore } from "src/utils/zustand";
 
 const CreateWorkout = () => {
-  const { time, isActive, toggle } = useStopwatch();
+  const { workout } = useWorkoutStore();
 
-  // convert time to hours, minutes, seconds
-  const hours = Math.floor(time / 3600);
-  const minutes = Math.floor((time % 3600) / 60);
-  const seconds = Math.floor((time % 3600) % 60);
-
-  useEffect(() => {
-    if (!isActive) {
-      toggle();
-    }
-  }, [isActive, toggle]);
+  console.log(workout);
 
   return (
     <>
@@ -30,20 +24,24 @@ const CreateWorkout = () => {
       <UserMenu>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="flex items-center gap-2 custom-h3">
+            <h2 className="custom-h3 flex items-center gap-2">
               {getTimeOfDay()} Workout
               <MoreHorizontal size={16} />
             </h2>
-            <p className="text-base custom-subtle">
-              {hours}:{minutes}:{seconds}
-            </p>
             <p className="custom-subtle">Notes</p>
           </div>
-          <Button className="self-start h-8" variant="destructive">
+          <Button className="h-8 self-start" variant="destructive">
             Finish
           </Button>
         </div>
-        <Button>Add Exercise</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Add Exercise</Button>
+          </DialogTrigger>
+          <DialogContent className="py-10">
+            <Exercises />
+          </DialogContent>
+        </Dialog>
         <Link href="/dashboard">
           <Button className="w-full">Cancel Workout</Button>
         </Link>
@@ -53,3 +51,31 @@ const CreateWorkout = () => {
 };
 
 export default CreateWorkout;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { ssg, session } = await ssgHelper(context);
+
+  if (session && session.user) {
+    await ssg.auth.getUserSession.prefetch();
+    await ssg.exercise.getExercises.prefetch();
+    await ssg.exercise.getExercisesByTypes.prefetch();
+    await ssg.exercise.getExercisesByMuscles.prefetch();
+    return {
+      props: {
+        trpcState: ssg.dehydrate(),
+      },
+    };
+  } else {
+    return {
+      props: {
+        trpcState: ssg.dehydrate(),
+      },
+      redirect: {
+        destination: "/",
+        permanent: "false",
+      },
+    };
+  }
+};

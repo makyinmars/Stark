@@ -1,16 +1,16 @@
 import Head from "next/head";
 import type { GetServerSidePropsContext } from "next";
 import Link from "next/link";
-import {
-  History,
-  MoreHorizontal,
-} from "lucide-react";
+import { History, MoreHorizontal } from "lucide-react";
 
+import { useWorkoutStore } from "src/utils/zustand";
 import { Button } from "src/components/ui/button";
 import { ssgHelper } from "src/utils/ssg";
 import UserMenu from "src/components/common/user-menu";
 
 const Dashboard = () => {
+  const { createWorkout } = useWorkoutStore();
+
   return (
     <>
       <Head>
@@ -21,7 +21,9 @@ const Dashboard = () => {
 
         <h3 className="custom-h3">Quick Start</h3>
         <Link href="/workout/create-workout">
-          <Button className="w-full">Start an Empty Workout</Button>
+          <Button className="w-full" onClick={() => createWorkout}>
+            Start an Empty Workout
+          </Button>
         </Link>
 
         <h3 className="custom-h3">Workouts</h3>

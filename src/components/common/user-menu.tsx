@@ -10,6 +10,7 @@ import {
   Dumbbell,
   Crown,
   Zap,
+  Search,
 } from "lucide-react";
 
 import {
@@ -31,7 +32,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
   const utils = api.useContext();
   const user = utils.auth.getUserSession.getData();
   return (
-    <div className="container flex flex-col gap-4 p-4 mx-auto">
+    <div className="container mx-auto flex flex-col gap-4 p-4">
       <div className="flex items-center justify-between">
         <Link href="/">
           <Home size={24} />
@@ -50,39 +51,45 @@ const UserMenu = ({ children }: UserMenuProps) => {
               <DropdownMenuItem>
                 {user && (
                   <Link href={`/user/${user.id}`} className="flex items-center">
-                    <User className="w-4 h-4 mr-2" />
+                    <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </Link>
                 )}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="/dashboard" className="flex items-center">
-                  <CreditCard className="w-4 h-4 mr-2" />
+                  <CreditCard className="mr-2 h-4 w-4" />
                   <span>Dashboard</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <History className="w-4 h-4 mr-2" />
+                <History className="mr-2 h-4 w-4" />
                 <span>History</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="/exercise" className="flex items-center">
-                  <Dumbbell className="w-4 h-4 mr-2" />
+                  <Dumbbell className="mr-2 h-4 w-4" />
                   <span>Exercises</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Crown className="w-4 h-4 mr-2" />
+                <Link href="/exercise" className="flex items-center">
+                  <Search className="mr-2 h-4 w-4" />
+                  <span>Users</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Crown className="mr-2 h-4 w-4" />
                 <span>Upgrade</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Zap className="w-4 h-4 mr-2" />
+                <Zap className="mr-2 h-4 w-4" />
                 <span>Wishlist</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <LogOut className="w-4 h-4 mr-2" />
+              <LogOut className="mr-2 h-4 w-4" />
               <span
                 onClick={() =>
                   void signOut({
