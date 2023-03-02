@@ -1,15 +1,14 @@
-import { Check } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 
-import { cn } from "src/utils/tailwindcss";
 import UserMenu from "src/components/common/user-menu";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
 } from "src/components/ui/command";
 import { ssgHelper } from "src/utils/ssg";
@@ -18,20 +17,13 @@ import { Input } from "src/components/ui/input";
 import { Button } from "src/components/ui/button";
 
 const SearchUser = () => {
-  const utils = api.useContext();
-
   const [value, setValue] = useState("");
+  const [search, setSearch] = useState("");
 
-  const { data, isLoading, isError } = api.user.getUsersBySearchName.useQuery({
-    name: "Franklin",
-  });
-
-  const onSearchClick = async () => {
-    try {
-      console.log("VAlue", value);
-      const data = await utils.user.getUsersBySearchName.fetch({ name: value });
-      console.log("DAta", data);
-    } catch {}
+  const onSearchClick = () => {
+    if (value) {
+      setSearch(value);
+    }
   };
 
   return (
@@ -47,31 +39,11 @@ const SearchUser = () => {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Button onClick={() => void onSearchClick()}>Search</Button>
+          <Button variant="outline" onClick={() => void onSearchClick()}>
+            Search
+          </Button>
         </div>
-        <Command>
-          <CommandInput placeholder="Search users..." />
-          <CommandEmpty>No users found.</CommandEmpty>
-          <CommandGroup>
-            {data &&
-              data.map((user) => (
-                <CommandItem
-                  key={user.name}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === user.name ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {user.name}
-                </CommandItem>
-              ))}
-          </CommandGroup>
-        </Command>
+        {search && <SearchResult value={search} />}
       </UserMenu>
     </>
   );
@@ -103,4 +75,41 @@ export const getServerSideProps = async (
       },
     };
   }
+};
+
+interface SearchUserProps {
+  value: string;
+}
+
+const SearchResult = ({ value }: SearchUserProps) => {
+  const { data } = api.user.getUsersBySearchName.useQuery({
+    name: value,
+  });
+
+  return (
+    <Command>
+      <CommandEmpty>No users found.</CommandEmpty>
+      <CommandGroup>
+        {data &&
+          data.map((user) => (
+            <Link key={user.name} href={`/user/${user.id}`}>
+              <CommandItem>
+                <div className="flex items-center gap-2">
+                  {user.image && (
+                    <Image
+                      width={32}
+                      height={12}
+                      alt={user.name as string}
+                      src={user.image}
+                      className="h-auto w-auto rounded"
+                    />
+                  )}
+                  {user.name}
+                </div>
+              </CommandItem>
+            </Link>
+          ))}
+      </CommandGroup>
+    </Command>
+  );
 };
