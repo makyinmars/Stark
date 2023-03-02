@@ -73,7 +73,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/exercise" className="flex items-center">
+                <Link href="/search-user" className="flex items-center">
                   <Search className="mr-2 h-4 w-4" />
                   <span>Users</span>
                 </Link>

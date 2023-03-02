@@ -17,6 +17,12 @@ const workoutsByUserId = Prisma.validator<Prisma.WorkoutSelect>()({
   createdAt: true,
 });
 
+export const usersBySearchName = Prisma.validator<Prisma.UserSelect>()({
+  id: true,
+  name: true,
+  image: true,
+});
+
 export const userRouter = createTRPCRouter({
   getUserById: protectedProcedure
     .input(z.object({ id: z.string().nullable() }))
@@ -63,6 +69,40 @@ export const userRouter = createTRPCRouter({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "No user id provided",
+      });
+    }),
+
+  getUsersBySearchName: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().nullable(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (input.name) {
+        const users = await ctx.prisma.user.findMany({
+          where: {
+            name: {
+              search: input.name,
+            },
+          },
+          take: 4,
+          select: usersBySearchName,
+        });
+
+        if (users.length > 0) {
+          return users;
+        }
+
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No users found",
+        });
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No name provided",
       });
     }),
 });
