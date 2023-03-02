@@ -10,3 +10,7 @@ export const getTimeOfDay = () => {
     return "Evening";
   }
 };
+
+export const formatDate = (format: string, date: Date) => {
+  return dayjs(date).format(format);
+};

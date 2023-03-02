@@ -33,7 +33,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "src/components/ui/tooltip";
 
 const Exercises = () => {
   const router = useRouter();

@@ -3,6 +3,7 @@ import { exampleRouter } from "./routers/example";
 import { authRouter } from "./routers/auth";
 import { userRouter } from "./routers/user";
 import { exerciseRouter } from "./routers/exercise";
+import { workoutRouter } from "./routers/workout";
 
 /**
  * This is the primary router for your server.
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   example: exampleRouter,
   auth: authRouter,
   user: userRouter,
+  workout: workoutRouter,
   exercise: exerciseRouter,
 });
 

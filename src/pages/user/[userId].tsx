@@ -9,6 +9,7 @@ import { MoreHorizontal, History, Copy } from "lucide-react";
 import { ssgHelper } from "src/utils/ssg";
 import { api } from "src/utils/api";
 import UserMenu from "src/components/common/user-menu";
+import { formatDate } from "src/utils/date";
 
 const User = ({
   userId,
@@ -16,6 +17,7 @@ const User = ({
   const utils = api.useContext();
 
   const user = utils.user.getUserById.getData({ id: userId });
+  const userWorkouts = utils.user.getWorkoutsByUserId.getData({ userId });
 
   return (
     <>
@@ -58,30 +60,26 @@ const User = ({
 
             <h4 className="self-center custom-h4">Workout History</h4>
             <div className="grid grid-cols-2 gap-2">
-              <div className="p-2 border rounded border-gray-50">
-                <h5 className="flex items-center justify-between custom-h5">
-                  Chest and Triceps <MoreHorizontal size={16} />
-                </h5>
-                <p className="custom-subtle">Beach Press(Barbell)</p>
-                <p className="flex items-center gap-2 custom-subtle">
-                  <History size={16} /> Dec 13, 2022
-                </p>
-                <p className="flex items-center gap-2">
-                  <Copy size={16} /> Copy Workout
-                </p>
-              </div>
-              <div className="p-2 border rounded border-gray-50">
-                <h5 className="flex items-center justify-between custom-h5">
-                  Chest and Triceps <MoreHorizontal size={16} />
-                </h5>
-                <p className="custom-subtle">Beach Press(Barbell)</p>
-                <p className="flex items-center gap-2 custom-subtle">
-                  <History size={16} /> Dec 13, 2022
-                </p>
-                <p className="flex items-center gap-2">
-                  <Copy size={16} /> Copy Workout
-                </p>
-              </div>
+              {userWorkouts &&
+                userWorkouts.map((workout, i) => (
+                  <div className="p-2 border rounded border-gray-50" key={i}>
+                    <h5 className="flex items-center justify-between custom-h5">
+                      {workout.name} <MoreHorizontal size={16} />
+                    </h5>
+                    {workout.exercises.map((exercise, j) => (
+                      <p className="custom-subtle" key={j}>
+                        {exercise.name}
+                      </p>
+                    ))}
+                    <p className="flex items-center gap-2 custom-subtle">
+                      <History size={16} />{" "}
+                      {formatDate("DD/MM/YYYY", workout.createdAt)}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <Copy size={16} /> Copy Workout
+                    </p>
+                  </div>
+                ))}
             </div>
           </UserMenu>
         </>
@@ -106,6 +104,7 @@ export const getServerSideProps = async (
   if (session && session.user) {
     await ssg.auth.getUserSession.prefetch();
     await ssg.user.getUserById.prefetch({ id: userId });
+    await ssg.user.getWorkoutsByUserId.prefetch({ userId });
 
     return {
       props: {

@@ -42,7 +42,13 @@ export const exerciseRouter = createTRPCRouter({
   }),
 
   getExercises: protectedProcedure.query(async ({ ctx }) => {
-    const exercises = await ctx.prisma.exercise.findMany();
+    const exercises = await ctx.prisma.exercise.findMany({
+      where: {
+        workoutId: {
+          equals: null,
+        },
+      },
+    });
 
     if (exercises) {
       return exercises;

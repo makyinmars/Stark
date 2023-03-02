@@ -9,8 +9,51 @@ import { Button } from "src/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
 import Exercises from "src/components/common/exercises";
 import { ssgHelper } from "src/utils/ssg";
+import { useExerciseState } from "src/utils/zustand";
+import { api } from "src/utils/api";
 
 const CreateWorkout = () => {
+  const utils = api.useContext();
+
+  const createQuickWorkout = api.workout.createQuickWorkout.useMutation();
+  const user = utils.auth.getUserSession.getData();
+
+  const { exercises, removeExercise } = useExerciseState();
+
+  console.log(exercises);
+
+  const onCreateQuickWorkout = async () => {
+    try {
+      const exerciseSets = [
+        { reps: 10, weight: 10 },
+        { reps: 10, weight: 10 },
+        { reps: 10, weight: 10 },
+      ];
+
+      if (user) {
+        const newWorkout = await createQuickWorkout.mutateAsync({
+          name: "Quick Workout",
+          notes: "Quick Workout Notes",
+          userId: user.id,
+          exercises: exercises.map((exercise) => ({
+            name: exercise.name,
+            instructions: exercise.instructions,
+            type: exercise.type,
+            muscle: exercise.muscle,
+            equipment: exercise.equipment,
+            equipmentNeeded: exercise.equipmentNeeded,
+            difficulty: exercise.difficulty,
+            time: exercise.time,
+            image: exercise.image,
+            sets: exerciseSets,
+          })),
+        });
+
+        console.log(newWorkout);
+      }
+    } catch {}
+  };
+
   return (
     <>
       <Head>
@@ -19,16 +62,26 @@ const CreateWorkout = () => {
       <UserMenu>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="custom-h3 flex items-center gap-2">
+            <h2 className="flex items-center gap-2 custom-h3">
               {getTimeOfDay()} Workout
               <MoreHorizontal size={16} />
             </h2>
             <p className="custom-subtle">Notes</p>
           </div>
-          <Button className="h-8 self-start" variant="destructive">
+          <Button
+            className="self-start h-8"
+            variant="destructive"
+            onClick={() => void onCreateQuickWorkout()}
+          >
             Finish
           </Button>
         </div>
+        {exercises.length > 0 &&
+          exercises.map((exercise, i) => (
+            <div key={i} className="flex items-center justify-between">
+              <p className="font-semibold custom-p">{exercise.name}</p>
+            </div>
+          ))}
         <Dialog>
           <DialogTrigger asChild>
             <Button>Add Exercise</Button>

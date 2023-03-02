@@ -103,8 +103,8 @@ model Set {
   exerciseId String
   reps       Int
   weight     Float
-  time       Float
-  rest       Float
+  time       Float?
+  rest       Float?
 }
 
 model Follows {
