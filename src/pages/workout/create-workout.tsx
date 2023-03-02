@@ -9,13 +9,8 @@ import { Button } from "src/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
 import Exercises from "src/components/common/exercises";
 import { ssgHelper } from "src/utils/ssg";
-import { useWorkoutStore } from "src/utils/zustand";
 
 const CreateWorkout = () => {
-  const { workout } = useWorkoutStore();
-
-  console.log(workout);
-
   return (
     <>
       <Head>

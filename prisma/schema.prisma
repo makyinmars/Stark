@@ -74,7 +74,6 @@ model Workout {
   description String?
   copyCount   Int        @default(0)
   notes       String?
-  timer       Float      @default(0.0)
   exercises   Exercise[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
