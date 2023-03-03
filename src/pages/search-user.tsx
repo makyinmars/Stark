@@ -82,8 +82,13 @@ interface SearchUserProps {
 }
 
 const SearchResult = ({ value }: SearchUserProps) => {
+  const utils = api.useContext();
+
+  const user = utils.auth.getUserSession.getData();
+
   const { data } = api.user.getUsersBySearchName.useQuery({
     name: value,
+    userId: user && user.id,
   });
 
   return (
@@ -101,7 +106,7 @@ const SearchResult = ({ value }: SearchUserProps) => {
                       height={12}
                       alt={user.name as string}
                       src={user.image}
-                      className="h-auto w-auto rounded"
+                      className="h-auto w-8 rounded"
                     />
                   )}
                   {user.name}

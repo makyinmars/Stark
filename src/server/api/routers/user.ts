@@ -76,14 +76,18 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().nullable(),
+        userId: z.string().nullable().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
-      if (input.name) {
+      if (input.name && input.userId) {
         const users = await ctx.prisma.user.findMany({
           where: {
             name: {
               search: input.name,
+            },
+            NOT: {
+              id: input.userId,
             },
           },
           take: 4,

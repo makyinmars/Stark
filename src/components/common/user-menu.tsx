@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import {
   Home,
   CreditCard,
@@ -11,8 +11,10 @@ import {
   Crown,
   Zap,
   Search,
+  ArrowLeftCircle,
 } from "lucide-react";
 
+import { Button } from "src/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +24,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "src/components/ui/tooltip";
 import { api } from "src/utils/api";
 
 interface UserMenuProps {
@@ -30,13 +38,24 @@ interface UserMenuProps {
 
 const UserMenu = ({ children }: UserMenuProps) => {
   const utils = api.useContext();
+  const router = useRouter();
   const user = utils.auth.getUserSession.getData();
   return (
     <div className="container mx-auto flex flex-col gap-4 p-4">
       <div className="flex items-center justify-between">
-        <Link href="/">
-          <Home size={24} />
-        </Link>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="w-10 rounded-full p-0" variant="ghost">
+                <ArrowLeftCircle
+                  className="h-8 w-8"
+                  onClick={() => void router.back()}
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Go back</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button>Account</Button>
@@ -48,6 +67,12 @@ const UserMenu = ({ children }: UserMenuProps) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <Link href="/" className="flex items-center">
+                  <Home className="mr-2 h-4 w-4" />
+                  <span>Home</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 {user && (
                   <Link href={`/user/${user.id}`} className="flex items-center">
