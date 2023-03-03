@@ -44,13 +44,13 @@ const User = ({
             <h4 className="self-center custom-h4">Workouts: (40)</h4>
 
             <div className="flex justify-around">
-              <div className="p-2 border rounded border-gray-50">
+              <div>
                 <h5 className="flex items-center justify-between custom-h5">
                   Followers
                 </h5>
                 <p className="text-center custom-subtle">15</p>
               </div>
-              <div className="p-2 border rounded border-gray-50">
+              <div>
                 <h5 className="flex items-center justify-between custom-h5">
                   Following
                 </h5>
@@ -62,7 +62,7 @@ const User = ({
             <div className="grid grid-cols-2 gap-2">
               {userWorkouts &&
                 userWorkouts.map((workout, i) => (
-                  <div className="p-2 border rounded border-gray-50" key={i}>
+                  <div className="p-2 border rounded border-slate-700" key={i}>
                     <h5 className="flex items-center justify-between custom-h5">
                       {workout.name} <MoreHorizontal size={16} />
                     </h5>
