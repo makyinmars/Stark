@@ -176,4 +176,27 @@ export const workoutRouter = createTRPCRouter({
 
       return newWorkout;
     }),
+
+  deleteWorkoutById: protectedProcedure
+    .input(
+      z.object({
+        workoutId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!input.workoutId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Could not delete workout",
+        });
+      }
+
+      const deletedWorkout = await ctx.prisma.workout.delete({
+        where: {
+          id: input.workoutId,
+        },
+      });
+
+      return deletedWorkout;
+    }),
 });

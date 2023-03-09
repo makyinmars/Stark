@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    @apply bg-gradient-to-r from-cyan-500 to-cyan-600;
+    @apply bg-gradient-to-r from-stone-50 to-stone-100;
   }
 }
 

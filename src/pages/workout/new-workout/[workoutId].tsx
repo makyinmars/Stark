@@ -4,10 +4,10 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import Link from "next/link";
-import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/router";
+import { XCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import { getTimeOfDay } from "src/utils/date";
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
@@ -16,6 +16,8 @@ import { ssgHelper } from "src/utils/ssg";
 import { useExerciseState } from "src/utils/zustand";
 import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
+import { Textarea } from "src/components/ui/textarea";
+import { workerData } from "worker_threads";
 
 type CreateWorkoutInput = {
   name: string;
@@ -25,10 +27,12 @@ const NewWorkout = ({
   workoutId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { register, watch } = useForm<CreateWorkoutInput>();
+  const router = useRouter();
 
   const utils = api.useContext();
 
   const updateQuickWorkout = api.workout.updateQuickWorkout.useMutation();
+  const deleteWorkout = api.workout.deleteWorkoutById.useMutation();
   const user = utils.auth.getUserSession.getData();
 
   const { data: workoutData } = api.workout.getWorkoutById.useQuery({
@@ -37,17 +41,17 @@ const NewWorkout = ({
 
   const { exercises, removeExercise, reset } = useExerciseState();
 
-  const onCreateQuickWorkout = async () => {
-    try {
-      const exerciseSets = [
-        { reps: 10, weight: 10 },
-        { reps: 10, weight: 10 },
-        { reps: 10, weight: 10 },
-      ];
+  const exerciseSets = [
+    { reps: 10, weight: 10 },
+    { reps: 10, weight: 10 },
+    { reps: 10, weight: 10 },
+  ];
 
-      if (user) {
+  const onUpdateQuickWorkout = async () => {
+    try {
+      if (user && workoutData) {
         const updatedWorkout = await updateQuickWorkout.mutateAsync({
-          name: "Quick Workout",
+          name: workoutData.name,
           notes: "Quick Workout Notes",
           userId: user.id,
           exercises: exercises.map((exercise) => ({
@@ -66,9 +70,21 @@ const NewWorkout = ({
 
         if (updatedWorkout) {
           reset();
+          await router.push("/dashboard");
         }
       }
-    } catch {}
+    } catch { }
+  };
+
+  const onDeleteWorkout = async (workoutId: string | null) => {
+    try {
+      if (!workoutId) return;
+      const deletedWorkout = await deleteWorkout.mutateAsync({ workoutId });
+      if (deletedWorkout) {
+        console.log("Workout deleted");
+        await router.push("/dashboard");
+      }
+    } catch { }
   };
 
   return (
@@ -77,27 +93,53 @@ const NewWorkout = ({
         <title>Create Workout</title>
       </Head>
       <UserMenu>
-        <div className="flex items-center justify-between">
-          <div>
-            <Input
-              className="custom-h3 flex items-center gap-2"
-              type="text"
-              defaultValue={workoutData && workoutData.name}
-            />
-            <p className="custom-subtle">Notes</p>
-          </div>
+        <div className="flex flex-col gap-2">
           <Button
-            className="h-8 self-start"
+            className="w-full"
             variant="destructive"
-            onClick={() => void onCreateQuickWorkout()}
+            onClick={() => void onUpdateQuickWorkout()}
           >
-            Finish
+            Complete Workout
           </Button>
+          <Input
+            className="custom-h3 flex items-center gap-2"
+            type="text"
+            defaultValue={workoutData && workoutData.name}
+          />
+          <Textarea
+            className="custom-subtle"
+            placeholder="Notes"
+            defaultValue={(workoutData && workoutData.notes) ?? "Notes"}
+          />
         </div>
         {exercises.length > 0 &&
           exercises.map((exercise, i) => (
-            <div key={i} className="flex items-center justify-between">
-              <p className="custom-p font-semibold">{exercise.name}</p>
+            <div
+              key={i}
+              className="flex flex-col gap-2 rounded border border-slate-800 p-2"
+            >
+              <div className="flex items-center justify-between">
+                <p className="custom-p font-semibold">{exercise.name}</p>
+                <Button
+                  variant="ghost"
+                  className="w-10 rounded-full p-0"
+                  onClick={() => removeExercise(exercise)}
+                >
+                  <XCircle />
+                </Button>
+              </div>
+              <div className="flex justify-around">
+                <p>Set #</p>
+                <p>Reps #</p>
+                <p>Weight</p>
+              </div>
+              {exerciseSets.map((set, i) => (
+                <div className="flex justify-around" key={i}>
+                  <div>{i + 1}</div>
+                  <div>{set.reps}</div>
+                  <div>{set.weight} lb</div>
+                </div>
+              ))}
             </div>
           ))}
         <Dialog>
@@ -108,9 +150,12 @@ const NewWorkout = ({
             <Exercises />
           </DialogContent>
         </Dialog>
-        <Link href="/dashboard">
-          <Button className="w-full">Cancel Workout</Button>
-        </Link>
+        <Button
+          className="w-full"
+          onClick={() => void onDeleteWorkout(workoutId)}
+        >
+          Cancel Workout
+        </Button>
       </UserMenu>
     </>
   );
@@ -144,7 +189,7 @@ export const getServerSideProps = async (
       },
       redirect: {
         destination: "/",
-        permanent: "false",
+        permanent: false,
       },
     };
   }

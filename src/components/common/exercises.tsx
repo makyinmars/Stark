@@ -50,7 +50,7 @@ const Exercises = () => {
   const [muscleValue, setMuscleValue] = useState("");
 
   const isCreateWorkoutPath = router.pathname.includes(
-    "/workout/create-workout"
+    "/workout/new-workout"
   );
   const {
     addExercise,

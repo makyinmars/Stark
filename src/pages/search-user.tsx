@@ -71,7 +71,7 @@ export const getServerSideProps = async (
       },
       redirect: {
         destination: "/",
-        permanent: "false",
+        permanent: false,
       },
     };
   }
