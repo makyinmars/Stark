@@ -69,10 +69,7 @@ const User = ({
       {userData ? (
         <>
           <Head>
-            <title>
-              {userData.name}
-              {`'`}s Profile
-            </title>
+            <title>{userData && userData.name}</title>
           </Head>
           <UserMenu>
             <div className="flex flex-col gap-4">

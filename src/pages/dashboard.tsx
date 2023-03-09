@@ -1,13 +1,32 @@
 import Head from "next/head";
 import type { GetServerSidePropsContext } from "next";
-import Link from "next/link";
 import { History, MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/router";
 
 import { Button } from "src/components/ui/button";
 import { ssgHelper } from "src/utils/ssg";
 import UserMenu from "src/components/common/user-menu";
+import { api } from "src/utils/api";
 
 const Dashboard = () => {
+  const utils = api.useContext();
+  const router = useRouter();
+
+  const createQuickWorkout = api.workout.createQuickWorkout.useMutation();
+  const user = utils.auth.getUserSession.getData();
+
+  const onCreateQuickWorkout = async () => {
+    try {
+      const newWorkout = await createQuickWorkout.mutateAsync({
+        userId: user && user.id,
+      });
+
+      if (newWorkout) {
+        await router.push(`/workout/new-workout/${newWorkout.id}`);
+      }
+    } catch {}
+  };
+
   return (
     <>
       <Head>
@@ -17,9 +36,9 @@ const Dashboard = () => {
         <h1 className="custom-h1">Start Workout</h1>
 
         <h3 className="custom-h3">Quick Start</h3>
-        <Link href="/workout/create-workout">
-          <Button className="w-full">Start an Empty Workout</Button>
-        </Link>
+        <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
+          Start an Empty Workout
+        </Button>
 
         <h3 className="custom-h3">Workouts</h3>
         <h4 className="custom-h4">My Workouts(4)</h4>

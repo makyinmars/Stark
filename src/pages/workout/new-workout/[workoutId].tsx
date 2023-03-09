@@ -1,5 +1,8 @@
 import Head from "next/head";
-import type { GetServerSidePropsContext } from "next";
+import type {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from "next";
 import Link from "next/link";
 import { MoreHorizontal } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -18,13 +21,19 @@ type CreateWorkoutInput = {
   name: string;
 };
 
-const CreateWorkout = () => {
+const NewWorkout = ({
+  workoutId,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { register, watch } = useForm<CreateWorkoutInput>();
 
   const utils = api.useContext();
 
-  const createQuickWorkout = api.workout.updateQuickWorkout.useMutation();
+  const updateQuickWorkout = api.workout.updateQuickWorkout.useMutation();
   const user = utils.auth.getUserSession.getData();
+
+  const { data: workoutData } = api.workout.getWorkoutById.useQuery({
+    workoutId: workoutId as string,
+  });
 
   const { exercises, removeExercise, reset } = useExerciseState();
 
@@ -37,7 +46,7 @@ const CreateWorkout = () => {
       ];
 
       if (user) {
-        const newWorkout = await createQuickWorkout.mutateAsync({
+        const updatedWorkout = await updateQuickWorkout.mutateAsync({
           name: "Quick Workout",
           notes: "Quick Workout Notes",
           userId: user.id,
@@ -55,7 +64,7 @@ const CreateWorkout = () => {
           })),
         });
 
-        if (newWorkout) {
+        if (updatedWorkout) {
           reset();
         }
       }
@@ -73,7 +82,7 @@ const CreateWorkout = () => {
             <Input
               className="custom-h3 flex items-center gap-2"
               type="text"
-              defaultValue={`${getTimeOfDay()} Workout`}
+              defaultValue={workoutData && workoutData.name}
             />
             <p className="custom-subtle">Notes</p>
           </div>
@@ -107,27 +116,31 @@ const CreateWorkout = () => {
   );
 };
 
-export default CreateWorkout;
+export default NewWorkout;
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
+  const workoutId = context.params?.workoutId as string;
   const { ssg, session } = await ssgHelper(context);
 
   if (session && session.user) {
     await ssg.auth.getUserSession.prefetch();
+    await ssg.workout.getWorkoutById.prefetch({ workoutId });
     await ssg.exercise.getExercises.prefetch();
     await ssg.exercise.getExercisesByTypes.prefetch();
     await ssg.exercise.getExercisesByMuscles.prefetch();
     return {
       props: {
         trpcState: ssg.dehydrate(),
+        workoutId,
       },
     };
   } else {
     return {
       props: {
         trpcState: ssg.dehydrate(),
+        workoutId: null,
       },
       redirect: {
         destination: "/",

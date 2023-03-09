@@ -3,16 +3,75 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { getTimeOfDay } from "src/utils/date";
+
+const getWorkoutById = Prisma.validator<Prisma.WorkoutSelect>()({
+  id: true,
+  name: true,
+  description: true,
+  copyCount: true,
+  notes: true,
+  exercises: true,
+  userId: true,
+});
 
 const quickWorkoutId = Prisma.validator<Prisma.WorkoutSelect>()({
   id: true,
 });
 
 export const workoutRouter = createTRPCRouter({
+  getWorkoutById: protectedProcedure
+    .input(
+      z.object({
+        workoutId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const workout = await ctx.prisma.workout.findUnique({
+        where: {
+          id: input.workoutId,
+        },
+        select: getWorkoutById,
+      });
+
+      if (!workout) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Could not find workout",
+        });
+      }
+
+      return workout;
+    }),
+
   createQuickWorkout: protectedProcedure
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().default(`${getTimeOfDay()} Workout`),
+        description: z.string().nullable().default(null),
+        copyCount: z.number().default(0),
+        notes: z.string().nullable().default(null),
+        userId: z.string().nullish(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const newQuickWorkout = await ctx.prisma.workout.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          copyCount: input.copyCount,
+          notes: input.notes,
+          userId: input.userId,
+        },
+      });
+
+      return newQuickWorkout;
+    }),
+
+  updateQuickWorkout: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().default(`${getTimeOfDay()} Workout`),
         description: z.string().nullable().default(null),
         copyCount: z.number().default(0),
         notes: z.string().nullable().default(null),
