@@ -18,7 +18,7 @@ const CreateWorkout = () => {
   const createQuickWorkout = api.workout.createQuickWorkout.useMutation();
   const user = utils.auth.getUserSession.getData();
 
-  const { exercises, removeExercise } = useExerciseState();
+  const { exercises, removeExercise, reset } = useExerciseState();
 
   console.log(exercises);
 
@@ -49,7 +49,9 @@ const CreateWorkout = () => {
           })),
         });
 
-        console.log(newWorkout);
+        if (newWorkout) {
+          reset();
+        }
       }
     } catch {}
   };
@@ -62,14 +64,14 @@ const CreateWorkout = () => {
       <UserMenu>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="flex items-center gap-2 custom-h3">
+            <h2 className="custom-h3 flex items-center gap-2">
               {getTimeOfDay()} Workout
               <MoreHorizontal size={16} />
             </h2>
             <p className="custom-subtle">Notes</p>
           </div>
           <Button
-            className="self-start h-8"
+            className="h-8 self-start"
             variant="destructive"
             onClick={() => void onCreateQuickWorkout()}
           >
@@ -79,7 +81,7 @@ const CreateWorkout = () => {
         {exercises.length > 0 &&
           exercises.map((exercise, i) => (
             <div key={i} className="flex items-center justify-between">
-              <p className="font-semibold custom-p">{exercise.name}</p>
+              <p className="custom-p font-semibold">{exercise.name}</p>
             </div>
           ))}
         <Dialog>

@@ -7,6 +7,7 @@ interface ExerciseState {
   addExercise: (exercise: Exercise) => void;
   removeExercise: (exercise: Exercise) => void;
   getExercises: () => Exercise[];
+  reset: () => void;
 }
 
 export const useExerciseState = create<ExerciseState>()(
@@ -21,6 +22,7 @@ export const useExerciseState = create<ExerciseState>()(
             exercises: state.exercises.filter((e) => e.id !== exercise.id),
           })),
         getExercises: () => get().exercises,
+        reset: () => set({ exercises: [] }),
       }),
       {
         name: "exercises",

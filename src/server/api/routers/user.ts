@@ -109,4 +109,68 @@ export const userRouter = createTRPCRouter({
         message: "No name provided",
       });
     }),
+
+  getUserFollowers: protectedProcedure
+    .input(z.object({ userId: z.string().nullable() }))
+    .query(async ({ ctx, input }) => {
+      if (input.userId) {
+        const followers = await ctx.prisma.user.findMany({
+          where: {
+            followers: {
+              some: {
+                followingId: input.userId,
+              },
+            },
+          },
+          select: usersBySearchName,
+        });
+
+        if (followers.length > 0) {
+          return followers;
+        } else {
+          return [];
+        }
+
+        // throw new TRPCError({
+        //   code: "BAD_REQUEST",
+        //   message: "No followers found",
+        // });
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No user id provided",
+      });
+    }),
+
+  getUserFollowing: protectedProcedure
+    .input(z.object({ userId: z.string().nullable() }))
+    .query(async ({ ctx, input }) => {
+      if (input.userId) {
+        const following = await ctx.prisma.user.findMany({
+          where: {
+            following: {
+              some: {
+                followerId: input.userId,
+              },
+            },
+          },
+          select: usersBySearchName,
+        });
+
+        if (following.length > 0) {
+          return following;
+        }
+
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No following found",
+        });
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No user id provided",
+      });
+    }),
 });
