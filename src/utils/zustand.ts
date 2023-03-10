@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import type { Exercise } from "@prisma/client";
+import type { Exercise, Set } from "@prisma/client";
 
 interface ExerciseState {
   exercises: Exercise[];
@@ -26,6 +26,45 @@ export const useExerciseState = create<ExerciseState>()(
       }),
       {
         name: "exercises",
+      }
+    )
+  )
+);
+
+interface SetState {
+  sets: Set[];
+  addSet: (setX: Set) => void;
+  removeSet: (setId: string) => void;
+  removeSets: (exerciseId: string) => void;
+  getSets: () => Set[];
+  reset: () => void;
+}
+
+export const useSetState = create<SetState>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        sets: [],
+        addSet: (setX: Set) =>
+          // Only add set if it doesn't already exist
+          set((state) => ({
+            sets: state.sets.find((s) => s.id === setX.id)
+              ? state.sets
+              : [...state.sets, setX],
+          })),
+        removeSet: (setId: string) =>
+          set((state) => ({
+            sets: state.sets.filter((s) => s.id !== setId),
+          })),
+        removeSets: (exerciseId: string) =>
+          set((state) => ({
+            sets: state.sets.filter((s) => s.exerciseId !== exerciseId),
+          })),
+        getSets: () => get().sets,
+        reset: () => set({ sets: [] }),
+      }),
+      {
+        name: "sets",
       }
     )
   )

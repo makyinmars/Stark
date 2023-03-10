@@ -89,8 +89,8 @@ export const workoutRouter = createTRPCRouter({
             image: z.string().nullable().default(null),
             sets: z.array(
               z.object({
-                reps: z.number().default(10),
-                weight: z.number().default(20),
+                reps: z.number().nullable().default(10),
+                weight: z.number().nullable().default(20),
                 time: z.number().nullable().default(null),
                 rest: z.number().nullable().default(null),
               })

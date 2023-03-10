@@ -3,31 +3,40 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { XCircle } from "lucide-react";
+import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
+import type { Exercise } from "@prisma/client";
 
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
 import Exercises from "src/components/common/exercises";
 import { ssgHelper } from "src/utils/ssg";
-import { useExerciseState } from "src/utils/zustand";
+import { useExerciseState, useSetState } from "src/utils/zustand";
 import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
-import { workerData } from "worker_threads";
+import CreateSet from "src/components/common/create-set";
 
-type CreateWorkoutInput = {
+type UpdateWorkoutInput = {
   name: string;
+  description: string;
+  copyCount: number;
+  notes: string;
+  exerciseSets: {
+    weight: number;
+    reps: number;
+    time: number;
+  }[];
 };
 
 const NewWorkout = ({
   workoutId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { register, watch } = useForm<CreateWorkoutInput>();
   const router = useRouter();
+
+  const { sets, reset: resetSet, removeSets } = useSetState();
 
   const utils = api.useContext();
 
@@ -39,20 +48,25 @@ const NewWorkout = ({
     workoutId: workoutId as string,
   });
 
-  const { exercises, removeExercise, reset } = useExerciseState();
+  const { register, watch } = useForm<UpdateWorkoutInput>({
+    defaultValues: {
+      name: workoutData ? workoutData.name : "",
+    },
+  });
 
-  const exerciseSets = [
-    { reps: 10, weight: 10 },
-    { reps: 10, weight: 10 },
-    { reps: 10, weight: 10 },
-  ];
+  const {
+    exercises,
+    removeExercise,
+    reset: resetExercise,
+  } = useExerciseState();
 
   const onUpdateQuickWorkout = async () => {
     try {
-      if (user && workoutData) {
+      if (user) {
         const updatedWorkout = await updateQuickWorkout.mutateAsync({
-          name: workoutData.name,
-          notes: "Quick Workout Notes",
+          name: watch("name"),
+          notes: watch("notes"),
+          description: watch("description"),
           userId: user.id,
           exercises: exercises.map((exercise) => ({
             name: exercise.name,
@@ -64,16 +78,17 @@ const NewWorkout = ({
             difficulty: exercise.difficulty,
             time: exercise.time,
             image: exercise.image,
-            sets: exerciseSets,
+            sets: sets,
           })),
         });
 
         if (updatedWorkout) {
-          reset();
+          resetExercise();
+          resetSet();
           await router.push("/dashboard");
         }
       }
-    } catch { }
+    } catch {}
   };
 
   const onDeleteWorkout = async (workoutId: string | null) => {
@@ -81,16 +96,20 @@ const NewWorkout = ({
       if (!workoutId) return;
       const deletedWorkout = await deleteWorkout.mutateAsync({ workoutId });
       if (deletedWorkout) {
-        console.log("Workout deleted");
         await router.push("/dashboard");
       }
-    } catch { }
+    } catch {}
+  };
+
+  const onRemoveExercise = (exercise: Exercise) => {
+    removeExercise(exercise);
+    removeSets(exercise.id);
   };
 
   return (
     <>
       <Head>
-        <title>Create Workout</title>
+        <title>New Workout</title>
       </Head>
       <UserMenu>
         <div className="flex flex-col gap-2">
@@ -102,49 +121,56 @@ const NewWorkout = ({
             Complete Workout
           </Button>
           <Input
-            className="custom-h3 flex items-center gap-2"
+            className="flex items-center gap-2 custom-h3"
             type="text"
             defaultValue={workoutData && workoutData.name}
+            {...register("name", {
+              required: true,
+              maxLength: 100,
+            })}
+          />
+          <Input
+            className="flex items-center gap-2 custom-h3"
+            type="text"
+            placeholder="Description"
+            defaultValue={(workoutData && workoutData.description) ?? ""}
+            {...register("description", {
+              required: true,
+              maxLength: 400,
+            })}
           />
           <Textarea
             className="custom-subtle"
             placeholder="Notes"
-            defaultValue={(workoutData && workoutData.notes) ?? "Notes"}
+            defaultValue={(workoutData && workoutData.notes) ?? ""}
+            {...register("notes", {
+              required: true,
+              maxLength: 300,
+            })}
           />
         </div>
         {exercises.length > 0 &&
           exercises.map((exercise, i) => (
             <div
               key={i}
-              className="flex flex-col gap-2 rounded border border-slate-800 p-2"
+              className="flex flex-col gap-2 p-2 border rounded border-slate-800"
             >
-              <div className="flex items-center justify-between">
-                <p className="custom-p font-semibold">{exercise.name}</p>
+              <div className="flex items-center justify-around">
+                <p className="font-semibold custom-p">{exercise.name}</p>
                 <Button
                   variant="ghost"
-                  className="w-10 rounded-full p-0"
-                  onClick={() => removeExercise(exercise)}
+                  className="w-10 p-0 rounded-full"
+                  onClick={() => onRemoveExercise(exercise)}
                 >
-                  <XCircle />
+                  <Trash />
                 </Button>
               </div>
-              <div className="flex justify-around">
-                <p>Set #</p>
-                <p>Reps #</p>
-                <p>Weight</p>
-              </div>
-              {exerciseSets.map((set, i) => (
-                <div className="flex justify-around" key={i}>
-                  <div>{i + 1}</div>
-                  <div>{set.reps}</div>
-                  <div>{set.weight} lb</div>
-                </div>
-              ))}
+              <CreateSet key={exercise.id} exerciseId={exercise.id} />
             </div>
           ))}
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Add Exercise</Button>
+            <Button variant="destructive">Add Exercise</Button>
           </DialogTrigger>
           <DialogContent className="py-10">
             <Exercises />
