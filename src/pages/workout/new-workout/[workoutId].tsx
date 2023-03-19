@@ -96,6 +96,8 @@ const NewWorkout = ({
       if (!workoutId) return;
       const deletedWorkout = await deleteWorkout.mutateAsync({ workoutId });
       if (deletedWorkout) {
+        resetExercise();
+        resetSet();
         await router.push("/dashboard");
       }
     } catch {}

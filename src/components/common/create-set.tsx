@@ -20,7 +20,7 @@ interface SetInputs {
 }
 
 const CreateSet = ({ exerciseId }: CreateSetProps) => {
-  const { addSet, removeSet } = useSetState();
+  const { addSet, removeSet, sets } = useSetState();
 
   const { register, control } = useForm<SetInputs>({
     defaultValues: {
@@ -39,6 +39,7 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
     removeSet(setId);
     remove(index);
   };
+
   return (
     <div>
       <div className="flex items-center justify-around">
@@ -49,58 +50,67 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
         <div />
         <div />
       </div>
-      {fields.map((set, index) => (
-        <div className="flex items-center justify-around" key={set.id}>
-          <p>{index + 1}</p>
-
-          <Input
-            type="number"
-            defaultValue={set.reps ?? 0}
-            className="w-12 h-6 p-0 text-center"
-            {...register(`sets.${index}.reps` as const, {
-              required: true,
-            })}
-          />
-          <Input
-            type="number"
-            defaultValue={set.weight ?? 0}
-            className="w-12 h-6 p-0 text-center"
-            {...register(`sets.${index}.weight` as const, {
-              required: true,
-            })}
-          />
-          <div>
-            <Button
-              variant="ghost"
-              className="w-10 p-0 rounded-full"
-              onClick={() => addSet({ ...set, exerciseId, id: set.id })}
-            >
-              <Check className="text-green-400" />
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-10 p-0 rounded-full"
-              onClick={() => onRemoveSet(index, set.id)}
-            >
-              <XCircle className="text-red-400" />
-            </Button>
+      <div className="flex flex-col gap-2">
+        {fields.map((set, index) => (
+          <div
+            className={`flex items-center justify-around ${
+              sets && sets.find((s) => s.id === set.id)
+                ? "rounded bg-slate-300"
+                : ""
+            }`}
+            key={set.id}
+          >
+            <p>{index + 1}</p>
+            <Input
+              type="number"
+              defaultValue={set.reps ?? 0}
+              className="w-12 h-6 p-0 text-center"
+              {...register(`sets.${index}.reps` as const, {
+                required: true,
+                valueAsNumber: true,
+              })}
+            />
+            <Input
+              type="number"
+              defaultValue={set.weight ?? 0}
+              className="w-12 h-6 p-0 text-center"
+              {...register(`sets.${index}.weight` as const, {
+                required: true,
+                valueAsNumber: true,
+              })}
+            />
+            <div>
+              <Button
+                variant="ghost"
+                className="w-10 p-0 rounded-full"
+                onClick={() => addSet({ ...set, exerciseId, id: set.id })}
+              >
+                <Check className="text-green-600" />
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-10 p-0 rounded-full"
+                onClick={() => onRemoveSet(index, set.id)}
+              >
+                <XCircle className="text-red-600" />
+              </Button>
+            </div>
           </div>
-        </div>
-      ))}
-
-      <Button
-        className="w-full"
-        onClick={() =>
-          append({
-            reps: 0,
-            weight: 0,
-            time: 0,
-            rest: 0,
-          })
-        }
-      >
-        Add Set
-      </Button>
+        ))}
+        <Button
+          className="w-full"
+          onClick={() =>
+            append({
+              reps: 0,
+              weight: 0,
+              time: 0,
+              rest: 0,
+            })
+          }
+        >
+          Add Set
+        </Button>
+      </div>
     </div>
   );
 };
