@@ -48,8 +48,6 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-
-      console.log(follow);
     } catch {}
   };
 
@@ -59,8 +57,6 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-
-      console.log(unfollow);
     } catch {}
   };
 
