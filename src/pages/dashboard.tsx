@@ -46,16 +46,23 @@ const Dashboard = ({
       if (newWorkout) {
         await router.push(`/workout/new-workout/${newWorkout.id}`);
       }
-    } catch { }
+    } catch {}
   };
 
   const onDeleteWorkoutById = async (workoutId: string) => {
     try {
-      await deleteWorkoutById.mutateAsync({ workoutId });
-    } catch { }
+      const deletedWorkout = await deleteWorkoutById.mutateAsync({ workoutId });
+
+      if (deletedWorkout) {
+        toast({
+          title: "Workout Deleted",
+          description: "This workout has been deleted",
+        });
+      }
+    } catch {}
   };
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   return (
     <>
@@ -68,16 +75,6 @@ const Dashboard = ({
         <h3 className="custom-h3">Quick Start</h3>
         <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
           Start an Empty Workout
-        </Button>
-        <Button
-          onClick={() => {
-            toast({
-              title: "Scheduled: Catch up",
-              description: "Friday, February 10, 2023 at 5:57 PM",
-            })
-          }}
-        >
-          Show Toast
         </Button>
         <h3 className="custom-h3">Workouts</h3>
         {myWorkoutsData && myWorkoutsData.length > 0 && (
