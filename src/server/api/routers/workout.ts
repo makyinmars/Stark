@@ -5,6 +5,19 @@ import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { getTimeOfDay } from "src/utils/date";
 
+const workoutsByUserId = Prisma.validator<Prisma.WorkoutSelect>()({
+  id: true,
+  name: true,
+  copyCount: true,
+  exercises: {
+    take: 2,
+    select: {
+      name: true,
+    },
+  },
+  createdAt: true,
+});
+
 const getWorkoutById = Prisma.validator<Prisma.WorkoutSelect>()({
   id: true,
   name: true,
@@ -42,6 +55,97 @@ export const workoutRouter = createTRPCRouter({
       }
 
       return workout;
+    }),
+
+  copyWorkoutById: protectedProcedure
+    .input(
+      z.object({
+        workoutId: z.string(),
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workout = await ctx.prisma.workout.findUnique({
+        where: {
+          id: input.workoutId,
+        },
+        include: {
+          exercises: {
+            include: {
+              set: true,
+            },
+          },
+        },
+      });
+
+      if (workout) {
+        const newWorkout = await ctx.prisma.workout.create({
+          data: {
+            name: `${workout.name} - Copy`,
+            description: workout.description,
+            notes: workout.notes,
+            userId: input.userId,
+          },
+        });
+
+        if (newWorkout) {
+          for (const exercise of workout.exercises) {
+            const newExercise = await ctx.prisma.exercise.create({
+              data: {
+                name: exercise.name,
+                instructions: exercise.instructions,
+                type: exercise.type,
+                muscle: exercise.muscle,
+                equipment: exercise.equipment,
+                equipmentNeeded: exercise.equipmentNeeded,
+                difficulty: exercise.difficulty,
+                time: exercise.time,
+                image: exercise.image,
+                workoutId: newWorkout.id,
+              },
+              select: {
+                id: true,
+              },
+            });
+
+            if (!newExercise) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "Could not create exercise",
+              });
+            }
+
+            if (newExercise) {
+              for (const set of exercise.set) {
+                const newSet = await ctx.prisma.set.create({
+                  data: {
+                    reps: set.reps,
+                    weight: set.weight,
+                    time: set.time,
+                    rest: set.rest,
+                    exerciseId: newExercise.id,
+                  },
+                });
+
+                if (!newSet) {
+                  throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Could not create set",
+                  });
+                }
+              }
+            }
+            if (!newExercise) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "Could not create exercise",
+              });
+            }
+          }
+
+          return newWorkout;
+        }
+      }
     }),
 
   createQuickWorkout: protectedProcedure
@@ -198,5 +302,36 @@ export const workoutRouter = createTRPCRouter({
       });
 
       return deletedWorkout;
+    }),
+
+  getWorkoutsByUserId: protectedProcedure
+    .input(z.object({ userId: z.string().nullable() }))
+    .query(async ({ ctx, input }) => {
+      if (input.userId) {
+        const userWorkouts = await ctx.prisma.workout.findMany({
+          take: 4,
+          orderBy: {
+            createdAt: "desc",
+          },
+          where: {
+            userId: input.userId,
+          },
+          select: workoutsByUserId,
+        });
+
+        if (userWorkouts.length > 0) {
+          return userWorkouts;
+        }
+
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No workouts found",
+        });
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No user id provided",
+      });
     }),
 });

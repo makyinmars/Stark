@@ -13,8 +13,6 @@ const WorkoutId = ({
     workoutId: workoutId as string,
   });
 
-  console.log("Data", data)
-
   return <div>WorkoutId</div>;
 };
 
