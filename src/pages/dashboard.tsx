@@ -11,6 +11,7 @@ import { ssgHelper } from "src/utils/ssg";
 import UserMenu from "src/components/common/user-menu";
 import { api } from "src/utils/api";
 import WorkoutBox from "src/components/common/workout-box";
+import { useToast } from "src/hooks/useToast";
 
 const Dashboard = ({
   userId,
@@ -18,9 +19,16 @@ const Dashboard = ({
   const utils = api.useContext();
   const router = useRouter();
 
-  const { data: myWorkoutsData } = api.workout.getWorkoutsByUserId.useQuery({
-    userId,
-  });
+  const { toast } = useToast();
+
+  const { data: myWorkoutsData } = api.workout.getWorkoutsByUserId.useQuery(
+    {
+      userId,
+    },
+    {
+      retry: false,
+    }
+  );
 
   const createQuickWorkout = api.workout.createQuickWorkout.useMutation();
 
@@ -33,6 +41,11 @@ const Dashboard = ({
       });
 
       if (newWorkout) {
+        toast({
+          title: "Workout created",
+          description: "You can add exercises to it now.",
+        });
+
         await router.push(`/workout/new-workout/${newWorkout.id}`);
       }
     } catch {}

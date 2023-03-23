@@ -31,15 +31,25 @@ const User = ({
   const session = utils.auth.getUserSession.getData();
 
   const userData = utils.user.getUserById.getData({ id: userId });
+
   const userWorkoutsData = utils.workout.getWorkoutsByUserId.getData({
     userId,
   });
-  const { data: userFollowersData } = api.user.getUserFollowers.useQuery({
-    userId,
-  });
-  const { data: userFollowingData } = api.user.getUserFollowing.useQuery({
-    userId,
-  });
+
+  const { data: userFollowersData } = api.user.getUserFollowers.useQuery(
+    {
+      userId,
+    },
+    { retry: false }
+  );
+  const { data: userFollowingData } = api.user.getUserFollowing.useQuery(
+    {
+      userId,
+    },
+    {
+      retry: false,
+    }
+  );
 
   const onFollowUser = async () => {
     try {
