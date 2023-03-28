@@ -1,4 +1,4 @@
-import { Dumbbell, MoreHorizontal, Trash, History, Copy } from "lucide-react";
+import { Dumbbell, Copy, MoreHorizontal, Trash, History } from "lucide-react";
 import { useRouter } from "next/router";
 
 import {
@@ -38,49 +38,58 @@ const WorkoutBox = ({
   const { toast } = useToast();
 
   const copyWorkoutById = api.workout.copyWorkoutById.useMutation({
+    // Check this as an example:
+    // @link: https://github.com/calcom/cal.com/blob/main/apps/web/pages/availability/index.tsx#L22
+    onError: (err) => {
+      if (err) {
+        toast({
+          title: "Error",
+          variant: "destructive",
+          description: err.message,
+        });
+      }
+    },
     onSuccess: async () => {
       await utils.workout.getWorkoutsByUserId.invalidate({ userId });
+      toast({
+        title: "Workout Copied",
+        description: "This workout has been copied and added to your workouts",
+      });
     },
   });
 
   const deleteWorkoutById = api.workout.deleteWorkoutById.useMutation({
-    onSuccess: async () => {
+    onSettled: async () => {
       await utils.workout.getWorkoutsByUserId.invalidate({ userId });
+    },
+    onSuccess: (variables) => {
+      if (variables) {
+        toast({
+          variant: "success",
+          title: "Workout Deleted",
+          description: `Workout: ${variables.name} has been deleted`,
+        });
+      }
     },
   });
 
   const onCopyWorkoutById = async (workoutId: string) => {
     try {
-      const copiedWorkout = await copyWorkoutById.mutateAsync({
+      await copyWorkoutById.mutateAsync({
         workoutId,
         userId,
       });
-
-      if (copiedWorkout) {
-        toast({
-          title: "Workout Copied",
-          description:
-            "This workout has been copied and added to your workouts",
-        });
-      }
     } catch {}
   };
 
   const onDeleteWorkoutById = async (workoutId: string) => {
     try {
-      const deletedWorkout = await deleteWorkoutById.mutateAsync({ workoutId });
-
-      if (deletedWorkout) {
-        toast({
-          title: "Workout Deleted",
-          description: "This workout has been deleted",
-        });
-      }
+      await deleteWorkoutById.mutateAsync({ workoutId });
     } catch {}
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 rounded bg-slate-300">
       <div className="rounded border border-gray-50 p-2">
         <h5 className="custom-h5 flex items-center justify-between">
           {name}
@@ -123,6 +132,9 @@ const WorkoutBox = ({
         ))}
         <p className="custom-subtle flex items-center gap-2">
           <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
+        </p>
+        <p className="custom-subtle flex items-center gap-2">
+          <Copy size={16} /> Copied: {copyCount}
         </p>
       </div>
     </div>

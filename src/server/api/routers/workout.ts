@@ -65,6 +65,15 @@ export const workoutRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const workoutsCopied = await ctx.prisma.user.findUnique({
+        where: {
+          id: input.userId,
+        },
+        select: {
+          workoutsCopied: true,
+        },
+      });
+
       const workout = await ctx.prisma.workout.findUnique({
         where: {
           id: input.workoutId,
@@ -78,10 +87,25 @@ export const workoutRouter = createTRPCRouter({
         },
       });
 
+      if (workoutsCopied && workout) {
+        // Check if user has copied this workout before
+        const workoutAlreadyCopied = workoutsCopied.workoutsCopied.includes(
+          workout.id
+        );
+
+        if (workoutAlreadyCopied) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "You have already copied this workout",
+          });
+        }
+      }
+
       if (workout) {
         const newWorkout = await ctx.prisma.workout.create({
           data: {
             name: `${workout.name} - Copy`,
+            copyId: workout.id,
             description: workout.description,
             notes: workout.notes,
             userId: input.userId,
@@ -89,6 +113,30 @@ export const workoutRouter = createTRPCRouter({
         });
 
         if (newWorkout) {
+          // Update the copy count of the workout
+          await ctx.prisma.workout.update({
+            where: {
+              id: workout.id,
+            },
+            data: {
+              copyCount: workout.copyCount + 1,
+            },
+          });
+
+          await ctx.prisma.user.update({
+            where: {
+              id: input.userId,
+            },
+            data: {
+              workoutsCopied: workoutsCopied
+                ? [...workoutsCopied.workoutsCopied, input.workoutId]
+                : [input.workoutId],
+            },
+            select: {
+              workoutsCopied: true,
+            },
+          });
+
           for (const exercise of workout.exercises) {
             const newExercise = await ctx.prisma.exercise.create({
               data: {
@@ -175,6 +223,7 @@ export const workoutRouter = createTRPCRouter({
   updateQuickWorkout: protectedProcedure
     .input(
       z.object({
+        workoutId: z.string(),
         name: z.string().default(`${getTimeOfDay()} Workout`),
         description: z.string().nullable().default(null),
         copyCount: z.number().default(0),
@@ -204,7 +253,10 @@ export const workoutRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const newWorkout = await ctx.prisma.workout.create({
+      const updateWorkout = await ctx.prisma.workout.update({
+        where: {
+          id: input.workoutId,
+        },
         data: {
           name: input.name,
           description: input.description,
@@ -215,14 +267,14 @@ export const workoutRouter = createTRPCRouter({
         select: quickWorkoutId,
       });
 
-      if (!newWorkout) {
+      if (!updateWorkout) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Could not create workout",
         });
       }
 
-      if (newWorkout) {
+      if (updateWorkout) {
         for (const exercise of input.exercises) {
           const newExercise = await ctx.prisma.exercise.create({
             data: {
@@ -235,7 +287,7 @@ export const workoutRouter = createTRPCRouter({
               difficulty: exercise.difficulty,
               time: exercise.time,
               image: exercise.image,
-              workoutId: newWorkout.id,
+              workoutId: updateWorkout.id,
             },
             select: {
               id: true,
@@ -278,7 +330,7 @@ export const workoutRouter = createTRPCRouter({
         }
       }
 
-      return newWorkout;
+      return updateWorkout;
     }),
 
   deleteWorkoutById: protectedProcedure
@@ -301,6 +353,30 @@ export const workoutRouter = createTRPCRouter({
         },
       });
 
+      if (deletedWorkout && deletedWorkout.copyId) {
+        const workouts = await ctx.prisma.user.findUnique({
+          where: {
+            id: deletedWorkout.userId as string,
+          },
+          select: {
+            workoutsCopied: true,
+          },
+        });
+
+        if (workouts) {
+          await ctx.prisma.user.update({
+            where: {
+              id: deletedWorkout.userId as string,
+            },
+            data: {
+              workoutsCopied: workouts.workoutsCopied.filter(
+                (w) => w !== deletedWorkout.copyId
+              ),
+            },
+          });
+        }
+      }
+
       return deletedWorkout;
     }),
 
@@ -319,7 +395,7 @@ export const workoutRouter = createTRPCRouter({
           select: workoutsByUserId,
         });
 
-        if (userWorkouts.length > 0) {
+        if (userWorkouts) {
           return userWorkouts;
         }
 

@@ -40,9 +40,14 @@ const NewWorkout = ({
 
   const utils = api.useContext();
 
-  const updateQuickWorkout = api.workout.updateQuickWorkout.useMutation();
   const deleteWorkout = api.workout.deleteWorkoutById.useMutation();
   const user = utils.auth.getUserSession.getData();
+
+  const updateQuickWorkout = api.workout.updateQuickWorkout.useMutation({
+    onSuccess: async () => {
+      await utils.workout.getWorkoutsByUserId.invalidate({ userId: user && user.id })
+    }
+  });
 
   const { data: workoutData } = api.workout.getWorkoutById.useQuery({
     workoutId: workoutId as string,
@@ -62,8 +67,9 @@ const NewWorkout = ({
 
   const onUpdateQuickWorkout = async () => {
     try {
-      if (user) {
+      if (user && workoutId) {
         const updatedWorkout = await updateQuickWorkout.mutateAsync({
+          workoutId,
           name: watch("name"),
           notes: watch("notes"),
           description: watch("description"),
@@ -88,7 +94,7 @@ const NewWorkout = ({
           await router.push("/dashboard");
         }
       }
-    } catch {}
+    } catch { }
   };
 
   const onDeleteWorkout = async (workoutId: string | null) => {
@@ -100,7 +106,7 @@ const NewWorkout = ({
         resetSet();
         await router.push("/dashboard");
       }
-    } catch {}
+    } catch { }
   };
 
   const onRemoveExercise = (exercise: Exercise) => {
@@ -123,7 +129,7 @@ const NewWorkout = ({
             Complete Workout
           </Button>
           <Input
-            className="flex items-center gap-2 custom-h3"
+            className="custom-h3 flex items-center gap-2"
             type="text"
             defaultValue={workoutData && workoutData.name}
             {...register("name", {
@@ -132,7 +138,7 @@ const NewWorkout = ({
             })}
           />
           <Input
-            className="flex items-center gap-2 custom-h3"
+            className="custom-h3 flex items-center gap-2"
             type="text"
             placeholder="Description"
             defaultValue={(workoutData && workoutData.description) ?? ""}
@@ -155,13 +161,13 @@ const NewWorkout = ({
           exercises.map((exercise, i) => (
             <div
               key={i}
-              className="flex flex-col gap-2 p-2 border rounded border-slate-800"
+              className="flex flex-col gap-2 rounded border border-slate-800 p-2"
             >
               <div className="flex items-center justify-around">
-                <p className="font-semibold custom-p">{exercise.name}</p>
+                <p className="custom-p font-semibold">{exercise.name}</p>
                 <Button
                   variant="ghost"
-                  className="w-10 p-0 rounded-full"
+                  className="w-10 rounded-full p-0"
                   onClick={() => onRemoveExercise(exercise)}
                 >
                   <Trash />

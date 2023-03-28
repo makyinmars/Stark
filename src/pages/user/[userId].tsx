@@ -137,7 +137,7 @@ const User = ({
             </div>
 
             <h4 className="custom-h4 self-center">Workout History</h4>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {userWorkoutsData &&
                 userWorkoutsData.map((w, i) => (
                   <WorkoutBox

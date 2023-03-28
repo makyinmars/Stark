@@ -42,6 +42,6 @@
   }
 
   .custom-subtle {
-    @apply text-sm text-slate-700 dark:text-slate-400;
+    @apply text-sm font-medium text-slate-800 dark:text-slate-400;
   }
 }

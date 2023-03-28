@@ -12,6 +12,8 @@ import UserMenu from "src/components/common/user-menu";
 import { api } from "src/utils/api";
 import WorkoutBox from "src/components/common/workout-box";
 import { useToast } from "src/hooks/useToast";
+import Error from "src/components/common/error";
+import Spinner from "src/components/common/spinner";
 
 const Dashboard = ({
   userId,
@@ -21,7 +23,12 @@ const Dashboard = ({
 
   const { toast } = useToast();
 
-  const { data: myWorkoutsData } = api.workout.getWorkoutsByUserId.useQuery(
+  const {
+    data: myWorkoutsData,
+    isLoading: myWorkoutsIsLoading,
+    isError: myWorkoutsIsError,
+    error: myWorkoutsDataError,
+  } = api.workout.getWorkoutsByUserId.useQuery(
     {
       userId,
     },
@@ -30,24 +37,27 @@ const Dashboard = ({
     }
   );
 
-  const createQuickWorkout = api.workout.createQuickWorkout.useMutation();
-
   const user = utils.auth.getUserSession.getData();
+
+  const createQuickWorkout = api.workout.createQuickWorkout.useMutation({
+    onSettled: async (variables) => {
+      if (!variables) return;
+      await router.push(`/workout/new-workout/${variables.id}`);
+      await utils.workout.getWorkoutsByUserId.invalidate({ userId: userId });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Workout created",
+        description: "You can add exercises to it now.",
+      });
+    },
+  });
 
   const onCreateQuickWorkout = async () => {
     try {
-      const newWorkout = await createQuickWorkout.mutateAsync({
+      await createQuickWorkout.mutateAsync({
         userId: user && user.id,
       });
-
-      if (newWorkout) {
-        toast({
-          title: "Workout created",
-          description: "You can add exercises to it now.",
-        });
-
-        await router.push(`/workout/new-workout/${newWorkout.id}`);
-      }
     } catch {}
   };
 
@@ -63,11 +73,12 @@ const Dashboard = ({
         <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
           Start an Empty Workout
         </Button>
-        <h3 className="custom-h3">Workouts</h3>
+        <h3 className="custom-h3 text-center">Workouts</h3>
+        {myWorkoutsIsLoading && <Spinner />}
         {myWorkoutsData && myWorkoutsData.length > 0 && (
           <div>
             <h4 className="custom-h4">My Workouts({myWorkoutsData.length})</h4>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {myWorkoutsData.map((w, i) => (
                 <WorkoutBox
                   key={i}
@@ -82,6 +93,7 @@ const Dashboard = ({
             </div>
           </div>
         )}
+        {myWorkoutsIsError && <Error message={myWorkoutsDataError.message} />}
         <h4 className="custom-h4">Example Workouts(4)</h4>
         <div className="grid grid-cols-2 gap-2">
           <div className="rounded border border-gray-50 p-2">
@@ -128,7 +140,6 @@ export const getServerSideProps = async (
     const userId = session.user.id;
 
     await ssg.auth.getUserSession.prefetch();
-    await ssg.workout.getWorkoutsByUserId.prefetch({ userId });
 
     return {
       props: {

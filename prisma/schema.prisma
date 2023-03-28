@@ -57,20 +57,23 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  workout       Workout[]
-  followers     Follows[] @relation("follower")
-  following     Follows[] @relation("following")
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  workout        Workout[]
+  followers      Follows[] @relation("follower")
+  following      Follows[] @relation("following")
+  workoutsCopied String[]  @default([])
 }
 
 model Workout {
   id          String     @id @default(cuid())
+  // If copied, this is the id of the original workout
+  copyId      String?
   name        String
   description String?
   copyCount   Int        @default(0)
