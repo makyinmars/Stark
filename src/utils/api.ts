@@ -6,8 +6,13 @@
  * We also create a few inference helpers for input and output types
  */
 import { httpBatchLink, loggerLink } from "@trpc/client";
+import type { TRPCClientErrorLike } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import type {
+  Maybe,
+  inferRouterInputs,
+  inferRouterOutputs,
+} from "@trpc/server";
 import superjson from "superjson";
 
 import { type AppRouter } from "../server/api/root";
@@ -47,7 +52,30 @@ export const api = createTRPCNext<AppRouter>({
       queryClientConfig: {
         defaultOptions: {
           queries: {
-            staleTime: Infinity,
+            /**
+             * 1s should be enough to just keep identical query waterfalls low
+             * @example if one page components uses a query that is also used further down the tree
+             */
+            staleTime: 1000,
+            /**
+             * Retry `useQuery()` calls depending on this function
+             */
+            retry(failureCount, _err) {
+              const err = _err as never as Maybe<
+                TRPCClientErrorLike<AppRouter>
+              >;
+              const code = err?.data?.code;
+              if (
+                code === "BAD_REQUEST" ||
+                code === "FORBIDDEN" ||
+                code === "UNAUTHORIZED"
+              ) {
+                // if input data is wrong or you're not authorized there's no point retrying a query
+                return false;
+              }
+              const MAX_QUERY_RETRIES = 3;
+              return failureCount < MAX_QUERY_RETRIES;
+            },
           },
         },
       },
