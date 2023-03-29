@@ -39,7 +39,7 @@ const SearchUser = () => {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Button variant="outline" onClick={() => void onSearchClick()}>
+          <Button onClick={() => void onSearchClick()}>
             Search
           </Button>
         </div>

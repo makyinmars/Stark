@@ -18,6 +18,7 @@ import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
 import CreateSet from "src/components/common/create-set";
+import { useToast } from "src/hooks/useToast";
 
 type UpdateWorkoutInput = {
   name: string;
@@ -35,18 +36,62 @@ const NewWorkout = ({
   workoutId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+  const { toast } = useToast();
 
   const { sets, reset: resetSet, removeSets } = useSetState();
 
   const utils = api.useContext();
 
-  const deleteWorkout = api.workout.deleteWorkoutById.useMutation();
   const user = utils.auth.getUserSession.getData();
 
-  const updateQuickWorkout = api.workout.updateQuickWorkout.useMutation({
+  const deleteWorkout = api.workout.deleteWorkoutById.useMutation({
+    onMutate: () => {
+      toast({
+        title: "Deleting Workout",
+        variant: "info",
+        description: "Please wait...",
+      });
+    },
+    onSettled: () => {
+      toast({
+        title: "Workout Deleted",
+        variant: "success",
+      });
+    },
     onSuccess: async () => {
-      await utils.workout.getWorkoutsByUserId.invalidate({ userId: user && user.id })
-    }
+      resetExercise();
+      resetSet();
+      await utils.workout.getWorkoutsByUserId.invalidate({
+        userId: user && user.id,
+      });
+      await router.push("/dashboard");
+    },
+  });
+
+  const updateQuickWorkout = api.workout.updateQuickWorkout.useMutation({
+    onMutate: ({ name }) => {
+      if (name) {
+        toast({
+          title: `Saving ${name} Workout`,
+          variant: "info",
+          description: "Please wait...",
+        });
+      }
+    },
+    onSettled: () => {
+      toast({
+        title: "Workout Saved",
+        variant: "success",
+      });
+    },
+    onSuccess: async () => {
+      resetExercise();
+      resetSet();
+      await utils.workout.getWorkoutsByUserId.invalidate({
+        userId: user && user.id,
+      });
+      await router.push("/dashboard");
+    },
   });
 
   const { data: workoutData } = api.workout.getWorkoutById.useQuery({
@@ -68,7 +113,7 @@ const NewWorkout = ({
   const onUpdateQuickWorkout = async () => {
     try {
       if (user && workoutId) {
-        const updatedWorkout = await updateQuickWorkout.mutateAsync({
+        await updateQuickWorkout.mutateAsync({
           workoutId,
           name: watch("name"),
           notes: watch("notes"),
@@ -87,26 +132,15 @@ const NewWorkout = ({
             sets: sets,
           })),
         });
-
-        if (updatedWorkout) {
-          resetExercise();
-          resetSet();
-          await router.push("/dashboard");
-        }
       }
-    } catch { }
+    } catch {}
   };
 
   const onDeleteWorkout = async (workoutId: string | null) => {
     try {
       if (!workoutId) return;
-      const deletedWorkout = await deleteWorkout.mutateAsync({ workoutId });
-      if (deletedWorkout) {
-        resetExercise();
-        resetSet();
-        await router.push("/dashboard");
-      }
-    } catch { }
+      await deleteWorkout.mutateAsync({ workoutId });
+    } catch {}
   };
 
   const onRemoveExercise = (exercise: Exercise) => {

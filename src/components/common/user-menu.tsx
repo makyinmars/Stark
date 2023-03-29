@@ -60,71 +60,69 @@ const UserMenu = ({ children }: UserMenuProps) => {
           <DropdownMenuTrigger asChild>
             <Button>Account</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-2 w-36">
-            <DropdownMenuLabel>
-              {user && user.name}
-              {`'`}s Account
-            </DropdownMenuLabel>
+          <DropdownMenuContent className="mr-2 flex w-auto flex-col">
+            <DropdownMenuLabel>{user && user.name}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link href="/" className="flex items-center">
+              <Link href="/" className="flex items-center">
+                <DropdownMenuItem className="w-full">
                   <Home className="mr-2 h-4 w-4" />
                   <span>Home</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                {user && (
-                  <Link href={`/user/${user.id}`} className="flex items-center">
+                </DropdownMenuItem>
+              </Link>
+              {user && (
+                <Link href={`/user/${user.id}`} className="flex items-center">
+                  <DropdownMenuItem className="w-full">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
-                  </Link>
-                )}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/dashboard" className="flex items-center">
+                  </DropdownMenuItem>
+                </Link>
+              )}
+              <Link href="/dashboard" className="flex items-center">
+                <DropdownMenuItem className="w-full">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <span>Dashboard</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem className="w-full">
                 <History className="mr-2 h-4 w-4" />
                 <span>History</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/exercise" className="flex items-center">
+              <Link href="/exercise" className="flex items-center">
+                <DropdownMenuItem className="w-full">
                   <Dumbbell className="mr-2 h-4 w-4" />
                   <span>Exercises</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/search-user" className="flex items-center">
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/search-user" className="flex items-center">
+                <DropdownMenuItem className="w-full">
                   <Search className="mr-2 h-4 w-4" />
                   <span>Users</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem className="w-full">
                 <Crown className="mr-2 h-4 w-4" />
                 <span>Upgrade</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="w-full">
                 <Zap className="mr-2 h-4 w-4" />
                 <span>Wishlist</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span
+            <div className="flex justify-center">
+              <DropdownMenuItem
+                className="w-full"
                 onClick={() =>
                   void signOut({
                     callbackUrl: "/",
                   })
                 }
               >
-                Log out
-              </span>
-            </DropdownMenuItem>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

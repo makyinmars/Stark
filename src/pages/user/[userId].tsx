@@ -10,50 +10,56 @@ import { api } from "src/utils/api";
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import WorkoutBox from "src/components/common/workout-box";
+import { useToast } from "src/hooks/useToast";
 
 const User = ({
   userId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const utils = api.useContext();
+  const { toast } = useToast();
+
+  const session = utils.auth.getUserSession.getData();
+
+  const userData = utils.user.getUserById.getData({ id: userId });
 
   const followUser = api.follow.followUser.useMutation({
+    onSettled: () => {
+      toast({
+        title: `Following ${userData?.name as string}`,
+        variant: "success",
+      });
+    },
     onSuccess: async () => {
       await utils.user.getUserFollowers.invalidate({ userId });
     },
   });
 
   const unfollowUser = api.follow.unfollowUser.useMutation({
+    onSettled: () => {
+      toast({
+        title: `Unfollowed ${userData?.name as string}`,
+        variant: "success",
+      });
+    },
     onSuccess: async () => {
       await utils.user.getUserFollowers.invalidate({ userId });
     },
   });
 
-  const session = utils.auth.getUserSession.getData();
-
-  const userData = utils.user.getUserById.getData({ id: userId });
-
   const userWorkoutsData = utils.workout.getWorkoutsByUserId.getData({
     userId,
   });
 
-  const { data: userFollowersData } = api.user.getUserFollowers.useQuery(
-    {
-      userId,
-    },
-    { retry: false }
-  );
-  const { data: userFollowingData } = api.user.getUserFollowing.useQuery(
-    {
-      userId,
-    },
-    {
-      retry: false,
-    }
-  );
+  const { data: userFollowersData } = api.user.getUserFollowers.useQuery({
+    userId,
+  });
+  const { data: userFollowingData } = api.user.getUserFollowing.useQuery({
+    userId,
+  });
 
   const onFollowUser = async () => {
     try {
-      const follow = await followUser.mutateAsync({
+      await followUser.mutateAsync({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
@@ -62,7 +68,7 @@ const User = ({
 
   const onUnfollowUser = async () => {
     try {
-      const unfollow = await unfollowUser.mutateAsync({
+      await unfollowUser.mutateAsync({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
@@ -137,7 +143,7 @@ const User = ({
             </div>
 
             <h4 className="custom-h4 self-center">Workout History</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {userWorkoutsData &&
                 userWorkoutsData.map((w, i) => (
                   <WorkoutBox

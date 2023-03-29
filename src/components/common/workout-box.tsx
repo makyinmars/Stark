@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 import { formatDate } from "src/utils/date";
-import { Button } from "../ui/button";
+import { Button } from "src/components/ui/button";
 import { api } from "src/utils/api";
 import { useToast } from "src/hooks/useToast";
 
@@ -79,13 +79,13 @@ const WorkoutBox = ({
         workoutId,
         userId,
       });
-    } catch {}
+    } catch { }
   };
 
   const onDeleteWorkoutById = async (workoutId: string) => {
     try {
       await deleteWorkoutById.mutateAsync({ workoutId });
-    } catch {}
+    } catch { }
   };
 
   return (
