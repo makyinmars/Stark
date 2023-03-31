@@ -10,37 +10,23 @@ import { api } from "src/utils/api";
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import WorkoutBox from "src/components/common/workout-box";
-import { useToast } from "src/hooks/useToast";
 
 const User = ({
   userId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const utils = api.useContext();
-  const { toast } = useToast();
 
   const session = utils.auth.getUserSession.getData();
 
   const userData = utils.user.getUserById.getData({ id: userId });
 
   const followUser = api.follow.followUser.useMutation({
-    onSettled: () => {
-      toast({
-        title: `Following ${userData?.name as string}`,
-        variant: "success",
-      });
-    },
     onSuccess: async () => {
       await utils.user.getUserFollowers.invalidate({ userId });
     },
   });
 
   const unfollowUser = api.follow.unfollowUser.useMutation({
-    onSettled: () => {
-      toast({
-        title: `Unfollowed ${userData?.name as string}`,
-        variant: "success",
-      });
-    },
     onSuccess: async () => {
       await utils.user.getUserFollowers.invalidate({ userId });
     },
