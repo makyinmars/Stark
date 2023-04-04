@@ -100,10 +100,13 @@ const UserMenu = ({ children }: UserMenuProps) => {
                   <span>Users</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem className="w-full">
-                <Crown className="mr-2 h-4 w-4" />
-                <span>Upgrade</span>
-              </DropdownMenuItem>
+              <Link href="/upgrade" className="flex items-center">
+
+                <DropdownMenuItem className="w-full">
+                  <Crown className="mr-2 h-4 w-4" />
+                  <span>Upgrade</span>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem className="w-full">
                 <Zap className="mr-2 h-4 w-4" />
                 <span>Wishlist</span>
