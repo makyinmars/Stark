@@ -9,7 +9,7 @@ import { getServerAuthSession } from "src/server/auth";
 export const ssgHelper = async (context: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(context);
 
-  const ctx = createInnerTRPCContext({ session });
+  const ctx = createInnerTRPCContext({ session});
 
   const ssg = createProxySSGHelpers({
     ctx,
