@@ -61,7 +61,12 @@ const UserMenu = ({ children }: UserMenuProps) => {
             <Button>Account</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2 flex w-auto flex-col">
-            <DropdownMenuLabel>{user && user.name}</DropdownMenuLabel>
+            <DropdownMenuLabel className="flex items-center gap-2">
+              {user && user.name}{" "}
+              {user && user.stripeSubscriptionStatus === "active" && (
+                <Crown className="h-5 w-5 text-yellow-500" />
+              )}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <Link href="/" className="flex items-center">
@@ -101,7 +106,6 @@ const UserMenu = ({ children }: UserMenuProps) => {
                 </DropdownMenuItem>
               </Link>
               <Link href="/upgrade" className="flex items-center">
-
                 <DropdownMenuItem className="w-full">
                   <Crown className="mr-2 h-4 w-4" />
                   <span>Upgrade</span>

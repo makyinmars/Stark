@@ -10,6 +10,7 @@ import { api } from "src/utils/api";
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import WorkoutBox from "src/components/common/workout-box";
+import { Crown } from "lucide-react";
 
 const User = ({
   userId,
@@ -78,7 +79,12 @@ const User = ({
                 priority={true}
                 alt={userData.name as string}
               />
-              <h3 className="custom-h3 self-center">{userData.name}</h3>
+              <h3 className="custom-h3 self-center flex items-center gap-2">
+                {userData.name}
+                {userData && userData.stripeSubscriptionStatus === "active" && (
+                  <Crown className="h-5 w-5 text-yellow-500" />
+                )}
+              </h3>
             </div>
 
             {session?.id !== userData.id && (
