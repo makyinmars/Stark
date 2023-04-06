@@ -7,7 +7,7 @@ import { Button } from "src/components/ui/button";
 import { api } from "src/utils/api";
 import { ssgHelper } from "src/utils/ssg";
 
-const Dashboard = () => {
+const Upgrade = () => {
   const { data: subscriptionStatus, isLoading } =
     api.user.subscriptionStatus.useQuery();
 
@@ -54,32 +54,41 @@ const Dashboard = () => {
         <title>Upgrade</title>
       </Head>
       <UserMenu>
-        <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
-          <p className="text-2xl text-gray-700">Actions:</p>
-          <div className="mt-3 flex flex-col items-center justify-center gap-4">
-            {!isLoading && subscriptionStatus !== null && (
-              <>
-                <p className="text-xl text-gray-700">
-                  Your subscription is {subscriptionStatus}.
-                </p>
-                <Button onClick={() => void onCreateBillingPortalSession()}>
-                  Manage subscription and billing
-                </Button>
-              </>
-            )}
-            {!isLoading && subscriptionStatus === null && (
-              <>
-                <p className="text-xl text-gray-700">
-                  You are not subscribed!!!
-                </p>
-
+        {!isLoading && subscriptionStatus !== null && (
+          <div className="flex flex-col gap-4">
+            <h2 className="custom-h2 self-center">
+              Your subscription is{" "}
+              <span className="text-green-600">{subscriptionStatus}</span>
+            </h2>
+            <Button onClick={() => void onCreateBillingPortalSession()}>
+              Manage subscription and billing
+            </Button>
+          </div>
+        )}
+        {!isLoading && subscriptionStatus === null && (
+          <div className="flex flex-col gap-4">
+            <h2 className="custom-h2 self-center">Premiun Membership</h2>
+            <div className="flex justify-around">
+              <div className="flex flex-col justify-around rounded border-2 border-slate-800 p-4">
+                <h3 className="custom-h3 self-center">Free</h3>
+                <ul>
+                  <li>Create workouts</li>
+                </ul>
+              </div>
+              <div className="flex flex-col justify-around gap-4 rounded border-2 border-slate-800 p-4">
+                <h3 className="custom-h3 self-center">Premiun</h3>
+                <ul>
+                  <li>Free plan plus</li>
+                  <li>Copy workouts</li>
+                  <li>View chart</li>
+                </ul>
                 <Button onClick={() => void onCreateCheckoutSession()}>
                   Upgrade account
                 </Button>
-              </>
-            )}
+              </div>
+            </div>
           </div>
-        </main>
+        )}
       </UserMenu>
     </>
   );
@@ -115,4 +124,4 @@ export const getServerSideProps = async (
   }
 };
 
-export default Dashboard;
+export default Upgrade;
