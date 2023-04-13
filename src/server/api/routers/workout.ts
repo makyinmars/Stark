@@ -410,4 +410,36 @@ export const workoutRouter = createTRPCRouter({
         message: "No user id provided",
       });
     }),
+
+  // For session use
+  getAllWorkouts: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.session.user) {
+      if (ctx.session.user.id) {
+        const userWorkouts = await ctx.prisma.workout.findMany({
+          take: 4,
+          orderBy: {
+            createdAt: "desc",
+          },
+          where: {
+            userId: ctx.session.user.id,
+          },
+          select: workoutsByUserId,
+        });
+
+        if (userWorkouts) {
+          return userWorkouts;
+        }
+
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No workouts found",
+        });
+      }
+    }
+
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No user id provided",
+    });
+  }),
 });

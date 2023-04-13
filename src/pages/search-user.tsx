@@ -5,16 +5,11 @@ import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 
 import UserMenu from "src/components/common/user-menu";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "src/components/ui/command";
 import { ssgHelper } from "src/utils/ssg";
 import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
 import { Button } from "src/components/ui/button";
+import { Card, CardDescription } from "src/components/ui/card";
 
 const SearchUser = () => {
   const [value, setValue] = useState("");
@@ -39,9 +34,7 @@ const SearchUser = () => {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Button onClick={() => void onSearchClick()}>
-            Search
-          </Button>
+          <Button onClick={() => void onSearchClick()}>Search</Button>
         </div>
         {search && <SearchResult value={search} />}
       </UserMenu>
@@ -92,29 +85,33 @@ const SearchResult = ({ value }: SearchUserProps) => {
   });
 
   return (
-    <Command>
-      <CommandEmpty>No users found.</CommandEmpty>
-      <CommandGroup>
-        {data &&
-          data.map((user) => (
-            <Link key={user.name} href={`/user/${user.id}`}>
-              <CommandItem>
-                <div className="flex items-center gap-2">
-                  {user.image && (
-                    <Image
-                      width={32}
-                      height={12}
-                      alt={user.name as string}
-                      src={user.image}
-                      className="h-auto w-8 rounded"
-                    />
-                  )}
-                  {user.name}
-                </div>
-              </CommandItem>
+    <>
+      {data && data.length > 0 ? (
+        data.map((user, i) => (
+          <Card key={i} className="p-1">
+            <Link href={`/user/${user.id}`}>
+              <CardDescription className="flex items-center gap-2">
+                {user.image && (
+                  <Image
+                    width={32}
+                    height={12}
+                    alt={user.name as string}
+                    src={user.image}
+                    className="h-auto w-8 rounded"
+                  />
+                )}
+                {user.name}
+              </CardDescription>
             </Link>
-          ))}
-      </CommandGroup>
-    </Command>
+          </Card>
+        ))
+      ) : (
+        <Card className="p-1">
+          <CardDescription className="custom-large">
+            No users found
+          </CardDescription>
+        </Card>
+      )}
+    </>
   );
 };

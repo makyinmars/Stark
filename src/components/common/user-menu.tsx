@@ -89,10 +89,12 @@ const UserMenu = ({ children }: UserMenuProps) => {
                   <span>Dashboard</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem className="w-full">
-                <History className="mr-2 h-4 w-4" />
-                <span>History</span>
-              </DropdownMenuItem>
+              <Link href="/history" className="flex items-center">
+                <DropdownMenuItem className="w-full">
+                  <History className="mr-2 h-4 w-4" />
+                  <span>History</span>
+                </DropdownMenuItem>
+              </Link>
               <Link href="/exercise" className="flex items-center">
                 <DropdownMenuItem className="w-full">
                   <Dumbbell className="mr-2 h-4 w-4" />
