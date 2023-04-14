@@ -13,12 +13,23 @@ import { Card, CardDescription } from "src/components/ui/card";
 
 const SearchUser = () => {
   const [value, setValue] = useState("");
-  const [search, setSearch] = useState("");
 
-  const onSearchClick = () => {
-    if (value) {
-      setSearch(value);
+  const utils = api.useContext();
+
+  const user = utils.auth.getUserSession.getData();
+
+  const { data, refetch } = api.user.getUsersBySearchName.useQuery(
+    {
+      name: value,
+      userId: user && user.id,
+    },
+    {
+      enabled: false,
     }
+  );
+
+  const onSearchClick = async () => {
+    await refetch({});
   };
 
   return (
@@ -36,7 +47,33 @@ const SearchUser = () => {
           />
           <Button onClick={() => void onSearchClick()}>Search</Button>
         </div>
-        {search && <SearchResult value={search} />}
+
+        {data && data.length > 0 ? (
+          data.map((user, i) => (
+            <Card key={i} className="p-1">
+              <Link href={`/user/${user.id}`}>
+                <CardDescription className="flex items-center gap-2">
+                  {user.image && (
+                    <Image
+                      width={32}
+                      height={12}
+                      alt={user.name as string}
+                      src={user.image}
+                      className="h-auto w-8 rounded"
+                    />
+                  )}
+                  {user.name}
+                </CardDescription>
+              </Link>
+            </Card>
+          ))
+        ) : (
+          <Card className="p-1">
+            <CardDescription className="custom-large">
+              No users found
+            </CardDescription>
+          </Card>
+        )}
       </UserMenu>
     </>
   );
@@ -68,50 +105,4 @@ export const getServerSideProps = async (
       },
     };
   }
-};
-
-interface SearchUserProps {
-  value: string;
-}
-
-const SearchResult = ({ value }: SearchUserProps) => {
-  const utils = api.useContext();
-
-  const user = utils.auth.getUserSession.getData();
-
-  const { data } = api.user.getUsersBySearchName.useQuery({
-    name: value,
-    userId: user && user.id,
-  });
-
-  return (
-    <>
-      {data && data.length > 0 ? (
-        data.map((user, i) => (
-          <Card key={i} className="p-1">
-            <Link href={`/user/${user.id}`}>
-              <CardDescription className="flex items-center gap-2">
-                {user.image && (
-                  <Image
-                    width={32}
-                    height={12}
-                    alt={user.name as string}
-                    src={user.image}
-                    className="h-auto w-8 rounded"
-                  />
-                )}
-                {user.name}
-              </CardDescription>
-            </Link>
-          </Card>
-        ))
-      ) : (
-        <Card className="p-1">
-          <CardDescription className="custom-large">
-            No users found
-          </CardDescription>
-        </Card>
-      )}
-    </>
-  );
 };

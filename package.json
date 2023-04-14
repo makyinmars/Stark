@@ -10,7 +10,8 @@
     "start": "next start",
     "db-push": "npx prisma db push",
     "db-pull": "npx prisma db pull",
-    "db-generate": "npx prisma generate"
+    "db-generate": "npx prisma generate",
+    "db-studio": "npx prisma studio"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",

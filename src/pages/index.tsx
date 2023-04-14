@@ -65,7 +65,7 @@ const Home: NextPage = () => {
                   <Button
                     onClick={() =>
                       void signIn("discord", {
-                        callbackUrl: "/",
+                        callbackUrl: "/dashboard",
                       })
                     }
                   >
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
                   <Button
                     onClick={() =>
                       void signIn("google", {
-                        callbackUrl: "/",
+                        callbackUrl: "/dashboard",
                       })
                     }
                   >
@@ -160,7 +160,7 @@ const Home: NextPage = () => {
               </p>
             </div>
             <div className="ga-4 flex flex-col">
-              <h3 className="custom-h3">Accessibility: </h3>
+              <h3 className="custom-h3">Accessibility</h3>
               <p className="custom-p">
                 We believe that fitness should be accessible to everyone,
                 regardless of their background or fitness level. That{`'`}s why
@@ -281,7 +281,7 @@ export const getServerSideProps = async (
     return {
       props: {
         trpcState: ssg.dehydrate(),
-      },
+      }
     };
   } else {
     return {
