@@ -91,7 +91,7 @@ const WorkoutBox = ({
   };
 
   return (
-    <div className="flex flex-col gap-1 p-2 rounded border-2 border-slate-300">
+    <div className="flex flex-col gap-1 p-2 border-2 rounded border-slate-300">
       <h5 className="flex items-center justify-between custom-h5">
         {name}
         <DropdownMenu>

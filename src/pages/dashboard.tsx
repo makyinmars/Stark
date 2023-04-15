@@ -14,7 +14,12 @@ import WorkoutBox from "src/components/common/workout-box";
 import { useToast } from "src/hooks/useToast";
 import Error from "src/components/common/error";
 import Spinner from "src/components/common/spinner";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "src/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "src/components/ui/accordion";
 
 const Dashboard = ({
   userId,
@@ -59,7 +64,7 @@ const Dashboard = ({
       await createQuickWorkout.mutateAsync({
         userId: user && user.id,
       });
-    } catch { }
+    } catch {}
   };
 
   return (
@@ -97,55 +102,42 @@ const Dashboard = ({
         {myWorkoutsIsError && <Error message={myWorkoutsDataError.message} />}
         <h4 className="custom-h4">Example Workouts(4)</h4>
         <div className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
-
-          <div className="p-2 flex flex-col gap-2 rounded border-gray-200 border-2">
-            <h5 className="text-center custom-h5">
-              Chest and Triceps
-            </h5>
+          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
+            <h5 className="text-center custom-h5">Chest and Triceps</h5>
             <Accordion type="single" collapsible className="w-auto">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent>
-                </AccordionContent>
+                <AccordionContent></AccordionContent>
               </AccordionItem>
             </Accordion>
             <Button>Start Workout</Button>
           </div>
-          <div className="p-2 flex flex-col gap-2 rounded border-gray-200 border-2">
-            <h5 className="text-center custom-h5">
-              Back and Biceps
-            </h5>
+          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
+            <h5 className="text-center custom-h5">Back and Biceps</h5>
             <Accordion type="single" collapsible className="w-auto">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent>
-                </AccordionContent>
+                <AccordionContent></AccordionContent>
               </AccordionItem>
             </Accordion>
             <Button>Start Workout</Button>
           </div>
-          <div className="p-2 flex flex-col gap-2 rounded border-gray-200 border-2">
-            <h5 className="text-center custom-h5">
-              Legs and Shoulders
-            </h5>
+          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
+            <h5 className="text-center custom-h5">Legs and Shoulders</h5>
             <Accordion type="single" collapsible className="w-auto">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent>
-                </AccordionContent>
+                <AccordionContent></AccordionContent>
               </AccordionItem>
             </Accordion>
             <Button>Start Workout</Button>
           </div>
-          <div className="p-2 flex flex-col gap-2 rounded border-gray-200 border-2">
-            <h5 className="text-center custom-h5">
-              Cardio
-            </h5>
+          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
+            <h5 className="text-center custom-h5">Cardio</h5>
             <Accordion type="single" collapsible className="w-auto">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent>
-                </AccordionContent>
+                <AccordionContent></AccordionContent>
               </AccordionItem>
             </Accordion>
             <Button>Start Workout</Button>
