@@ -79,64 +79,62 @@ const WorkoutBox = ({
         workoutId,
         userId,
       });
-    } catch { }
+    } catch {}
   };
 
   const onDeleteWorkoutById = async (workoutId: string) => {
     try {
       await deleteWorkoutById.mutateAsync({ workoutId });
-    } catch { }
+    } catch {}
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded bg-slate-300">
-      <div className="rounded border border-gray-50 p-2">
-        <h5 className="custom-h5 flex items-center justify-between">
-          {name}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                <MoreHorizontal size={16} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
+    <div className="flex flex-col gap-1 rounded bg-slate-300 p-2">
+      <h5 className="custom-h5 flex items-center justify-between">
+        {name}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button>
+              <MoreHorizontal size={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              className="flex items-center justify-around gap-2"
+              onClick={() => void router.push(`/workout/${id}`)}
+            >
+              <Dumbbell size={14} />
+              <p>View Workout</p>
+            </DropdownMenuItem>
+            {router.pathname.includes("/user") && showCopy && (
               <DropdownMenuItem
                 className="flex items-center justify-around gap-2"
-                onClick={() => void router.push(`/workout/${id}`)}
+                onClick={() => void onCopyWorkoutById(id)}
               >
-                <Dumbbell size={14} />
-                <p>View Workout</p>
+                <Copy size={14} /> Copy Workout
               </DropdownMenuItem>
-              {router.pathname.includes("/user") && showCopy && (
-                <DropdownMenuItem
-                  className="flex items-center justify-around gap-2"
-                  onClick={() => void onCopyWorkoutById(id)}
-                >
-                  <Copy size={14} /> Copy Workout
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem
-                className="flex items-center justify-around gap-2"
-                onClick={() => void onDeleteWorkoutById(id)}
-              >
-                <Trash size={14} />
-                <p>Delete Workout</p>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </h5>
-        {exercises.map((e, j) => (
-          <p className="custom-subtle" key={j}>
-            {e.name}
-          </p>
-        ))}
-        <p className="custom-subtle flex items-center gap-2">
-          <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
+            )}
+            <DropdownMenuItem
+              className="flex items-center justify-around gap-2"
+              onClick={() => void onDeleteWorkoutById(id)}
+            >
+              <Trash size={14} />
+              <p>Delete Workout</p>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </h5>
+      {exercises.map((e, j) => (
+        <p className="custom-subtle" key={j}>
+          {e.name}
         </p>
-        <p className="custom-subtle flex items-center gap-2">
-          <Copy size={16} /> Copied: {copyCount}
-        </p>
-      </div>
+      ))}
+      <p className="custom-subtle flex items-center gap-2">
+        <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
+      </p>
+      <p className="custom-subtle flex items-center gap-2">
+        <Copy size={16} /> Copied: {copyCount}
+      </p>
     </div>
   );
 };

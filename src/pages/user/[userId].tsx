@@ -11,15 +11,74 @@ import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import WorkoutBox from "src/components/common/workout-box";
 import { Crown } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "src/components/ui/dialog";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "src/components/ui/command";
+import Link from "next/link";
+import { ScrollArea } from "src/components/ui/scroll-area";
+import Spinner from "src/components/common/spinner";
+import Error from "src/components/common/error";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "src/components/ui/popover";
 
 const User = ({
   userId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const utils = api.useContext();
 
-  const session = utils.auth.getUserSession.getData();
+  const { data: session } = api.auth.getUserSession.useQuery();
 
-  const userData = utils.user.getUserById.getData({ id: userId });
+  const {
+    data: userData,
+    isLoading: userIsLoading,
+    isError: userIsError,
+    error: userError,
+  } = api.user.getUserById.useQuery({ id: userId });
+
+  const {
+    data: followersData,
+    refetch: followersRefetch,
+    isLoading: followersIsLoading,
+    isError: followersIsError,
+    error: followersError,
+  } = api.follow.getFollowers.useQuery(
+    {
+      userId: userId as string,
+    },
+    {
+      enabled: false,
+    }
+  );
+
+  const {
+    data: followingData,
+    refetch: followingRefetch,
+    isLoading: followingIsLoading,
+    isError: followingIsError,
+    error: followingError,
+  } = api.follow.getFollowing.useQuery(
+    {
+      userId: userId as string,
+    },
+    {
+      enabled: false,
+    }
+  );
 
   const followUser = api.follow.followUser.useMutation({
     onSuccess: async () => {
@@ -50,7 +109,7 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-    } catch { }
+    } catch {}
   };
 
   const onUnfollowUser = async () => {
@@ -59,7 +118,7 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-    } catch { }
+    } catch {}
   };
 
   return (
@@ -79,10 +138,10 @@ const User = ({
                 priority={true}
                 alt={userData.name as string}
               />
-              <h3 className="custom-h3 self-center flex items-center gap-2">
+              <h3 className="flex items-center self-center gap-2 custom-h3">
                 {userData.name}
                 {userData && userData.stripeSubscriptionStatus === "active" && (
-                  <Crown className="h-5 w-5 text-yellow-500" />
+                  <Crown className="w-5 h-5 text-yellow-500" />
                 )}
               </h3>
             </div>
@@ -90,8 +149,8 @@ const User = ({
             {session?.id !== userData.id && (
               <div className="flex flex-col items-center justify-center gap-1">
                 {session &&
-                  userFollowersData &&
-                  userFollowersData.find((u) => u.id === session.id) ? (
+                userFollowersData &&
+                userFollowersData.find((u) => u.id === session.id) ? (
                   <Button
                     className="w-40"
                     onClick={() => void onUnfollowUser()}
@@ -106,36 +165,120 @@ const User = ({
                 {session &&
                   userFollowingData &&
                   userFollowingData.find((u) => u.id === session.id) && (
-                    <p className="custom-subtle p-1">Follows you</p>
+                    <p className="p-1 custom-subtle">Follows you</p>
                   )}
               </div>
             )}
 
-            <h4 className="custom-h4 self-center">
+            <h4 className="self-center custom-h4">
               Workouts: ({userWorkoutsData ? userWorkoutsData.length : 0})
             </h4>
 
             <div className="flex justify-around">
               <div>
-                <h5 className="custom-h5 flex items-center justify-between">
-                  Followers
-                </h5>
-                <p className="custom-subtle text-center">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button onClick={() => void followersRefetch()}>
+                      Followers
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="h-auto">
+                    <h4 className="text-center custom-h4">Followers</h4>
+                    <Command className="border rounded-lg shadow-md border-slate-100 dark:border-slate-800">
+                      <CommandInput placeholder="Search user..." />
+                      <CommandList>
+                        <ScrollArea className="h-48">
+                          <CommandEmpty>No results found.</CommandEmpty>
+                          <CommandGroup>
+                            {followersIsLoading && <Spinner />}
+                            {followersIsError && (
+                              <Error message={followersError.message} />
+                            )}
+                            {followersData &&
+                              followersData.map((f) => (
+                                <CommandItem key={f.id} className="my-1">
+                                  <Link
+                                    href={`/user/${f.id}`}
+                                    className="flex items-center gap-2"
+                                  >
+                                    {f.image && (
+                                      <Image
+                                        src={f.image}
+                                        className="rounded"
+                                        width={40}
+                                        height={40}
+                                        priority={true}
+                                        alt={f.name as string}
+                                      />
+                                    )}
+                                    <span>{f.name}</span>
+                                  </Link>
+                                </CommandItem>
+                              ))}
+                          </CommandGroup>
+                        </ScrollArea>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <p className="text-center custom-subtle">
                   {userFollowersData ? userFollowersData.length : 0}
                 </p>
               </div>
               <div>
-                <h5 className="custom-h5 flex items-center justify-between">
-                  Following
-                </h5>
-                <p className="custom-subtle text-center">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button onClick={() => void followingRefetch()}>
+                      Following
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="h-auto">
+                    <h4 className="text-center custom-h4">Following</h4>
+                    <Command className="border rounded-lg shadow-md border-slate-100 dark:border-slate-800">
+                      <CommandInput placeholder="Search user..." />
+                      <CommandList>
+                        <ScrollArea className="h-48">
+                          <CommandEmpty>No results found.</CommandEmpty>
+                          <CommandGroup>
+                            {followingIsLoading && <Spinner />}
+                            {followingIsError && (
+                              <Error message={followingError.message} />
+                            )}
+                            {followingData &&
+                              followingData.map((f) => (
+                                <CommandItem key={f.id} className="my-1">
+                                  <Link
+                                    href={`/user/${f.id}`}
+                                    className="flex items-center gap-2"
+                                  >
+                                    {f.image && (
+                                      <Image
+                                        src={f.image}
+                                        className="rounded"
+                                        width={40}
+                                        height={40}
+                                        priority={true}
+                                        alt={f.name as string}
+                                      />
+                                    )}
+                                    <span>{f.name}</span>
+                                  </Link>
+                                </CommandItem>
+                              ))}
+                          </CommandGroup>
+                        </ScrollArea>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <p className="text-center custom-subtle">
                   {userFollowingData ? userFollowingData.length : 0}
                 </p>
               </div>
             </div>
 
-            <h4 className="custom-h4 self-center">Workout History</h4>
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <h4 className="self-center custom-h4">Workout History</h4>
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
               {userWorkoutsData &&
                 userWorkoutsData.map((w, i) => (
                   <WorkoutBox
@@ -146,16 +289,23 @@ const User = ({
                     exercises={w.exercises}
                     copyCount={w.copyCount}
                     userId={session?.id as string}
-                    showCopy={userId !== session?.id && session?.stripeSubscriptionStatus === "active"}
+                    showCopy={
+                      userId !== session?.id &&
+                      session?.stripeSubscriptionStatus === "active"
+                    }
                   />
                 ))}
             </div>
           </UserMenu>
         </>
       ) : (
-        <Head>
-          <title>User Not Found</title>
-        </Head>
+        <div>
+          <Head>
+            <title>User Not Found</title>
+          </Head>
+          {userIsLoading && <Spinner />}
+          {userIsError && <Error message={userError.message} />}
+        </div>
       )}
     </>
   );
