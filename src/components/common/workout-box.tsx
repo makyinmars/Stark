@@ -22,6 +22,7 @@ interface WorkoutsProps {
   copyCount: number;
   userId: string;
   showCopy?: boolean;
+  showDelete?: boolean;
 }
 
 const WorkoutBox = ({
@@ -32,6 +33,7 @@ const WorkoutBox = ({
   copyCount,
   userId,
   showCopy,
+  showDelete,
 }: WorkoutsProps) => {
   const router = useRouter();
   const utils = api.useContext();
@@ -89,8 +91,8 @@ const WorkoutBox = ({
   };
 
   return (
-    <div className="flex flex-col gap-1 rounded bg-slate-300 p-2">
-      <h5 className="custom-h5 flex items-center justify-between">
+    <div className="flex flex-col gap-1 p-2 rounded bg-slate-300">
+      <h5 className="flex items-center justify-between custom-h5">
         {name}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -114,13 +116,17 @@ const WorkoutBox = ({
                 <Copy size={14} /> Copy Workout
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              className="flex items-center justify-around gap-2"
-              onClick={() => void onDeleteWorkoutById(id)}
-            >
-              <Trash size={14} />
-              <p>Delete Workout</p>
-            </DropdownMenuItem>
+            {(router.pathname.includes("/dashboard") ||
+              router.pathname.includes("/history") ||
+              showDelete) && (
+              <DropdownMenuItem
+                className="flex items-center justify-around gap-2"
+                onClick={() => void onDeleteWorkoutById(id)}
+              >
+                <Trash size={14} />
+                <p>Delete Workout</p>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </h5>
@@ -129,10 +135,10 @@ const WorkoutBox = ({
           {e.name}
         </p>
       ))}
-      <p className="custom-subtle flex items-center gap-2">
+      <p className="flex items-center gap-2 custom-subtle">
         <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
       </p>
-      <p className="custom-subtle flex items-center gap-2">
+      <p className="flex items-center gap-2 custom-subtle">
         <Copy size={16} /> Copied: {copyCount}
       </p>
     </div>

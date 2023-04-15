@@ -15,9 +15,9 @@ const History = () => {
 
   return (
     <UserMenu>
-      <h2 className="custom-h2 text-center">Workouts History</h2>
+      <h2 className="text-center custom-h2">Workouts History</h2>
       {isLoading && <Spinner />}
-      <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
         {data &&
           data.map((w, i) => (
             <WorkoutBox

@@ -73,12 +73,12 @@ const Dashboard = ({
         <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
           Start an Empty Workout
         </Button>
-        <h3 className="custom-h3 text-center">Workouts</h3>
+        <h3 className="text-center custom-h3">Workouts</h3>
         {myWorkoutsIsLoading && <Spinner />}
         {myWorkoutsData && myWorkoutsData.length > 0 && (
           <div>
             <h4 className="custom-h4">My Workouts({myWorkoutsData.length})</h4>
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
               {myWorkoutsData.map((w, i) => (
                 <WorkoutBox
                   key={i}
@@ -95,31 +95,31 @@ const Dashboard = ({
         )}
         {myWorkoutsIsError && <Error message={myWorkoutsDataError.message} />}
         <h4 className="custom-h4">Example Workouts(4)</h4>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="rounded border border-gray-50 p-2">
-            <h5 className="custom-h5 flex items-center justify-between">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
+          <div className="p-2 border rounded border-gray-50">
+            <h5 className="flex items-center justify-between custom-h5">
               Chest and Triceps <MoreHorizontal size={16} />
             </h5>
             <p className="custom-subtle">Beach Press(Barbell)</p>
-            <p className="custom-subtle flex items-center gap-2">
+            <p className="flex items-center gap-2 custom-subtle">
               <History size={16} /> Dec 13, 2022
             </p>
           </div>
-          <div className="rounded border border-gray-50 p-2">
-            <h5 className="custom-h5 flex items-center justify-between">
+          <div className="p-2 border rounded border-gray-50">
+            <h5 className="flex items-center justify-between custom-h5">
               Chest and Triceps <MoreHorizontal size={16} />
             </h5>
             <p className="custom-subtle">Beach Press(Barbell)</p>
-            <p className="custom-subtle flex items-center gap-2">
+            <p className="flex items-center gap-2 custom-subtle">
               <History size={16} /> Dec 13, 2022
             </p>
           </div>
-          <div className="rounded border border-gray-50 p-2">
-            <h5 className="custom-h5 flex items-center justify-between">
+          <div className="p-2 border rounded border-gray-50">
+            <h5 className="flex items-center justify-between custom-h5">
               Chest and Triceps <MoreHorizontal size={16} />
             </h5>
             <p className="custom-subtle">Beach Press(Barbell)</p>
-            <p className="custom-subtle flex items-center gap-2">
+            <p className="flex items-center gap-2 custom-subtle">
               <History size={16} /> Dec 13, 2022
             </p>
           </div>
