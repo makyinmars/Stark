@@ -293,6 +293,7 @@ const User = ({
                       userId !== session?.id &&
                       session?.stripeSubscriptionStatus === "active"
                     }
+                    showDelete={userId === session?.id}
                   />
                 ))}
             </div>
