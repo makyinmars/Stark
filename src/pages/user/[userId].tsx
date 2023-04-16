@@ -12,13 +12,6 @@ import { Button } from "src/components/ui/button";
 import WorkoutBox from "src/components/common/workout-box";
 import { Crown } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "src/components/ui/dialog";
-import {
   Command,
   CommandEmpty,
   CommandGroup,

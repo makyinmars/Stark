@@ -113,10 +113,12 @@ const UserMenu = ({ children }: UserMenuProps) => {
                   <span>Upgrade</span>
                 </DropdownMenuItem>
               </Link>
+              <Link href="/feature-request" className="flex items-center">
               <DropdownMenuItem className="w-full">
                 <Zap className="mr-2 h-4 w-4" />
-                <span>Wishlist</span>
+                <span>Feature Request</span>
               </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <div className="flex justify-center">

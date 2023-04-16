@@ -5,6 +5,7 @@ import { exerciseRouter } from "./routers/exercise";
 import { workoutRouter } from "./routers/workout";
 import { followRouter } from "./routers/follow";
 import { stripeRouter } from "./routers/stripe";
+import { featureRequestRouter } from "./routers/feature-request";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   exercise: exerciseRouter,
   follow: followRouter,
   stripe: stripeRouter,
+  featureRequest: featureRequestRouter,
 });
 
 // export type definition of API

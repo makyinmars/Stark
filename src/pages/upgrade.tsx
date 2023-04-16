@@ -100,21 +100,17 @@ export const getServerSideProps = async (
   const { ssg, session } = await ssgHelper(context);
 
   if (session && session.user) {
-    const userId = session.user.id;
-
     await ssg.auth.getUserSession.prefetch();
 
     return {
       props: {
         trpcState: ssg.dehydrate(),
-        userId,
       },
     };
   } else {
     return {
       props: {
         trpcState: ssg.dehydrate(),
-        userId: null,
       },
       redirect: {
         destination: "/",
