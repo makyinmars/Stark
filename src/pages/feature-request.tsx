@@ -75,7 +75,7 @@ const FeatureRequest = () => {
         <title>Feature Request</title>
       </Head>
       <UserMenu>
-        <h1 className="text-center custom-h1">Feature Request</h1>
+        <h1 className="custom-h1 text-center">Feature Request</h1>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
           <Input placeholder="Title" {...register("title")} />
@@ -87,7 +87,7 @@ const FeatureRequest = () => {
           />
           <Button type="submit">Submit</Button>
         </form>
-        <h2 className="text-center custom-h2">Feature Request Items</h2>
+        <h2 className="custom-h2 text-center">Feature Request Items</h2>
         {data && (
           <div className="flex flex-col gap-1">
             <Button
@@ -105,9 +105,9 @@ const FeatureRequest = () => {
                 {page.featureRequests.map((item) => (
                   <div
                     key={item.id}
-                    className="p-2 border rounded border-slate-400"
+                    className="rounded border border-slate-400 p-2"
                   >
-                    <h5 className="text-center custom-h5">{item.title}</h5>
+                    <h5 className="custom-h5 text-center">{item.title}</h5>
                     <p>{item.title}</p>
                   </div>
                 ))}

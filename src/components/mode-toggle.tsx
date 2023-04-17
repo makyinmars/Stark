@@ -1,13 +1,13 @@
 import { useTheme } from "next-themes";
 
+import { Laptop, Moon, Sun } from "lucide-react";
 import { Button } from "src/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
-import { Laptop, Moon, Sun } from "lucide-react";
 
 const ModeToggle = () => {
   const { setTheme } = useTheme();
