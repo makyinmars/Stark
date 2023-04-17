@@ -83,6 +83,14 @@ const UserMenu = ({ children }: UserMenuProps) => {
                   </DropdownMenuItem>
                 </Link>
               )}
+              {user?.role === "ADMIN" && (
+                <Link href="/admin" className="flex items-center">
+                  <DropdownMenuItem className="w-full">
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    <span>Admin</span>
+                  </DropdownMenuItem>
+                </Link>
+              )}
               <Link href="/dashboard" className="flex items-center">
                 <DropdownMenuItem className="w-full">
                   <CreditCard className="mr-2 h-4 w-4" />
@@ -114,10 +122,10 @@ const UserMenu = ({ children }: UserMenuProps) => {
                 </DropdownMenuItem>
               </Link>
               <Link href="/feature-request" className="flex items-center">
-              <DropdownMenuItem className="w-full">
-                <Zap className="mr-2 h-4 w-4" />
-                <span>Feature Request</span>
-              </DropdownMenuItem>
+                <DropdownMenuItem className="w-full">
+                  <Zap className="mr-2 h-4 w-4" />
+                  <span>Feature Request</span>
+                </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

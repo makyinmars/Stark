@@ -36,6 +36,7 @@ export const featureRequestRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(100).nullish(),
         cursor: z.string().nullish(),
+        showApproved: z.boolean().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -54,9 +55,11 @@ export const featureRequestRouter = createTRPCRouter({
         orderBy: {
           createdAt: "desc",
         },
-        // where: {
-        //   approved: true,
-        // },
+        where: {
+          approved: {
+            equals: input.showApproved ?? false,
+          }
+        },
       });
 
       let nextCursor: typeof cursor | undefined = undefined;
@@ -73,4 +76,19 @@ export const featureRequestRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+
+  approveFeatureRequest: protectedProcedure.input(z.object({
+    featureRequestId: z.string(),
+  })).mutation(async ({ ctx, input }) => {
+    if (ctx.session.user?.role === "ADMIN") {
+      return await ctx.prisma.featureRequest.update({
+        where: {
+          id: input.featureRequestId,
+        },
+        data: {
+          approved: true,
+        }
+      })
+    }
+  }),
 });
