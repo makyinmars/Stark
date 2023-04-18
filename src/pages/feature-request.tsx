@@ -28,20 +28,17 @@ const FeatureRequest = () => {
       onMutate: () => {
         toast({
           title: "Creating Feature Request",
-          variant: "info",
           description: "Please wait...",
         });
       },
       onSettled: () => {
         toast({
           title: "Feature Request Created",
-          variant: "success",
         });
       },
       onError: (error) => {
         toast({
           title: "Feature Request Creation Failed",
-          variant: "success",
           description: error.shape?.message,
         });
       },

@@ -1,16 +1,24 @@
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 import { Laptop, Moon, Sun } from "lucide-react";
 import { Button } from "src/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
 const ModeToggle = () => {
-  const { setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false)
+  const { setTheme } = useTheme()
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <DropdownMenu>

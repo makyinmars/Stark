@@ -67,7 +67,6 @@ const WorkoutBox = ({
     onSuccess: (variables) => {
       if (variables) {
         toast({
-          variant: "success",
           title: "Workout Deleted",
           description: `Workout: ${variables.name} has been deleted`,
         });

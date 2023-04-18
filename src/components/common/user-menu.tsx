@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+
 import {
   Home,
   CreditCard,
@@ -31,6 +32,7 @@ import {
   TooltipTrigger,
 } from "src/components/ui/tooltip";
 import { api } from "src/utils/api";
+import ModeToggle from "../mode-toggle";
 
 interface UserMenuProps {
   children: React.ReactNode;
@@ -40,6 +42,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
   const utils = api.useContext();
   const router = useRouter();
   const user = utils.auth.getUserSession.getData();
+
   return (
     <div className="container mx-auto flex flex-col gap-4 p-4">
       <div className="flex items-center justify-between">
@@ -56,11 +59,13 @@ const UserMenu = ({ children }: UserMenuProps) => {
             <TooltipContent>Go back</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button>Account</Button>
+            <Button
+            >Account</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-2 flex w-auto flex-col">
+          <DropdownMenuContent className="mr-2 flex w-auto flex-col bg-accent-default">
             <DropdownMenuLabel className="flex items-center gap-2">
               {user && user.name}{" "}
               {user && user.stripeSubscriptionStatus === "active" && (

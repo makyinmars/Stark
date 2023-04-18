@@ -48,14 +48,12 @@ const NewWorkout = ({
     onMutate: () => {
       toast({
         title: "Deleting Workout",
-        variant: "info",
         description: "Please wait...",
       });
     },
     onSettled: () => {
       toast({
         title: "Workout Deleted",
-        variant: "success",
       });
     },
     onSuccess: async () => {
@@ -73,7 +71,6 @@ const NewWorkout = ({
       if (name) {
         toast({
           title: `Saving ${name} Workout`,
-          variant: "info",
           description: "Please wait...",
         });
       }
@@ -81,7 +78,6 @@ const NewWorkout = ({
     onSettled: () => {
       toast({
         title: "Workout Saved",
-        variant: "success",
       });
     },
     onSuccess: async () => {
