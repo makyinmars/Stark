@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes'
 import { Toaster } from "src/components/common/toaster";
 import { api } from "src/utils/api";
 import "src/styles/globals.css";
+import Footer from "src/components/common/footer";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,6 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         <Component {...pageProps} />
+        <Footer />
         <Toaster />
       </ThemeProvider>
     </SessionProvider>
@@ -22,3 +24,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
 };
 
 export default api.withTRPC(MyApp);
+

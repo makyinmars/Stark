@@ -1,5 +1,4 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
-import Image from "next/image";
 import Head from "next/head";
 import { useSession, signIn, signOut } from "next-auth/react";
 
@@ -15,6 +14,14 @@ import { Button } from "src/components/ui/button";
 import { ssgHelper } from "src/utils/ssg";
 import { api } from "src/utils/api";
 import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "src/components/ui/card";
 
 const Home: NextPage = () => {
   const utils = api.useContext();
@@ -86,158 +93,146 @@ const Home: NextPage = () => {
           </Dialog>
         </nav>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="custom-p">
-              Simple, Easy, Stay Healthy, Get Strong
-            </p>
-            <h1 className="custom-h1">
-              Your Ultimate Fitness Solution
-            </h1>
-            <p className="custom-p">
-              With Stark, you can customize your workout routine based on your
-              fitness level, preferences, and goals. Whether you want to lose
-              weight, build muscle, or simply stay in shape, our app has a
-              variety of workouts that are tailored to meet your needs. Whether
-              you{`'`}re a beginner or an experienced fitness enthusiast, Stark
-              is the perfect tool to help you achieve your fitness goals and
-              live a healthier, happier life. Let{`'`}s get started!
-            </p>
-            <Button className="font-bold">Start For Free</Button>
-          </div>
-          <Image
-            src="/assets/exercise-1.webp"
-            className="mx-auto object-cover"
-            alt="Exercise 1"
-            priority={true}
-            width={300}
-            height={300}
-          />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Simple, Easy, Stay Healthy, Get Strong</CardTitle>
+            <CardDescription>Your Ultimate Fitness Solution</CardDescription>
+          </CardHeader>
+          <CardContent>
+            With Stark, you can customize your workout routine based on your
+            fitness level, preferences, and goals. Whether you want to lose
+            weight, build muscle, or simply stay in shape, our app has a variety
+            of workouts that are tailored to meet your needs. Whether you{`'`}re
+            a beginner or an experienced fitness enthusiast, Stark is the
+            perfect tool to help you achieve your fitness goals and live a
+            healthier, happier life. Let{`'`}s get started!
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full font-bold">Start For Free</Button>
+          </CardFooter>
+        </Card>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="custom-p">About Us</p>
-            <h3 className="custom-h3">
-              A Managed Approach To Fitness
-            </h3>
-            <p className="custom-p">
-              We understand that staying motivated can be challenging, so we
-              {`'`}ve incorporated a variety of features to help you stay on
-              track. From progress tracking to personalized reminders, our app
-              is designed to make your fitness journey fun, easy, and rewarding.
-            </p>
-            <Button className="font-bold">Read More</Button>
-          </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>A Managed Approach To Fitness</CardTitle>
+          </CardHeader>
+          <CardContent>
+            We understand that staying motivated can be challenging, so we
+            {`'`}ve incorporated a variety of features to help you stay on
+            track. From progress tracking to personalized reminders, our app is
+            designed to make your fitness journey fun, easy, and rewarding.
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full font-bold">
+              Read More
+            </Button>
+          </CardFooter>
+        </Card>
 
-          <Image
-            src="/assets/exercise-2.webp"
-            className="mx-auto object-cover"
-            alt="Exercise 2"
-            priority={true}
-            width={300}
-            height={300}
-          />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>The Core Values We Live By</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Innovation</CardTitle>
+                <CardDescription>
+                  We believe in constantly pushing the boundaries of what{`'`}s
+                  possible and developing new and innovative ways to help our
+                  users get fit and healthy.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Accessibility</CardTitle>
+                <CardDescription>
+                  We believe that fitness should be accessible to everyone,
+                  regardless of their background or fitness level. That{`'`}s
+                  why we
+                  {`'`}ve designed our app to be user-friendly and customizable
+                  for all.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Accessibility</CardTitle>
+                <CardDescription>
+                  We believe that fitness should be accessible to everyone,
+                  regardless of their background or fitness level. That{`'`}s
+                  why we
+                  {`'`}ve designed our app to be user-friendly and customizable
+                  for all.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Community</CardTitle>
+                <CardDescription>
+                  We believe that fitness is a journey that{`'`}s better when
+                  shared. Our app fosters a sense of community and support among
+                  our users, allowing them to motivate and inspire one another.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </CardContent>
+        </Card>
 
-        <div className="flex flex-col gap-4 rounded bg-slate-100 p-4">
-          <h2 className="custom-h2">The Core Values We Live By</h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="ga-4 flex flex-col">
-              <h3 className="custom-h3">Empowerment</h3>
-              <p className="custom-p">
-                We believe that everyone has the potential to achieve their
-                fitness goals, and we strive to empower our users with the tools
-                and knowledge they need to succeed.
-              </p>
-            </div>
-            <div className="ga-4 flex flex-col">
-              <h3 className="custom-h3">Innovation</h3>
-              <p className="custom-p">
-                We believe in constantly pushing the boundaries of what{`'`}s
-                possible and developing new and innovative ways to help our
-                users get fit and healthy.
-              </p>
-            </div>
-            <div className="ga-4 flex flex-col">
-              <h3 className="custom-h3">Accessibility</h3>
-              <p className="custom-p">
-                We believe that fitness should be accessible to everyone,
-                regardless of their background or fitness level. That{`'`}s why
-                we
-                {`'`}ve designed our app to be user-friendly and customizable
-                for all.
-              </p>
-            </div>
-            <div className="ga-4 flex flex-col">
-              <h3 className="custom-h3">Community</h3>
-              <p className="custom-p">
-                We believe that fitness is a journey that{`'`}s better when
-                shared. Our app fosters a sense of community and support among
-                our users, allowing them to motivate and inspire one another.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <h3 className="custom-h3">
+        <Card>
+          <CardHeader>
+            <CardTitle>
               Achive Your Fitness Goals With Our Customizable Workouts
-            </h3>
-            <p className="custom-p">
-              Customizable workouts are a crucial aspect of any effective
-              fitness program, and at Stark, we understand that everyone has
-              unique fitness goals, preferences, and needs. That{`'`}s why our
-              app offers a variety of customizable workouts to help you tailor
-              your fitness routine to meet your individual needs. Our app
-              includes a wide range of exercises and workouts, ranging from
-              cardio to strength training, yoga, and Pilates, and more. Whether
-              you{`'`}re a beginner or an experienced fitness enthusiast, our
-              app has workouts to meet your needs. With FitTrack, you can
-              customize your workouts based on your fitness level, goals, and
-              available equipment. Our app allows you to choose from a variety
-              of exercise options, select the duration of your workout, and set
-              your own pace and intensity.
-            </p>
-            <Button className="font-bold">Read More</Button>
-          </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            Customizable workouts are a crucial aspect of any effective fitness
+            program, and at Stark, we understand that everyone has unique
+            fitness goals, preferences, and needs. That{`'`}s why our app offers
+            a variety of customizable workouts to help you tailor your fitness
+            routine to meet your individual needs. Our app includes a wide range
+            of exercises and workouts, ranging from cardio to strength training,
+            yoga, and Pilates, and more. Whether you{`'`}re a beginner or an
+            experienced fitness enthusiast, our app has workouts to meet your
+            needs. With FitTrack, you can customize your workouts based on your
+            fitness level, goals, and available equipment. Our app allows you to
+            choose from a variety of exercise options, select the duration of
+            your workout, and set your own pace and intensity.
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full font-bold">Read More</Button>
+          </CardFooter>
+        </Card>
 
-          <Image
-            src="/assets/exercise-3.webp"
-            className="mx-auto object-cover"
-            alt="Exercise 3"
-            priority={true}
-            width={300}
-            height={300}
-          />
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <h3 className="custom-h3">
+        <Card>
+          <CardHeader>
+            <CardTitle>
               Incredible Features To Help You Stay Motivated
-            </h3>
-            <p className="custom-p">
-              At Stark, we believe that fitness is a journey that{`'`}s better
-              when shared. That{`'`}s why we offer a feature that allows you to
-              follow other users on our app and connect with a community of
-              like-minded individuals who are on a similar fitness journey.
-              Following other users on FitTrack is simple and easy. You can
-              search for other users based on their fitness goals, interests,
-              and location, and follow them with just a click of a button. Once
-              you{`'`}re connected, you can see their progress updates, offer
-              support and encouragement, and share your own progress updates.
-            </p>
-            <Button className="font-bold">Read More</Button>
-          </div>
-        </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            At Stark, we believe that fitness is a journey that{`'`}s better
+            when shared. That{`'`}s why we offer a feature that allows you to
+            follow other users on our app and connect with a community of
+            like-minded individuals who are on a similar fitness journey.
+            Following other users on FitTrack is simple and easy. You can search
+            for other users based on their fitness goals, interests, and
+            location, and follow them with just a click of a button. Once you
+            {`'`}re connected, you can see their progress updates, offer support
+            and encouragement, and share your own progress updates.
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full font-bold">Read More</Button>
+          </CardFooter>
+        </Card>
 
-        <div className="flex flex-col gap-4">
-          <h3 className="custom-h3">
-            Need More, Premium Features With Stark Pro
-          </h3>
-          <p className="custom-p">
+        <Card>
+          <CardHeader>
+            <CardTitle>Need More, Premium Features With Stark Pro</CardTitle>
+          </CardHeader>
+          <CardContent>
             At Stark, we offer a premium membership that includes a variety of
             features designed to help you achieve your fitness goals more
             effectively. Two of these features include the ability to copy
@@ -254,16 +249,12 @@ const Home: NextPage = () => {
             areas where you{`'`}re making progress and areas where you need to
             focus more attention. You can also set goals and benchmarks for
             yourself, and track your progress towards these goals over time.
-          </p>
-          <Button className="font-bold">Read More</Button>
-        </div>
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full font-bold">Read More</Button>
+          </CardFooter>
+        </Card>
       </main>
-      <footer className="mx-auto flex items-center justify-center gap-4 mb-8">
-        <p>Product</p>
-        <p>Quick Links</p>
-        <p>Source</p>
-        <p>Support</p>
-      </footer>
     </>
   );
 };
@@ -281,7 +272,7 @@ export const getServerSideProps = async (
     return {
       props: {
         trpcState: ssg.dehydrate(),
-      }
+      },
     };
   } else {
     return {

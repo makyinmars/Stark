@@ -1,4 +1,4 @@
-import { createProxySSGHelpers } from "@trpc/react-query/ssg";
+import { createServerSideHelpers } from "@trpc/react-query/server";
 import superjson from "superjson";
 
 import { appRouter } from "src/server/api/root";
@@ -11,7 +11,7 @@ export const ssgHelper = async (context: GetServerSidePropsContext) => {
 
   const ctx = createInnerTRPCContext({ session});
 
-  const ssg = createProxySSGHelpers({
+  const ssg = createServerSideHelpers({
     ctx,
     router: appRouter,
     transformer: superjson,

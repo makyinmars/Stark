@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-const animate = require("tailwindcss-animate");
-
 module.exports = {
   darkMode: ["class"],
-  content: ["src/**/*.{ts,tsx}"],
+  content: [
+    'src/**/*.{ts,tsx}',
+	],
   theme: {
     container: {
       center: true,
@@ -20,35 +20,35 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          default: "hsl(var(--primary))",
+          DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          default: "hsl(var(--secondary))",
+          DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
-          default: "hsl(var(--destructive))",
+          DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          default: "hsl(var(--muted))",
+          DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          default: "hsl(var(--accent))",
+          DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          default: "hsl(var(--popover))",
+          DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          default: "hsl(var(--card))",
+          DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      borderradius: {
+      borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
@@ -67,7 +67,7 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-    }
+    },
   },
-  plugins: [animate],
-};
+  plugins: [require("tailwindcss-animate")],
+}

@@ -1,8 +1,10 @@
+"use client"
+
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown } from "lucide-react"
 
-import { cn } from "src/utils/tailwindcss"
+import { cn } from "src/lib/utils"
 
 const Select = SelectPrimitive.Root
 
@@ -49,7 +51,7 @@ const SelectContent = React.forwardRef<
         className={cn(
           "p-1",
           position === "popper" &&
-          "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
         )}
       >
         {children}
@@ -116,4 +118,3 @@ export {
   SelectItem,
   SelectSeparator,
 }
-

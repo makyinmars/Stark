@@ -65,7 +65,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
             <Button
             >Account</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-2 flex w-auto flex-col bg-accent-default">
+          <DropdownMenuContent className="mr-2 flex w-auto flex-col">
             <DropdownMenuLabel className="flex items-center gap-2">
               {user && user.name}{" "}
               {user && user.stripeSubscriptionStatus === "active" && (

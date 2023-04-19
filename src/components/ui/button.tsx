@@ -1,7 +1,7 @@
 import * as React from "react"
-import { type VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "class-variance-authority"
 
-import { cn } from "src/utils/tailwindcss"
+import { cn } from "src/lib/utils"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
@@ -25,7 +25,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "outline",
+      variant: "default",
       size: "default",
     },
   }
@@ -49,4 +49,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
-
