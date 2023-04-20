@@ -52,8 +52,6 @@ export const getServerSideProps = async (
   const { workoutId } = context.params as { workoutId: string };
 
   if (session && session.user) {
-    await ssg.auth.getUserSession.prefetch();
-    await ssg.workout.getWorkoutById.prefetch({ workoutId });
     return {
       props: {
         trpcState: ssg.dehydrate(),

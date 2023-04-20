@@ -7,15 +7,13 @@ import { api } from "src/utils/api";
 import { ssgHelper } from "src/utils/ssg";
 
 const History = () => {
-  const utils = api.useContext();
-
   const { data, isLoading } = api.workout.getAllWorkouts.useQuery();
 
-  const session = utils.auth.getUserSession.getData();
+  const session = api.auth.getUserSession.useQuery();
 
   return (
     <UserMenu>
-      <h2 className="text-center custom-h2">Workouts History</h2>
+      <h2 className="custom-h2 text-center">Workouts History</h2>
       {isLoading && <Spinner />}
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
         {data &&
@@ -27,7 +25,7 @@ const History = () => {
               createdAt={w.createdAt}
               exercises={w.exercises}
               copyCount={w.copyCount}
-              userId={session?.id as string}
+              userId={session?.data?.id as string}
               showCopy={true}
             />
           ))}
@@ -44,8 +42,6 @@ export const getServerSideProps = async (
   const { ssg, session } = await ssgHelper(context);
 
   if (session && session.user) {
-    await ssg.auth.getUserSession.prefetch();
-    await ssg.workout.getAllWorkouts.prefetch();
     return {
       props: {
         trpcState: ssg.dehydrate(),

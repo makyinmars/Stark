@@ -209,8 +209,6 @@ export const getServerSideProps = async (
   if (session && session.user) {
     const userId = session.user.id;
 
-    await ssg.auth.getUserSession.prefetch();
-
     return {
       props: {
         trpcState: ssg.dehydrate(),

@@ -49,7 +49,7 @@ const NewWorkout = ({
 
   const utils = api.useContext();
 
-  const user = utils.auth.getUserSession.getData();
+  const user = api.auth.getUserSession.useQuery();
 
   const deleteWorkout = api.workout.deleteWorkoutById.useMutation({
     onMutate: () => {
@@ -67,7 +67,7 @@ const NewWorkout = ({
       resetExercise();
       resetSet();
       await utils.workout.getWorkoutsByUserId.invalidate({
-        userId: user && user.id,
+        userId: user?.data && user?.data?.id,
       });
       await router.push("/dashboard");
     },
@@ -91,7 +91,7 @@ const NewWorkout = ({
       resetExercise();
       resetSet();
       await utils.workout.getWorkoutsByUserId.invalidate({
-        userId: user && user.id,
+        userId: user?.data && user?.data?.id,
       });
       await router.push("/dashboard");
     },
@@ -121,7 +121,7 @@ const NewWorkout = ({
           name: watch("name"),
           notes: watch("notes"),
           description: watch("description"),
-          userId: user.id,
+          userId: user.data?.id as string,
           exercises: exercises.map((exercise) => ({
             name: exercise.name,
             instructions: exercise.instructions,
@@ -255,11 +255,6 @@ export const getServerSideProps = async (
   const { ssg, session } = await ssgHelper(context);
 
   if (session && session.user) {
-    await ssg.auth.getUserSession.prefetch();
-    await ssg.workout.getWorkoutById.prefetch({ workoutId });
-    await ssg.exercise.getExercises.prefetch();
-    await ssg.exercise.getExercisesByTypes.prefetch();
-    await ssg.exercise.getExercisesByMuscles.prefetch();
     return {
       props: {
         trpcState: ssg.dehydrate(),

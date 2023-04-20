@@ -39,9 +39,8 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ children }: UserMenuProps) => {
-  const utils = api.useContext();
   const router = useRouter();
-  const user = utils.auth.getUserSession.getData();
+  const user = api.auth.getUserSession.useQuery();
 
   return (
     <div className="container mx-auto flex flex-col gap-4 p-4">
@@ -66,8 +65,8 @@ const UserMenu = ({ children }: UserMenuProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2 flex w-auto flex-col">
             <DropdownMenuLabel className="flex items-center gap-2">
-              {user && user.name}{" "}
-              {user && user.stripeSubscriptionStatus === "active" && (
+              {user && user?.data?.name}{" "}
+              {user && user?.data?.stripeSubscriptionStatus === "active" && (
                 <Crown className="h-5 w-5 text-yellow-500" />
               )}
             </DropdownMenuLabel>
@@ -79,15 +78,18 @@ const UserMenu = ({ children }: UserMenuProps) => {
                   <span>Home</span>
                 </DropdownMenuItem>
               </Link>
-              {user && (
-                <Link href={`/user/${user.id}`} className="flex items-center">
+              {user?.data && (
+                <Link
+                  href={`/user/${user.data?.id}`}
+                  className="flex items-center"
+                >
                   <DropdownMenuItem className="w-full">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </DropdownMenuItem>
                 </Link>
               )}
-              {user?.role === "ADMIN" && (
+              {user?.data?.role === "ADMIN" && (
                 <Link href="/admin" className="flex items-center">
                   <DropdownMenuItem className="w-full">
                     <Lock className="mr-2 h-4 w-4" />
