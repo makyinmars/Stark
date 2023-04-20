@@ -11,6 +11,7 @@ import { formatDate } from "src/utils/date";
 import { Button } from "src/components/ui/button";
 import { api } from "src/utils/api";
 import { useToast } from "src/hooks/useToast";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 interface WorkoutsProps {
   id: string;
@@ -90,57 +91,63 @@ const WorkoutBox = ({
   };
 
   return (
-    <div className="flex flex-col gap-1 p-2 border-2 rounded border-slate-300">
-      <h5 className="flex items-center justify-between custom-h5">
-        {name}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button>
-              <MoreHorizontal size={16} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              className="flex items-center justify-around gap-2"
-              onClick={() => void router.push(`/workout/${id}`)}
-            >
-              <Dumbbell size={14} />
-              <p>View Workout</p>
-            </DropdownMenuItem>
-            {router.pathname.includes("/user") && showCopy && (
-              <DropdownMenuItem
-                className="flex items-center justify-around gap-2"
-                onClick={() => void onCopyWorkoutById(id)}
-              >
-                <Copy size={14} /> Copy Workout
-              </DropdownMenuItem>
-            )}
-            {(router.pathname.includes("/dashboard") ||
-              router.pathname.includes("/history") ||
-              showDelete) && (
-              <DropdownMenuItem
-                className="flex items-center justify-around gap-2"
-                onClick={() => void onDeleteWorkoutById(id)}
-              >
-                <Trash size={14} />
-                <p>Delete Workout</p>
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </h5>
-      {exercises.map((e, j) => (
-        <p className="custom-subtle" key={j}>
-          {e.name}
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <h5 className="custom-h5 flex items-center justify-between">
+            {name}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button>
+                  <MoreHorizontal size={16} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  className="flex items-center justify-around gap-2"
+                  onClick={() => void router.push(`/workout/${id}`)}
+                >
+                  <Dumbbell size={14} />
+                  <p>View Workout</p>
+                </DropdownMenuItem>
+                {router.pathname.includes("/user") && showCopy && (
+                  <DropdownMenuItem
+                    className="flex items-center justify-around gap-2"
+                    onClick={() => void onCopyWorkoutById(id)}
+                  >
+                    <Copy size={14} /> Copy Workout
+                  </DropdownMenuItem>
+                )}
+                {(router.pathname.includes("/dashboard") ||
+                  router.pathname.includes("/history") ||
+                  showDelete) && (
+                  <DropdownMenuItem
+                    className="flex items-center justify-around gap-2"
+                    onClick={() => void onDeleteWorkoutById(id)}
+                  >
+                    <Trash size={14} />
+                    <p>Delete Workout</p>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </h5>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {exercises.map((e, j) => (
+          <p className="custom-subtle" key={j}>
+            {e.name}
+          </p>
+        ))}
+        <p className="custom-subtle flex items-center gap-2">
+          <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
         </p>
-      ))}
-      <p className="flex items-center gap-2 custom-subtle">
-        <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
-      </p>
-      <p className="flex items-center gap-2 custom-subtle">
-        <Copy size={16} /> Copied: {copyCount}
-      </p>
-    </div>
+        <p className="custom-subtle flex items-center gap-2">
+          <Copy size={16} /> Copied: {copyCount}
+        </p>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -9,7 +9,7 @@ import { ssgHelper } from "src/utils/ssg";
 import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
 import { Button } from "src/components/ui/button";
-import { Card, CardDescription } from "src/components/ui/card";
+import { Card, CardHeader, CardTitle } from "src/components/ui/card";
 
 const SearchUser = () => {
   const [value, setValue] = useState("");
@@ -38,40 +38,44 @@ const SearchUser = () => {
         <title>User Search</title>
       </Head>
       <UserMenu>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-4">
           <Input
             type="text"
             placeholder="Search user"
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Button onClick={() => void onSearchClick()}>Search</Button>
+          <Button className="w-40" onClick={() => void onSearchClick()}>
+            Search
+          </Button>
         </div>
 
         {data && data.length > 0 ? (
-          data.map((user, i) => (
-            <Card key={i} className="p-1">
-              <Link href={`/user/${user.id}`}>
-                <CardDescription className="flex items-center gap-2">
-                  {user.image && (
-                    <Image
-                      width={32}
-                      height={12}
-                      alt={user.name as string}
-                      src={user.image}
-                      className="h-auto w-8 rounded"
-                    />
-                  )}
-                  {user.name}
-                </CardDescription>
-              </Link>
-            </Card>
-          ))
+          <Card>
+            {data.map((user, i) => (
+              <CardHeader key={i} className="p-2">
+                <Link href={`/user/${user.id}`}>
+                  <CardTitle className="flex items-center gap-2">
+                    {user.image && (
+                      <Image
+                        width={32}
+                        height={12}
+                        alt={user.name as string}
+                        src={user.image}
+                        className="h-auto w-8 rounded"
+                      />
+                    )}
+                    {user.name}
+                  </CardTitle>
+                </Link>
+              </CardHeader>
+            ))}
+          </Card>
         ) : (
-          <Card className="p-1">
-            <CardDescription className="custom-large">
-              No users found
-            </CardDescription>
+          <Card>
+            <CardHeader>
+              <CardTitle>No users found</CardTitle>
+            </CardHeader>
           </Card>
         )}
       </UserMenu>

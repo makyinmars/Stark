@@ -3,7 +3,6 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { History, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/router";
 
 import { Button } from "src/components/ui/button";
@@ -20,6 +19,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "src/components/ui/accordion";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "src/components/ui/card";
 
 const Dashboard = ({
   userId,
@@ -79,12 +85,18 @@ const Dashboard = ({
         <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
           Start an Empty Workout
         </Button>
-        <h3 className="text-center custom-h3">Workouts</h3>
+        <h3 className="custom-h3 text-center">Workouts</h3>
         {myWorkoutsIsLoading && <Spinner />}
         {myWorkoutsData && myWorkoutsData.length > 0 && (
-          <div>
-            <h4 className="custom-h4">My Workouts({myWorkoutsData.length})</h4>
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                <h4 className="custom-h4">
+                  My Workouts({myWorkoutsData.length})
+                </h4>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
               {myWorkoutsData.map((w, i) => (
                 <WorkoutBox
                   key={i}
@@ -96,53 +108,92 @@ const Dashboard = ({
                   userId={userId as string}
                 />
               ))}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
         {myWorkoutsIsError && <Error message={myWorkoutsDataError.message} />}
-        <h4 className="custom-h4">Example Workouts(4)</h4>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
-          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
-            <h5 className="text-center custom-h5">Chest and Triceps</h5>
-            <Accordion type="single" collapsible className="w-auto">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent></AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <Button>Start Workout</Button>
-          </div>
-          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
-            <h5 className="text-center custom-h5">Back and Biceps</h5>
-            <Accordion type="single" collapsible className="w-auto">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent></AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <Button>Start Workout</Button>
-          </div>
-          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
-            <h5 className="text-center custom-h5">Legs and Shoulders</h5>
-            <Accordion type="single" collapsible className="w-auto">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent></AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <Button>Start Workout</Button>
-          </div>
-          <div className="flex flex-col gap-2 p-2 border-2 border-gray-200 rounded">
-            <h5 className="text-center custom-h5">Cardio</h5>
-            <Accordion type="single" collapsible className="w-auto">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Exercises</AccordionTrigger>
-                <AccordionContent></AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <Button>Start Workout</Button>
-          </div>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              <h4 className="custom-h4">Example Workouts(4)</h4>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  <h5 className="custom-h5 text-center">Chest and Triceps</h5>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="w-auto">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>Exercises</AccordionTrigger>
+                    <AccordionContent></AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">Start Workout</Button>
+              </CardFooter>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  <h5 className="custom-h5 text-center">Back and Biceps</h5>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="w-auto">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>Exercises</AccordionTrigger>
+                    <AccordionContent></AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">Start Workout</Button>
+              </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  <h5 className="custom-h5 text-center">Cardio</h5>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="w-auto">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>Exercises</AccordionTrigger>
+                    <AccordionContent></AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">Start Workout</Button>
+              </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  <h5 className="custom-h5 text-center">Legs and Shoulders</h5>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="w-auto">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>Exercises</AccordionTrigger>
+                    <AccordionContent></AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">Start Workout</Button>
+              </CardFooter>
+            </Card>
+          </CardContent>
+        </Card>
       </UserMenu>
     </>
   );

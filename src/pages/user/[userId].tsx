@@ -131,10 +131,10 @@ const User = ({
                 priority={true}
                 alt={userData.name as string}
               />
-              <h3 className="flex items-center self-center gap-2 custom-h3">
+              <h3 className="custom-h3 flex items-center gap-2 self-center">
                 {userData.name}
                 {userData && userData.stripeSubscriptionStatus === "active" && (
-                  <Crown className="w-5 h-5 text-yellow-500" />
+                  <Crown className="h-5 w-5 text-yellow-500" />
                 )}
               </h3>
             </div>
@@ -158,12 +158,12 @@ const User = ({
                 {session &&
                   userFollowingData &&
                   userFollowingData.find((u) => u.id === session.id) && (
-                    <p className="p-1 custom-subtle">Follows you</p>
+                    <p className="custom-subtle p-1">Follows you</p>
                   )}
               </div>
             )}
 
-            <h4 className="self-center custom-h4">
+            <h4 className="custom-h4 self-center">
               Workouts: ({userWorkoutsData ? userWorkoutsData.length : 0})
             </h4>
 
@@ -175,9 +175,9 @@ const User = ({
                       Followers
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="h-auto">
-                    <h4 className="text-center custom-h4">Followers</h4>
-                    <Command className="border rounded-lg shadow-md border-slate-100 dark:border-slate-800">
+                  <PopoverContent className="flex h-auto flex-col gap-2">
+                    <h4 className="custom-h4 text-center">Followers</h4>
+                    <Command>
                       <CommandInput placeholder="Search user..." />
                       <CommandList>
                         <ScrollArea className="h-48">
@@ -214,7 +214,7 @@ const User = ({
                     </Command>
                   </PopoverContent>
                 </Popover>
-                <p className="text-center custom-subtle">
+                <p className="custom-subtle text-center">
                   {userFollowersData ? userFollowersData.length : 0}
                 </p>
               </div>
@@ -225,9 +225,9 @@ const User = ({
                       Following
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="h-auto">
-                    <h4 className="text-center custom-h4">Following</h4>
-                    <Command className="border rounded-lg shadow-md border-slate-100 dark:border-slate-800">
+                  <PopoverContent className="flex h-auto flex-col gap-4">
+                    <h4 className="custom-h4 text-center">Following</h4>
+                    <Command>
                       <CommandInput placeholder="Search user..." />
                       <CommandList>
                         <ScrollArea className="h-48">
@@ -264,13 +264,13 @@ const User = ({
                     </Command>
                   </PopoverContent>
                 </Popover>
-                <p className="text-center custom-subtle">
+                <p className="custom-subtle text-center">
                   {userFollowingData ? userFollowingData.length : 0}
                 </p>
               </div>
             </div>
 
-            <h4 className="self-center custom-h4">Workout History</h4>
+            <h4 className="custom-h4 self-center">Workout History</h4>
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
               {userWorkoutsData &&
                 userWorkoutsData.map((w, i) => (
@@ -318,8 +318,6 @@ export const getServerSideProps = async (
     await ssg.auth.getUserSession.prefetch();
     await ssg.user.getUserById.prefetch({ id: userId });
     await ssg.workout.getWorkoutsByUserId.prefetch({ userId });
-    await ssg.user.getUserFollowers.prefetch({ userId });
-    await ssg.user.getUserFollowing.prefetch({ userId });
 
     return {
       props: {

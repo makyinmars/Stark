@@ -58,6 +58,7 @@ const Home: NextPage = () => {
                     <Button className="w-full">Dashboard</Button>
                   </Link>
                   <Button
+                    variant="destructive"
                     onClick={() =>
                       void signOut({
                         callbackUrl: "/",
@@ -123,9 +124,7 @@ const Home: NextPage = () => {
             designed to make your fitness journey fun, easy, and rewarding.
           </CardContent>
           <CardFooter>
-            <Button className="w-full font-bold">
-              Read More
-            </Button>
+            <Button className="w-full font-bold">Read More</Button>
           </CardFooter>
         </Card>
 
@@ -184,7 +183,7 @@ const Home: NextPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>
-              Achive Your Fitness Goals With Our Customizable Workouts
+              Achieve Your Fitness Goals With Our Customizable Workouts
             </CardTitle>
           </CardHeader>
           <CardContent>

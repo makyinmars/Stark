@@ -64,7 +64,7 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
             <Input
               type="number"
               defaultValue={set.reps ?? 0}
-              className="w-12 h-6 p-0 text-center"
+              className="h-6 w-12 p-0 text-center"
               {...register(`sets.${index}.reps` as const, {
                 required: true,
                 valueAsNumber: true,
@@ -73,7 +73,7 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
             <Input
               type="number"
               defaultValue={set.weight ?? 0}
-              className="w-12 h-6 p-0 text-center"
+              className="h-6 w-12 p-0 text-center"
               {...register(`sets.${index}.weight` as const, {
                 required: true,
                 valueAsNumber: true,
@@ -82,14 +82,14 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
             <div>
               <Button
                 variant="ghost"
-                className="w-10 p-0 rounded-full"
+                className="w-10 rounded-full p-0"
                 onClick={() => addSet({ ...set, exerciseId, id: set.id })}
               >
                 <Check className="text-green-600" />
               </Button>
               <Button
                 variant="ghost"
-                className="w-10 p-0 rounded-full"
+                className="w-10 rounded-full p-0"
                 onClick={() => onRemoveSet(index, set.id)}
               >
                 <XCircle className="text-red-600" />
@@ -108,7 +108,7 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
             })
           }
         >
-          Add Set
+          Add New Set
         </Button>
       </div>
     </div>

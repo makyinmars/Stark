@@ -19,6 +19,13 @@ import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
 import CreateSet from "src/components/common/create-set";
 import { useToast } from "src/hooks/useToast";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "src/components/ui/card";
 
 type UpdateWorkoutInput = {
   name: string;
@@ -150,76 +157,90 @@ const NewWorkout = ({
         <title>New Workout</title>
       </Head>
       <UserMenu>
-        <div className="flex flex-col gap-2">
-          <Button
-            className="w-full"
-            variant="destructive"
-            onClick={() => void onUpdateQuickWorkout()}
-          >
-            Complete Workout
-          </Button>
-          <Input
-            className="custom-h3 flex items-center gap-2"
-            type="text"
-            defaultValue={workoutData && workoutData.name}
-            {...register("name", {
-              required: true,
-              maxLength: 100,
-            })}
-          />
-          <Input
-            className="custom-h3 flex items-center gap-2"
-            type="text"
-            placeholder="Description"
-            defaultValue={(workoutData && workoutData.description) ?? ""}
-            {...register("description", {
-              required: true,
-              maxLength: 400,
-            })}
-          />
-          <Textarea
-            className="custom-subtle"
-            placeholder="Notes"
-            defaultValue={(workoutData && workoutData.notes) ?? ""}
-            {...register("notes", {
-              required: true,
-              maxLength: 300,
-            })}
-          />
-        </div>
-        {exercises.length > 0 &&
-          exercises.map((exercise, i) => (
-            <div
-              key={i}
-              className="flex flex-col gap-2 rounded border border-slate-800 p-2"
+        <Card className="flex flex-col gap-2">
+          <CardHeader>
+            <CardTitle className="flex flex-col gap-2">
+              <Input
+                className="custom-h3 flex items-center gap-2"
+                type="text"
+                defaultValue={workoutData && workoutData.name}
+                {...register("name", {
+                  required: true,
+                  maxLength: 100,
+                })}
+              />
+              <Input
+                className="custom-h3 flex items-center gap-2"
+                type="text"
+                placeholder="Description"
+                defaultValue={(workoutData && workoutData.description) ?? ""}
+                {...register("description", {
+                  required: true,
+                  maxLength: 400,
+                })}
+              />
+              <Textarea
+                className="custom-subtle"
+                placeholder="Notes"
+                defaultValue={(workoutData && workoutData.notes) ?? ""}
+                {...register("notes", {
+                  required: true,
+                  maxLength: 300,
+                })}
+              />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button
+              className="w-full"
+              variant="beneficial"
+              onClick={() => void onUpdateQuickWorkout()}
             >
-              <div className="flex items-center justify-around">
-                <p className="custom-p font-semibold">{exercise.name}</p>
-                <Button
-                  variant="ghost"
-                  className="w-10 rounded-full p-0"
-                  onClick={() => onRemoveExercise(exercise)}
-                >
-                  <Trash />
-                </Button>
-              </div>
-              <CreateSet key={exercise.id} exerciseId={exercise.id} />
-            </div>
-          ))}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="destructive">Add Exercise</Button>
-          </DialogTrigger>
-          <DialogContent className="py-10">
-            <Exercises />
-          </DialogContent>
-        </Dialog>
-        <Button
-          className="w-full"
-          onClick={() => void onDeleteWorkout(workoutId)}
-        >
-          Cancel Workout
-        </Button>
+              Complete Workout
+            </Button>
+          </CardContent>
+          <CardFooter className="flex gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="w-full">Add Exercise</Button>
+              </DialogTrigger>
+              <DialogContent className="py-10">
+                <Exercises />
+              </DialogContent>
+            </Dialog>
+            <Button
+              className="w-full"
+              variant="destructive"
+              onClick={() => void onDeleteWorkout(workoutId)}
+            >
+              Cancel Workout
+            </Button>
+          </CardFooter>
+        </Card>
+        <Card className="py-6">
+          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {exercises.length > 0 &&
+              exercises.map((exercise, i) => (
+                <Card key={i} className="flex flex-col gap-2">
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-around">
+                      <p className="custom-p font-semibold">{exercise.name}</p>
+                      <Button
+                        variant="ghost"
+                        className="w-10 rounded-full p-0"
+                        onClick={() => onRemoveExercise(exercise)}
+                      >
+                        <Trash />
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CreateSet key={exercise.id} exerciseId={exercise.id} />
+                  </CardContent>
+                </Card>
+              ))}
+          </CardContent>
+        </Card>
       </UserMenu>
     </>
   );

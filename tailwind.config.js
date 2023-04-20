@@ -1,9 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    'src/**/*.{ts,tsx}',
-	],
+  content: ["src/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
@@ -30,6 +28,10 @@ module.exports = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+        },
+        beneficial: {
+          DEFAULT: "hsl(var(--beneficial))",
+          foreground: "hsl(var(--beneficial-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -70,4 +72,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

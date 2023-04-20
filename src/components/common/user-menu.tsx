@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-
 import {
   Home,
   CreditCard,
@@ -13,6 +12,7 @@ import {
   Zap,
   Search,
   ArrowLeftCircle,
+  Lock,
 } from "lucide-react";
 
 import { Button } from "src/components/ui/button";
@@ -62,8 +62,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
         <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-            >Account</Button>
+            <Button>Account</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2 flex w-auto flex-col">
             <DropdownMenuLabel className="flex items-center gap-2">
@@ -91,7 +90,7 @@ const UserMenu = ({ children }: UserMenuProps) => {
               {user?.role === "ADMIN" && (
                 <Link href="/admin" className="flex items-center">
                   <DropdownMenuItem className="w-full">
-                    <CreditCard className="mr-2 h-4 w-4" />
+                    <Lock className="mr-2 h-4 w-4" />
                     <span>Admin</span>
                   </DropdownMenuItem>
                 </Link>
