@@ -462,3 +462,882 @@ export const yogaExercises = [
       "https://www.healthier.qld.gov.au/wp-content/uploads/2015/07/01_F_WIP02.gif",
   },
 ];
+
+export const seedExercises = [
+  // Chest and Tricep{
+  {
+    name: "Close-Grip Bench Press",
+    instructions:
+      "Lie on a flat bench with your hands placed slightly closer than shoulder-width apart. Lower the barbell to your chest, then press it back up to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  {
+    name: "Dumbbell Flys",
+    instructions:
+      "Lie on a flat bench with a dumbbell in each hand. Lower the dumbbells out to your sides, then bring them back up to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+
+  {
+    name: "Tricep Pushdowns",
+    instructions:
+      "Attach a rope handle to a high pulley. Stand facing the pulley with your elbows at your sides. Push the rope down until your arms are straight, then bring it back up. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Cable Machine",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+
+  {
+    name: "Incline Dumbbell Press",
+    instructions:
+      "Lie on an incline bench with a dumbbell in each hand. Press the dumbbells up above your chest, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  {
+    name: "Tricep Dips",
+    instructions:
+      "Position yourself between two parallel bars with your arms straight. Lower yourself down until your elbows are at a 90-degree angle, then push back up. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Parallel Bars",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  {
+    name: "Cable Crossovers",
+    instructions:
+      "Stand in front of a cable machine with your arms out to your sides. Bring your hands together in front of your chest, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Cable Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Skull Crushers",
+    instructions:
+      "Lie on a flat bench with a barbell or dumbbells held straight up above your chest. Lower the weight down towards your forehead, then push it back up. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Barbell or Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Advanced",
+  },
+  {
+    name: "Decline Dumbbell Press",
+    instructions:
+      "Lie on a decline bench with a dumbbell in each hand. Press the dumbbells up above your chest, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Advanced",
+  },
+  {
+    name: "Incline Close-Grip Bench Press",
+    instructions:
+      "Lie on an incline bench with your hands placed slightly closer than shoulder-width apart. Lower the barbell to your chest, then press it back up to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Dumbbell Pullovers",
+    instructions:
+      "Lie on a bench with a dumbbell in both hands above your chest. Lower the weight behind your head, then bring it back up to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Dumbbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Dumbbell Skull Crushers",
+    instructions:
+      "Lie on a flat bench with a dumbbell in each hand. Lower the dumbbells down towards your forehead, then push them back up. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Dumbbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Incline Dumbbell Flys",
+    instructions:
+      "Lie on an incline bench with a dumbbell in each hand. Lower the dumbbells out to your sides, then bring them back up to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Tricep Kickbacks",
+    instructions:
+      "Stand with a dumbbell in each hand. Bend over slightly with your palms facing up, then extend your arms behind you. Bring your arms back to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Incline Bench Cable Flys",
+    instructions:
+      "Lie on an incline bench with a cable machine behind you. Extend your arms forward, then bring them together in front of your chest. Return to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "Cable Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Tricep Rope Extensions",
+    instructions:
+      "Attach a rope handle to a high pulley. Face the machine with your elbows at your sides, then extend your arms down. Return to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Triceps",
+    equipment: "Cable Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Incline Push-Ups",
+    instructions:
+      "Place your hands on an incline surface, such as a bench. Lower your body towards the surface, then push up to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Chest",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+
+  // Back and Biceps
+  {
+    name: "Chin-Ups",
+    instructions:
+      "Grab a chin-up bar with an underhand grip. Pull your body up until your chin is above the bar, then lower yourself back down. Repeat.",
+    type: "Strength",
+    muscle: "Biceps",
+    equipment: "Chin-Up Bar",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Barbell Rows",
+    instructions:
+      "Bend over with your knees slightly bent and grip a barbell with an overhand grip. Lift the bar up to your chest, then lower it back down. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Seated Cable Rows",
+    instructions:
+      "Sit on a cable machine with your legs bent and your feet flat on the floor. Pull the cable towards your chest, then release it back to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Cable Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Hammer Curls",
+    instructions:
+      "Stand with a dumbbell in each hand with your palms facing in. Curl the dumbbells up to your shoulders, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Biceps",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "One-Arm Dumbbell Rows",
+    instructions:
+      "Kneel on a bench with a dumbbell in one hand. Pull the weight up towards your chest, then lower it back down. Repeat with the other arm.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Dumbbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Preacher Curls",
+    instructions:
+      "Sit on a preacher bench with your arms resting on the bench. Curl the barbell up to your shoulders, then lower it back down. Repeat.",
+    type: "Strength",
+    muscle: "Biceps",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Lat Pulldowns",
+    instructions:
+      "Sit on a lat pulldown machine with your hands placed wider than shoulder-width apart. Pull the bar down towards your chest, then release it back to the starting position. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Lat Pulldown Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Deadlifts",
+    instructions:
+      "Stand with your feet shoulder-width apart and grip a barbell with an overhand grip. Lift the bar up off the ground, keeping your back straight, then lower it back down. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Concentration Curls",
+    instructions:
+      "Sit on a bench with a dumbbell in one hand. Rest your elbow on your inner thigh and curl the weight up to your shoulder, then lower it back down. Repeat with the other arm.",
+    type: "Strength",
+    muscle: "Biceps",
+    equipment: "Dumbbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Pull-Ups",
+    instructions:
+      "Grab a pull-up bar with an overhand grip. Pull your body up until your chest touches the bar, then lower yourself back down. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Pull-Up Bar",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Inverted Rows",
+    instructions:
+      "Lie on your back under a barbell rack or suspension trainer. Grab the bar or handles with an overhand grip and pull your chest up to the bar, then lower yourself back down. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Barbell Rack or Suspension Trainer",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "EZ Bar Curls",
+    instructions:
+      "Stand with an EZ bar with an underhand grip. Curl the bar up to your shoulders, then lower it back down. Repeat.",
+    type: "Strength",
+    muscle: "Biceps",
+    equipment: "EZ Bar",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Dumbbell Pullovers",
+    instructions:
+      "Lie on a bench with a dumbbell held with both hands over your chest. Lower the weight back over your head, then pull it back over your chest. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Dumbbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Reverse Grip Bent-Over Rows",
+    instructions:
+      "Bend over with your knees slightly bent and grip a barbell with an underhand grip. Lift the bar up to your chest, then lower it back down. Repeat.",
+    type: "Strength",
+    muscle: "Back",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  // Cardio and Core
+  {
+    name: "Mountain Climbers",
+    instructions:
+      "Start in a plank position with your hands on the ground. Bring one knee towards your chest and quickly switch legs, keeping your core engaged. Continue alternating legs as quickly as possible.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Jumping Jacks",
+    instructions:
+      "Stand with your feet together and your hands at your sides. Jump your feet out to the sides while raising your arms above your head. Jump your feet back together while lowering your arms. Repeat.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Plank",
+    instructions:
+      "Start in a push-up position with your elbows on the ground. Hold your body in a straight line from head to heels, keeping your core engaged. Hold for as long as you can.",
+    type: "Core",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Burpees",
+    instructions:
+      "Start in a standing position. Drop down into a plank position, then do a push-up. Jump your feet back towards your hands and jump up, reaching your arms overhead. Repeat.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Russian Twists",
+    instructions:
+      "Sit on the ground with your knees bent and your feet flat on the ground. Lean back slightly and hold a weight or medicine ball with both hands. Twist your torso to one side, then twist to the other side. Repeat.",
+    type: "Core",
+    muscle: "Core",
+    equipment: "Weight or Medicine Ball",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "High Knees",
+    instructions:
+      "Stand with your feet hip-width apart. Run in place, lifting your knees up towards your chest as high as you can.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Bicycle Crunches",
+    instructions:
+      "Lie on your back with your hands behind your head and your knees bent. Lift your shoulders off the ground and bring your right elbow towards your left knee as you extend your right leg. Switch sides and repeat.",
+    type: "Core",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Jump Rope",
+    instructions:
+      "Hold a jump rope in each hand and swing it over your head, jumping over it with both feet. Keep your core engaged and your feet together as you jump.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "Jump Rope",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Side Plank",
+    instructions:
+      "Start in a plank position on your side, with one elbow on the ground and your feet stacked on top of each other. Hold your body in a straight line, keeping your core engaged. Hold for as long as you can, then switch sides.",
+    type: "Core",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Jump Squats",
+    instructions:
+      "Start in a standing position with your feet shoulder-width apart. Squat down, then jump up as high as you can. Land softly and repeat.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Plank Jacks",
+    instructions:
+      "Start in a plank position with your hands on the ground. Jump your feet out to the sides, then jump them back together. Keep your core engaged throughout the exercise.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Leg Raises",
+    instructions:
+      "Lie on your back with your legs straight and your arms at your sides. Lift your legs up towards the ceiling, keeping them straight. Lower them back down and repeat.",
+    type: "Core",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Jumping Lunges",
+    instructions:
+      "Start in a lunge position with your front knee bent at a 90-degree angle. Jump up and switch legs in mid-air, landing in a lunge position with your other leg forward. Repeat.",
+    type: "Cardio",
+    muscle: "Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Russian Twist with Medicine Ball",
+    instructions:
+      "Sit on the ground with your knees bent and your feet flat on the ground. Hold a medicine ball or weight with both hands. Twist your torso to one side, then twist to the other side. Repeat.",
+    type: "Core",
+    muscle: "Core",
+    equipment: "Medicine Ball or Weight",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  // Legs
+  {
+    name: "Barbell Front Squat",
+    instructions:
+      "Hold a barbell in front of your body with your palms facing up and your elbows pointing forward. Squat down, then stand back up. Repeat.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Single-Leg Deadlift",
+    instructions:
+      "Stand on one leg and hold a dumbbell or kettlebell in the opposite hand. Hinge forward at the hips while lifting your other leg behind you, keeping your back straight. Return to starting position and repeat on the other side.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Dumbbell or Kettlebell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Reverse Lunge with Knee Raise",
+    instructions:
+      "Stand with your feet hip-width apart and your hands on your hips. Step back with your left leg into a lunge, then bring your left knee up towards your chest as you stand back up. Repeat on the other side.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Box Jumps",
+    instructions:
+      "Stand in front of a box or step with your feet shoulder-width apart. Jump up onto the box, then jump back down to the starting position. Repeat.",
+    type: "Cardio",
+    muscle: "Legs",
+    equipment: "Box or Step",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Calf Raises",
+    instructions:
+      "Stand on the edge of a step or raised platform with your heels hanging off. Raise your heels up as high as you can, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Step or Raised Platform",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Pistol Squats",
+    instructions:
+      "Stand on one leg with the other leg extended out in front of you. Lower down into a squat position on one leg, then stand back up. Repeat on the other side.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Advanced",
+  },
+  {
+    name: "Step-Ups",
+    instructions:
+      "Stand in front of a step or raised platform. Step up onto the platform with one foot, then bring your other foot up to stand on the platform. Step back down with one foot, then the other. Repeat, alternating which foot steps up first.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Step or Raised Platform",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Sumo Squat",
+    instructions:
+      "Stand with your feet wider than shoulder-width apart and your toes pointing out. Hold a dumbbell or kettlebell with both hands and lower down into a squat, keeping your back straight. Stand back up and repeat.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Dumbbell or Kettlebell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Walking Lunges",
+    instructions:
+      "Take a big step forward with your right foot, lowering down into a lunge position. Push off your back foot to step forward with your left foot, lowering down into a lunge position. Continue walking forward, alternating legs.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Glute Bridge",
+    instructions:
+      "Lie on your back with your knees bent and your feet flat on the ground. Lift your hips up towards the ceiling, squeezing your glutes at the top. Lower back down and repeat.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Step-Ups with Knee Raise",
+    instructions:
+      "Stand in front of a step or raised platform. Step up onto the platform with one foot, bringing your other knee up towards your chest. Step back down and repeat on the other side, alternating legs.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Step or Raised Platform",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Jump Squats",
+    instructions:
+      "Stand with your feet shoulder-width apart. Lower down into a squat position, then jump up as high as you can. Land softly and immediately lower down into another squat. Repeat.",
+    type: "Cardio",
+    muscle: "Legs",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Bulgarian Split Squat",
+    instructions:
+      "Stand with your back to a bench or step. Place the top of one foot on the bench or step behind you. Lower down into a lunge position on your front leg, then stand back up. Repeat on the other side.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Bench or Step",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Leg Press",
+    instructions:
+      "Sit in a leg press machine with your back against the seat and your feet on the platform. Push the platform away from you, then slowly lower it back down. Repeat.",
+    type: "Strength",
+    muscle: "Legs",
+    equipment: "Leg Press Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  // Shoulders
+  {
+    name: "Standing Barbell Shoulder Press",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a barbell at shoulder height with an overhand grip. Press the barbell up overhead, keeping your core tight and your back straight. Lower the barbell back down to shoulder height and repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Dumbbell Lateral Raise",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a dumbbell in each hand at your sides. Lift both dumbbells out to the side until your arms are parallel to the ground, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Arnold Press",
+    instructions:
+      "Sit on a bench with a dumbbell in each hand at shoulder height, palms facing your body. Press the dumbbells up overhead, rotating your palms so they face forward at the top. Lower the dumbbells back down to shoulder height and repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Push Press",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a barbell at shoulder height with an overhand grip. Lower down into a quarter squat, then push up explosively to press the barbell up overhead. Lower the barbell back down to shoulder height and repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Front Dumbbell Raise",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a dumbbell in each hand at your thighs. Lift both dumbbells straight up in front of you until they reach shoulder height, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Reverse Fly",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a dumbbell in each hand at your thighs, palms facing in. Lift both dumbbells out to the side until your arms are parallel to the ground, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Standing Barbell Upright Row",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a barbell with an overhand grip in front of your thighs. Pull the barbell up to your chin, keeping it close to your body. Lower the barbell back down to your thighs and repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Seated Dumbbell Shoulder Press",
+    instructions:
+      "Sit on a bench with a dumbbell in each hand at shoulder height, palms facing forward. Press the dumbbells up overhead, then lower them back down to shoulder height. Repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Dumbbell Front Raise",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a dumbbell in each hand at your thighs, palms facing in. Lift one dumbbell straight up in front of you until it reaches shoulder height, then lower it back down. Repeat with the other arm.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Seated Military Press",
+    instructions:
+      "Sit on a bench with a barbell at shoulder height in front of you. Grab the barbell with an overhand grip, then press it up overhead until your arms are fully extended. Lower the barbell back down to shoulder height and repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Lateral Cable Raise",
+    instructions:
+      "Stand next to a cable machine with your feet shoulder-width apart and your closest hand on the machine's handle. Lift the handle straight out to the side until your arm is parallel to the ground, then lower it back down. Repeat with the other arm.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Cable Machine",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Rear Delt Fly",
+    instructions:
+      "Lie face down on an incline bench with a dumbbell in each hand. Lift the dumbbells out to the side until your arms are parallel to the ground, then lower them back down. Repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Dumbbells, Bench",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Kettlebell Halo",
+    instructions:
+      "Hold a kettlebell with both hands at chest height. Circle the kettlebell around your head, keeping your elbows close to your body. Reverse the direction of the circle after a few repetitions.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Kettlebell",
+    equipmentNeeded: true,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Barbell Push Press",
+    instructions:
+      "Stand with your feet shoulder-width apart and hold a barbell at shoulder height with an overhand grip. Dip down into a quarter squat, then push up explosively to press the barbell up overhead. Lower the barbell back down to shoulder height and repeat.",
+    type: "Strength",
+    muscle: "Shoulders",
+    equipment: "Barbell",
+    equipmentNeeded: true,
+    difficulty: "Intermediate",
+  },
+
+  // Yoga
+  {
+    name: "Downward-Facing Dog",
+    instructions:
+      "Start on your hands and knees with your hands slightly in front of your shoulders. Lift your hips up and back, straightening your arms and legs. Press your heels towards the ground and hold for several breaths.",
+    type: "Flexibility",
+    muscle: "Hamstrings, Calves, Shoulders",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Tree Pose",
+    instructions:
+      "Stand with your feet together and shift your weight onto one foot. Place the sole of the opposite foot against the inside of your standing leg's thigh. Bring your hands together in front of your chest and hold for several breaths before switching sides.",
+    type: "Balance",
+    muscle: "Quads, Glutes, Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Warrior II",
+    instructions:
+      "Start with your feet wide apart, turning one foot out and the other foot slightly in. Extend your arms out to the sides and bend the front knee. Hold for several breaths before switching sides.",
+    type: "Strength",
+    muscle: "Quads, Glutes, Shoulders",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Child's Pose",
+    instructions:
+      "Start on your hands and knees and lower your hips back towards your heels. Extend your arms out in front of you and rest your forehead on the ground. Hold for several breaths.",
+    type: "Flexibility",
+    muscle: "Lower Back, Hips",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Plank Pose",
+    instructions:
+      "Start on your hands and knees, then extend your legs behind you, resting on your toes. Keep your body straight and engage your core. Hold for several breaths.",
+    type: "Strength",
+    muscle: "Core, Shoulders, Arms",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Seated Forward Bend",
+    instructions:
+      "Sit with your legs extended in front of you and reach your arms towards your toes. Keep your back straight and fold forward as far as you can. Hold for several breaths.",
+    type: "Flexibility",
+    muscle: "Hamstrings, Lower Back",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Crow Pose",
+    instructions:
+      "Squat down with your feet close together and place your hands on the ground in front of you. Lift your hips up and balance on your hands, bringing your knees towards your armpits. Hold for several breaths.",
+    type: "Balance",
+    muscle: "Arms, Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Triangle Pose",
+    instructions:
+      "Stand with your feet wide apart and turn one foot out. Extend your arms out to the sides and reach towards the extended foot. Hold for several breaths before switching sides.",
+    type: "Flexibility",
+    muscle: "Hamstrings, Calves, Shoulders",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Chair Pose",
+    instructions:
+      "Stand with your feet together and bend your knees, as if sitting in a chair. Extend your arms up towards the ceiling and hold for several breaths.",
+    type: "Strength",
+    muscle: "Quads, Glutes, Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Beginner",
+  },
+  {
+    name: "Upward-Facing Dog",
+    instructions:
+      "Start lying on your stomach with your hands by your ribs. Press up, straightening your arms and lifting your chest off the ground. Hold for several breaths.",
+    type: "Strength",
+    muscle: "Chest, Shoulders, Core",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Half Pigeon Pose",
+    instructions:
+      "Start in a low lunge position with one foot forward. Lower your back knee to the ground and slide your front foot over towards the opposite hand. Fold forward over your front leg and hold for several breaths before switching sides.",
+    type: "Flexibility",
+    muscle: "Hips, Glutes",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Warrior III",
+    instructions:
+      "Start in a lunge position with one foot forward. Shift your weight onto the front foot and lift the back foot off the ground, extending your arms forward. Hold for several breaths before switching sides.",
+    type: "Balance",
+    muscle: "Legs, Core, Shoulders",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Advanced",
+  },
+  {
+    name: "Fish Pose",
+    instructions:
+      "Lie on your back with your arms extended overhead. Lift your chest and place the top of your head on the ground. Hold for several breaths.",
+    type: "Flexibility",
+    muscle: "Chest, Shoulders",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+  {
+    name: "Eagle Pose",
+    instructions:
+      "Stand with your feet together and wrap one leg around the other. Cross one arm over the other and bend your elbows, bringing your palms together. Hold for several breaths before switching sides.",
+    type: "Balance",
+    muscle: "Legs, Shoulders",
+    equipment: "None",
+    equipmentNeeded: false,
+    difficulty: "Intermediate",
+  },
+];
