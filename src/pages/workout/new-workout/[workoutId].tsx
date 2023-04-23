@@ -26,6 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from "src/components/ui/card";
+import { getTimeOfDay } from "src/utils/date";
 
 type UpdateWorkoutInput = {
   name: string;
@@ -161,8 +162,9 @@ const NewWorkout = ({
           <CardHeader>
             <CardTitle className="flex flex-col gap-2">
               <Input
-                className="custom-h3 flex items-center gap-2"
+                className="flex items-center gap-2 custom-h3"
                 type="text"
+                placeholder={`${getTimeOfDay()} Workout`}
                 defaultValue={workoutData && workoutData.name}
                 {...register("name", {
                   required: true,
@@ -170,7 +172,7 @@ const NewWorkout = ({
                 })}
               />
               <Input
-                className="custom-h3 flex items-center gap-2"
+                className="flex items-center gap-2 custom-h3"
                 type="text"
                 placeholder="Description"
                 defaultValue={(workoutData && workoutData.description) ?? ""}
@@ -224,10 +226,10 @@ const NewWorkout = ({
                 <Card key={i} className="flex flex-col gap-2">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-around">
-                      <p className="custom-p font-semibold">{exercise.name}</p>
+                      <p className="font-semibold custom-p">{exercise.name}</p>
                       <Button
                         variant="ghost"
-                        className="w-10 rounded-full p-0"
+                        className="w-10 p-0 rounded-full"
                         onClick={() => onRemoveExercise(exercise)}
                       >
                         <Trash />

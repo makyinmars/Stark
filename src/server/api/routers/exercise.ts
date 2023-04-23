@@ -90,4 +90,28 @@ export const exerciseRouter = createTRPCRouter({
       message: "No exercises found",
     });
   }),
+
+  getExercisesByMuscle: protectedProcedure
+    .input(z.object({ muscle: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const exercises = await ctx.prisma.exercise.findMany({
+        where: {
+          muscle: {
+            equals: input.muscle,
+          },
+        },
+        select: {
+          name: true,
+        },
+      });
+
+      if (exercises) {
+        return exercises.map((exercise) => exercise.name);
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No exercises found",
+      });
+    }),
 });

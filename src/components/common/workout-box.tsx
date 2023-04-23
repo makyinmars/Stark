@@ -94,7 +94,7 @@ const WorkoutBox = ({
     <Card>
       <CardHeader>
         <CardTitle>
-          <h5 className="custom-h5 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             {name}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -131,7 +131,7 @@ const WorkoutBox = ({
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
-          </h5>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -140,10 +140,10 @@ const WorkoutBox = ({
             {e.name}
           </p>
         ))}
-        <p className="custom-subtle flex items-center gap-2">
+        <p className="flex items-center gap-2 custom-subtle">
           <History size={16} /> {formatDate("MMM D, YYYY", createdAt)}
         </p>
-        <p className="custom-subtle flex items-center gap-2">
+        <p className="flex items-center gap-2 custom-subtle">
           <Copy size={16} /> Copied: {copyCount}
         </p>
       </CardContent>

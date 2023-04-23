@@ -68,14 +68,14 @@ const Exercises = () => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={openType}
-                    className="w-full justify-between"
+                    className="justify-between w-full"
                   >
                     {typeValue
                       ? exercisesTypes?.data?.find(
                           (type) => type.toLowerCase() === typeValue
                         )
-                      : "Select body type..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      : "Select type..."}
+                    <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full">
@@ -83,9 +83,9 @@ const Exercises = () => {
                     <CommandInput placeholder="Search body type..." />
                     <CommandEmpty>No type found.</CommandEmpty>
                     <CommandGroup className="w-full">
-                      {exercisesTypes?.data?.map((type) => (
+                      {exercisesTypes?.data?.map((type, i) => (
                         <CommandItem
-                          key={type}
+                          key={i}
                           onSelect={(currentValue) => {
                             setTypeValue(
                               currentValue === typeValue ? "" : currentValue
@@ -112,14 +112,14 @@ const Exercises = () => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={openMuscle}
-                    className="w-full justify-between"
+                    className="justify-between w-full"
                   >
                     {muscleValue
                       ? exercisesMuscles?.data?.find(
                           (muscle) => muscle.toLowerCase() === muscleValue
                         )
-                      : "Select body muscle..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      : "Select muscle..."}
+                    <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
@@ -127,9 +127,9 @@ const Exercises = () => {
                     <CommandInput placeholder="Search body muscle..." />
                     <CommandEmpty>No muscle exercises found.</CommandEmpty>
                     <CommandGroup className="w-full">
-                      {exercisesMuscles?.data?.map((muscle) => (
+                      {exercisesMuscles?.data?.map((muscle, i) => (
                         <CommandItem
-                          key={muscle}
+                          key={i}
                           onSelect={(currentValue) => {
                             setMuscleValue(
                               currentValue === muscleValue ? "" : currentValue
@@ -175,9 +175,9 @@ const Exercises = () => {
                         return exercise;
                       }
                     })
-                    .map((exercise) => (
+                    .map((exercise, i) => (
                       <CommandItem
-                        key={exercise.name}
+                        key={i}
                         onSelect={(currentValue) => {
                           setExerciseValue(
                             currentValue === exerciseValue ? "" : currentValue
@@ -203,10 +203,10 @@ const Exercises = () => {
                               height={70}
                               alt={exercise.name}
                               loading="lazy"
-                              className="h-auto w-24 rounded"
+                              className="w-24 h-auto rounded"
                             />
                           ) : (
-                            <p className="flex h-14 w-24 items-center justify-center rounded bg-primary text-primary-foreground">
+                            <p className="flex items-center justify-center w-24 rounded h-14 bg-primary text-primary-foreground">
                               {exercise.name.charAt(0)}
                             </p>
                           )}
@@ -215,7 +215,7 @@ const Exercises = () => {
 
                             <Dialog>
                               <DialogTrigger>
-                                <Info className="h-4 w-4" />
+                                <Info className="w-4 h-4" />
                               </DialogTrigger>
                               <DialogContent className="flex flex-col gap-2">
                                 <DialogHeader>
@@ -229,7 +229,7 @@ const Exercises = () => {
                                       height={70}
                                       alt={exercise.name}
                                       loading="lazy"
-                                      className="mx-auto h-full w-full rounded"
+                                      className="w-full h-full mx-auto rounded"
                                     />
                                   )}
                                   <DialogDescription>
@@ -274,18 +274,18 @@ const Exercises = () => {
                                   (e) => e.id === exercise.id
                                 ) ? (
                                   <Button
-                                    className="w-10 rounded-full p-0"
+                                    className="w-10 p-0 rounded-full"
                                     onClick={() => removeExercise(exercise)}
                                   >
-                                    <Minus className="h-4 w-4" />
+                                    <Minus className="w-4 h-4" />
                                     <span className="sr-only">Remove</span>
                                   </Button>
                                 ) : (
                                   <Button
-                                    className="w-10 rounded-full p-0"
+                                    className="w-10 p-0 rounded-full"
                                     onClick={() => addExercise(exercise)}
                                   >
-                                    <Plus className="h-4 w-4" />
+                                    <Plus className="w-4 h-4" />
                                     <span className="sr-only">Add</span>
                                   </Button>
                                 )}

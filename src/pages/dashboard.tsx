@@ -35,6 +35,34 @@ const Dashboard = ({
 
   const { toast } = useToast();
 
+  const chestExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Chest",
+  });
+
+  const tricepsExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Triceps",
+  });
+
+  const bicepsExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Biceps",
+  });
+
+  const backExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Back",
+  });
+
+  const coreExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Core",
+  });
+
+  const legsExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Legs",
+  });
+
+  const shouldersExercisesQuery = api.exercise.getExercisesByMuscle.useQuery({
+    muscle: "Shoulders",
+  });
+
   const {
     data: myWorkoutsData,
     isLoading: myWorkoutsIsLoading,
@@ -85,16 +113,12 @@ const Dashboard = ({
         <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
           Start an Empty Workout
         </Button>
-        <h3 className="custom-h3 text-center">Workouts</h3>
+        <h3 className="text-center custom-h3">Workouts</h3>
         {myWorkoutsIsLoading && <Spinner />}
         {myWorkoutsData && myWorkoutsData.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>
-                <h4 className="custom-h4">
-                  My Workouts({myWorkoutsData.length})
-                </h4>
-              </CardTitle>
+              <CardTitle>My Workouts({myWorkoutsData.length})</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
               {myWorkoutsData.map((w, i) => (
@@ -114,88 +138,83 @@ const Dashboard = ({
         {myWorkoutsIsError && <Error message={myWorkoutsDataError.message} />}
         <Card>
           <CardHeader>
-            <CardTitle>
-              <h4 className="custom-h4">Example Workouts(4)</h4>
-            </CardTitle>
+            <CardTitle>Example Workouts(7)</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  <h5 className="custom-h5 text-center">Chest and Triceps</h5>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-auto">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Exercises</AccordionTrigger>
-                    <AccordionContent></AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">Start Workout</Button>
-              </CardFooter>
-            </Card>
+            {chestExercisesQuery.data && (
+              <ExampleWorkout
+                name="Chest"
+                exercises={chestExercisesQuery.data}
+              />
+            )}
 
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  <h5 className="custom-h5 text-center">Back and Biceps</h5>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-auto">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Exercises</AccordionTrigger>
-                    <AccordionContent></AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">Start Workout</Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  <h5 className="custom-h5 text-center">Cardio</h5>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-auto">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Exercises</AccordionTrigger>
-                    <AccordionContent></AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">Start Workout</Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  <h5 className="custom-h5 text-center">Legs and Shoulders</h5>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-auto">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Exercises</AccordionTrigger>
-                    <AccordionContent></AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">Start Workout</Button>
-              </CardFooter>
-            </Card>
+            {tricepsExercisesQuery.data && (
+              <ExampleWorkout
+                name="Triceps"
+                exercises={tricepsExercisesQuery.data}
+              />
+            )}
+
+            {bicepsExercisesQuery.data && (
+              <ExampleWorkout
+                name="Biceps"
+                exercises={bicepsExercisesQuery.data}
+              />
+            )}
+
+            {backExercisesQuery.data && (
+              <ExampleWorkout name="Back" exercises={backExercisesQuery.data} />
+            )}
+
+            {coreExercisesQuery.data && (
+              <ExampleWorkout name="Core" exercises={coreExercisesQuery.data} />
+            )}
+
+            {legsExercisesQuery.data && (
+              <ExampleWorkout name="Legs" exercises={legsExercisesQuery.data} />
+            )}
+
+            {shouldersExercisesQuery.data && (
+              <ExampleWorkout
+                name="Shoulders"
+                exercises={shouldersExercisesQuery.data}
+              />
+            )}
           </CardContent>
         </Card>
       </UserMenu>
     </>
+  );
+};
+
+const ExampleWorkout = ({
+  name,
+  exercises,
+}: {
+  name: string;
+  exercises: string[];
+}) => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Accordion type="single" collapsible className="w-auto">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Exercises</AccordionTrigger>
+            <AccordionContent>
+              {exercises.map((e, i) => (
+                <div key={i}>{e}</div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">Start Workout</Button>
+      </CardFooter>
+    </Card>
   );
 };
 
