@@ -192,16 +192,7 @@ const NewWorkout = ({
               />
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <Button
-              className="w-full"
-              variant="beneficial"
-              onClick={() => void onUpdateQuickWorkout()}
-            >
-              Complete Workout
-            </Button>
-          </CardContent>
-          <CardFooter className="flex gap-2">
+          <CardContent className="flex gap-2">
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="w-full">Add Exercise</Button>
@@ -216,6 +207,15 @@ const NewWorkout = ({
               onClick={() => void onDeleteWorkout(workoutId)}
             >
               Cancel Workout
+            </Button>
+          </CardContent>
+          <CardFooter className="flex gap-2">
+            <Button
+              className="w-full"
+              variant="beneficial"
+              onClick={() => void onUpdateQuickWorkout()}
+            >
+              Complete Workout
             </Button>
           </CardFooter>
         </Card>
