@@ -7,6 +7,7 @@ import { Button } from "src/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -62,38 +63,35 @@ const Upgrade = () => {
       </Head>
       <UserMenu>
         {!isLoading && subscriptionStatus !== null && (
-          <Card className="flex flex-col gap-4">
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle>
-                <h2 className="custom-h2 self-center">
-                  Your subscription is{" "}
-                  <span className="text-green-600">{subscriptionStatus}</span>
-                </h2>
+              <CardTitle className="text-center">
+                Your subscription is{" "}
+                <span className="text-green-600">{subscriptionStatus}</span>
               </CardTitle>
+              <CardDescription>
+                You are a premium member of Stark. Thank you for your support!
+              </CardDescription>
             </CardHeader>
-            <CardFooter>
+            <CardContent>
               <Button
                 className="w-full"
                 onClick={() => void onCreateBillingPortalSession()}
               >
                 Manage subscription and billing
               </Button>
-            </CardFooter>
+            </CardContent>
           </Card>
         )}
-        {!isLoading && !subscriptionStatus === null && (
+        {!isLoading && subscriptionStatus === null && (
           <Card>
             <CardHeader>
-              <CardTitle>
-                <h2 className="custom-h2">Premium Membership</h2>
-              </CardTitle>
+              <CardTitle className="text-center">Premium Membership</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>
-                    <h3 className="custom-h3 self-center">Free</h3>
-                  </CardTitle>
+                  <CardTitle>Free</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul>
@@ -112,9 +110,7 @@ const Upgrade = () => {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>
-                    <h3 className="custom-h3 self-center">Premium</h3>
-                  </CardTitle>
+                  <CardTitle>Premium</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul>
