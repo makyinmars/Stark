@@ -7,9 +7,7 @@ import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "src/components/ui/card";

@@ -4,6 +4,12 @@ import { Fragment } from "react";
 
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "src/components/ui/card";
 import { Input } from "src/components/ui/input";
 import { Label } from "src/components/ui/label";
 import {
@@ -16,17 +22,10 @@ import { api } from "src/utils/api";
 import { ssgHelper } from "src/utils/ssg";
 
 const Admin = () => {
-  const { data, fetchPreviousPage, hasPreviousPage, isFetchingPreviousPage } =
-    api.featureRequest.getFeatureRequests.useInfiniteQuery(
-      {
-        limit: 5,
-      },
-      {
-        getPreviousPageParam(lastPage) {
-          return lastPage.nextCursor;
-        },
-      }
-    );
+  const { data } = api.featureRequest.getFeatureRequests.useQuery({
+    showApproved: true,
+    status: "NOT_STARTED",
+  });
 
   return (
     <>
@@ -84,28 +83,13 @@ const Admin = () => {
         </Tabs>
         {data && (
           <div className="flex flex-col gap-1">
-            <Button
-              onClick={() => void fetchPreviousPage()}
-              disabled={!hasPreviousPage || isFetchingPreviousPage}
-            >
-              {isFetchingPreviousPage
-                ? "Loading More..."
-                : hasPreviousPage
-                ? "Load More"
-                : "Nothing More to Load"}
-            </Button>
-            {data.pages.map((page, index) => (
-              <Fragment key={page.featureRequests[0]?.id || index}>
-                {page.featureRequests.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded border border-slate-400 p-2"
-                  >
-                    <h5 className="custom-h5 text-center">{item.title}</h5>
-                    <p>{item.title}</p>
-                  </div>
-                ))}
-              </Fragment>
+            {data.map((page, i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <CardTitle>{page.title}</CardTitle>
+                  <CardDescription>{page.description}</CardDescription>
+                </CardHeader>
+              </Card>
             ))}
           </div>
         )}
