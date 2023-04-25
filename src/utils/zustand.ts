@@ -10,7 +10,7 @@ interface ExerciseState {
   reset: () => void;
 }
 
-export const useExerciseState = create<ExerciseState>()(
+export const useExerciseStore = create<ExerciseState>()(
   devtools(
     persist(
       (set, get) => ({
@@ -40,7 +40,7 @@ interface SetState {
   reset: () => void;
 }
 
-export const useSetState = create<SetState>()(
+export const useSetStore = create<SetState>()(
   devtools(
     persist(
       (set, get) => ({

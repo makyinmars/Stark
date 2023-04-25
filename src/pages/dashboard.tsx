@@ -26,6 +26,8 @@ import {
   CardHeader,
   CardTitle,
 } from "src/components/ui/card";
+import { useExerciseStore } from "src/utils/zustand";
+import { Loader2 } from "lucide-react";
 
 const Dashboard = ({
   userId,
@@ -113,7 +115,7 @@ const Dashboard = ({
         <Button className="w-full" onClick={() => void onCreateQuickWorkout()}>
           Start an Empty Workout
         </Button>
-        <h3 className="text-center custom-h3">Workouts</h3>
+        <h3 className="custom-h3 text-center">Workouts</h3>
         {myWorkoutsIsLoading && <Spinner />}
         {myWorkoutsData && myWorkoutsData.length > 0 && (
           <Card>
@@ -140,7 +142,7 @@ const Dashboard = ({
           <CardHeader>
             <CardTitle>Example Workouts(7)</CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
+          <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
             {chestExercisesQuery.data && (
               <ExampleWorkout
                 name="Chest"
@@ -194,10 +196,55 @@ const ExampleWorkout = ({
   name: string;
   exercises: string[];
 }) => {
+  const utils = api.useContext();
+  const { toast } = useToast();
+  const router = useRouter();
+  const { reset, addExercise } = useExerciseStore();
+
+  const createExampleWorkout = api.workout.createExampleWorkout.useMutation({
+    onMutate: (variables) => {
+      toast({
+        title: `Creating ${variables.muscle} workout...`,
+        description: (
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-6 w-6 animate-spin" />{" "}
+            <span>Please wait...</span>
+          </div>
+        ),
+      });
+    },
+    onSuccess: async (data) => {
+      if (data) {
+        await router.push(`/workout/new-workout/${data?.id}`);
+        reset();
+        if (data.exercises) {
+          for (const e of data.exercises) {
+            addExercise(e);
+          }
+        }
+        await utils.workout.getWorkoutsByUserId.invalidate({
+          userId: data?.userId,
+        });
+        toast({
+          title: "Workout created",
+          description: "You can add exercises to it now.",
+        });
+      }
+    },
+  });
+
+  const onCreateExampleWorkout = async (muscle: string) => {
+    try {
+      await createExampleWorkout.mutateAsync({
+        muscle,
+      });
+    } catch {}
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{name}</CardTitle>
+        <CardTitle className="text-center">{name}</CardTitle>
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-auto">
@@ -212,7 +259,12 @@ const ExampleWorkout = ({
         </Accordion>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Start Workout</Button>
+        <Button
+          className="w-full"
+          onClick={() => void onCreateExampleWorkout(name)}
+        >
+          Start Workout
+        </Button>
       </CardFooter>
     </Card>
   );

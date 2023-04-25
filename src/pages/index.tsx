@@ -1,5 +1,6 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 import {
@@ -25,6 +26,7 @@ import {
 
 const Home: NextPage = () => {
   const utils = api.useContext();
+  const router = useRouter();
   const { data: session } = useSession();
   const user = utils.auth.getUserSession.getData();
 
@@ -109,22 +111,18 @@ const Home: NextPage = () => {
             healthier, happier life. Let{`'`}s get started!
           </CardContent>
           <CardFooter>
-            <Button className="w-full font-bold">Start For Free</Button>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>A Managed Approach To Fitness</CardTitle>
-          </CardHeader>
-          <CardContent>
-            We understand that staying motivated can be challenging, so we
-            {`'`}ve incorporated a variety of features to help you stay on
-            track. From progress tracking to personalized reminders, our app is
-            designed to make your fitness journey fun, easy, and rewarding.
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full font-bold">Read More</Button>
+            <Button
+              className="w-full font-bold"
+              onClick={() => {
+                if (session) {
+                  void router.push("/dashboard");
+                } else {
+                  void signIn();
+                }
+              }}
+            >
+              {session ? "Dashboard" : "Start Now"}
+            </Button>
           </CardFooter>
         </Card>
 
@@ -183,48 +181,15 @@ const Home: NextPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>
-              Achieve Your Fitness Goals With Our Customizable Workouts
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            Customizable workouts are a crucial aspect of any effective fitness
-            program, and at Stark, we understand that everyone has unique
-            fitness goals, preferences, and needs. That{`'`}s why our app offers
-            a variety of customizable workouts to help you tailor your fitness
-            routine to meet your individual needs. Our app includes a wide range
-            of exercises and workouts, ranging from cardio to strength training,
-            yoga, and Pilates, and more. Whether you{`'`}re a beginner or an
-            experienced fitness enthusiast, our app has workouts to meet your
-            needs. With FitTrack, you can customize your workouts based on your
-            fitness level, goals, and available equipment. Our app allows you to
-            choose from a variety of exercise options, select the duration of
-            your workout, and set your own pace and intensity.
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full font-bold">Read More</Button>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>
               Incredible Features To Help You Stay Motivated
             </CardTitle>
           </CardHeader>
           <CardContent>
-            At Stark, we believe that fitness is a journey that{`'`}s better
-            when shared. That{`'`}s why we offer a feature that allows you to
-            follow other users on our app and connect with a community of
-            like-minded individuals who are on a similar fitness journey.
-            Following other users on FitTrack is simple and easy. You can search
-            for other users based on their fitness goals, interests, and
-            location, and follow them with just a click of a button. Once you
-            {`'`}re connected, you can see their progress updates, offer support
-            and encouragement, and share your own progress updates.
+            Stark believes fitness is better shared and offers a feature to
+            connect with a like-minded community. Users can search for others
+            based on goals, interests, and location, follow them, see progress
+            updates, offer support, and share their own updates.
           </CardContent>
-          <CardFooter>
-            <Button className="w-full font-bold">Read More</Button>
-          </CardFooter>
         </Card>
 
         <Card>
@@ -232,26 +197,12 @@ const Home: NextPage = () => {
             <CardTitle>Need More, Premium Features With Stark Pro</CardTitle>
           </CardHeader>
           <CardContent>
-            At Stark, we offer a premium membership that includes a variety of
-            features designed to help you achieve your fitness goals more
-            effectively. Two of these features include the ability to copy
-            workouts and view chart progress. With our premium membership, you
-            can easily copy workouts created by other users or trainers on our
-            app. This feature allows you to discover new workouts and routines
-            that have been tried and tested by others, and integrate them into
-            your own fitness program. You can also save your favorite workouts
-            for easy access later. In addition, our premium membership allows
-            you to view your progress in a visual and easy-to-understand chart
-            format. This feature helps you to see your progress over time, track
-            your fitness journey, and stay motivated as you work towards your
-            goals. By viewing your progress in chart format, you can identify
-            areas where you{`'`}re making progress and areas where you need to
-            focus more attention. You can also set goals and benchmarks for
-            yourself, and track your progress towards these goals over time.
+            Stark{`'`}s premium membership offers effective fitness features,
+            including the ability to copy and save workouts from other users or
+            trainers. Additionally, members can track their progress through
+            visual charts, set goals, and stay motivated throughout their
+            fitness journey.
           </CardContent>
-          <CardFooter>
-            <Button className="w-full font-bold">Read More</Button>
-          </CardFooter>
         </Card>
       </main>
     </>

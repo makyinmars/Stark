@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { exercises, yogaExercises } from "src/data/exercises";
+import { exercises } from "src/data/exercises";
 
 const exerciseType = Prisma.validator<Prisma.ExerciseSelect>()({
   type: true,
@@ -103,6 +103,7 @@ export const exerciseRouter = createTRPCRouter({
         select: {
           name: true,
         },
+        take: 5,
       });
 
       if (exercises) {

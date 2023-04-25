@@ -220,6 +220,69 @@ export const workoutRouter = createTRPCRouter({
       return newQuickWorkout;
     }),
 
+  createExampleWorkout: protectedProcedure
+    .input(
+      z.object({
+        muscle: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workout = await ctx.prisma.workout.create({
+        data: {
+          name: `${input.muscle} Workout`,
+          description: `This is an example ${input.muscle} workout`,
+          copyCount: 0,
+          notes: `This is an example ${input.muscle} workout`,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      const exercises = await ctx.prisma.exercise.findMany({
+        where: {
+          muscle: input.muscle,
+        },
+        take: 5,
+      });
+
+      for (const exercise of exercises) {
+        const newExercise = await ctx.prisma.exercise.create({
+          data: {
+            name: exercise.name,
+            instructions: exercise.instructions,
+            type: exercise.type,
+            muscle: exercise.muscle,
+            equipment: exercise.equipment,
+            equipmentNeeded: exercise.equipmentNeeded,
+            difficulty: exercise.difficulty,
+            time: exercise.time,
+            image: exercise.image,
+            workoutId: workout.id,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (!newExercise) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Could not create exercise",
+          });
+        }
+      }
+
+      const newWorkout = await ctx.prisma.workout.findUnique({
+        where: {
+          id: workout.id,
+        },
+        include: {
+          exercises: true,
+        },
+      });
+
+      return newWorkout;
+    }),
+
   updateQuickWorkout: protectedProcedure
     .input(
       z.object({
@@ -416,7 +479,7 @@ export const workoutRouter = createTRPCRouter({
     if (ctx.session.user) {
       if (ctx.session.user.id) {
         const userWorkouts = await ctx.prisma.workout.findMany({
-          take: 4,
+          take: 8,
           orderBy: {
             createdAt: "desc",
           },

@@ -4,7 +4,7 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import { useRouter } from "next/router";
-import { Trash } from "lucide-react";
+import { Loader2, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import type { Exercise } from "@prisma/client";
 
@@ -13,7 +13,7 @@ import { Button } from "src/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
 import Exercises from "src/components/common/exercises";
 import { ssgHelper } from "src/utils/ssg";
-import { useExerciseState, useSetState } from "src/utils/zustand";
+import { useExerciseStore, useSetStore } from "src/utils/zustand";
 import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
@@ -46,7 +46,7 @@ const NewWorkout = ({
   const router = useRouter();
   const { toast } = useToast();
 
-  const { sets, reset: resetSet, removeSets } = useSetState();
+  const { sets, reset: resetSet, removeSets } = useSetStore();
 
   const utils = api.useContext();
 
@@ -56,7 +56,12 @@ const NewWorkout = ({
     onMutate: () => {
       toast({
         title: "Deleting Workout",
-        description: "Please wait...",
+        description: (
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-6 w-6 animate-spin" />{" "}
+            <span>Please wait...</span>
+          </div>
+        ),
       });
     },
     onSettled: () => {
@@ -79,16 +84,20 @@ const NewWorkout = ({
       if (name) {
         toast({
           title: `Saving ${name} Workout`,
-          description: "Please wait...",
+          description: (
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-6 w-6 animate-spin" />
+              <span>Please wait...</span>
+            </div>
+          ),
         });
       }
     },
-    onSettled: () => {
+    onSuccess: async () => {
       toast({
         title: "Workout Saved",
+        description: "Your workout has been saved.",
       });
-    },
-    onSuccess: async () => {
       resetExercise();
       resetSet();
       await utils.workout.getWorkoutsByUserId.invalidate({
@@ -112,14 +121,15 @@ const NewWorkout = ({
     exercises,
     removeExercise,
     reset: resetExercise,
-  } = useExerciseState();
+  } = useExerciseStore();
 
   const onUpdateQuickWorkout = async () => {
     try {
       if (user && workoutId) {
         await updateQuickWorkout.mutateAsync({
           workoutId,
-          name: watch("name"),
+          name:
+            watch("name") === "" ? `${getTimeOfDay()} Workout` : watch("name"),
           notes: watch("notes"),
           description: watch("description"),
           userId: user.data?.id as string,
@@ -162,17 +172,15 @@ const NewWorkout = ({
           <CardHeader>
             <CardTitle className="flex flex-col gap-2">
               <Input
-                className="flex items-center gap-2 custom-h3"
                 type="text"
-                placeholder={`${getTimeOfDay()} Workout`}
-                defaultValue={workoutData && workoutData.name}
+                placeholder="Name"
+                defaultValue={(workoutData && workoutData.name) ?? ""}
                 {...register("name", {
                   required: true,
                   maxLength: 100,
                 })}
               />
               <Input
-                className="flex items-center gap-2 custom-h3"
                 type="text"
                 placeholder="Description"
                 defaultValue={(workoutData && workoutData.description) ?? ""}
@@ -226,10 +234,10 @@ const NewWorkout = ({
                 <Card key={i} className="flex flex-col gap-2">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-around">
-                      <p className="font-semibold custom-p">{exercise.name}</p>
+                      <p className="custom-p font-semibold">{exercise.name}</p>
                       <Button
                         variant="ghost"
-                        className="w-10 p-0 rounded-full"
+                        className="w-10 rounded-full p-0"
                         onClick={() => onRemoveExercise(exercise)}
                       >
                         <Trash />

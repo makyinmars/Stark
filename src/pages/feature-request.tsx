@@ -1,11 +1,25 @@
+import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { Fragment } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "src/components/ui/card";
 import { Input } from "src/components/ui/input";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "src/components/ui/tabs";
 import { Textarea } from "src/components/ui/textarea";
 import { useToast } from "src/hooks/useToast";
 import { api } from "src/utils/api";
@@ -48,17 +62,20 @@ const FeatureRequest = () => {
       },
     });
 
-  const { data, fetchPreviousPage, hasPreviousPage, isFetchingPreviousPage } =
-    api.featureRequest.getFeatureRequests.useInfiniteQuery(
-      {
-        limit: 5,
-      },
-      {
-        getPreviousPageParam(lastPage) {
-          return lastPage.nextCursor;
-        },
-      }
-    );
+  const frCompletedQuery = api.featureRequest.getFeatureRequests.useQuery({
+    showApproved: true,
+    status: "COMPLETED",
+  });
+
+  const frInProgressQuery = api.featureRequest.getFeatureRequests.useQuery({
+    showApproved: true,
+    status: "IN_PROGRESS",
+  });
+
+  const frNotStartedQuery = api.featureRequest.getFeatureRequests.useQuery({
+    showApproved: true,
+    status: "NOT_STARTED",
+  });
 
   const onSubmit: SubmitHandler<FeatureRequestInputs> = async (data) => {
     try {
@@ -85,33 +102,67 @@ const FeatureRequest = () => {
           <Button type="submit">Submit</Button>
         </form>
         <h2 className="custom-h2 text-center">Feature Request Items</h2>
-        {data && (
-          <div className="flex flex-col gap-1">
-            <Button
-              onClick={() => void fetchPreviousPage()}
-              disabled={!hasPreviousPage || isFetchingPreviousPage}
-            >
-              {isFetchingPreviousPage
-                ? "Loading more..."
-                : hasPreviousPage
-                ? "Load More"
-                : "Nothing more to load"}
-            </Button>
-            {data.pages.map((page, index) => (
-              <Fragment key={page.featureRequests[0]?.id || index}>
-                {page.featureRequests.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded border border-slate-400 p-2"
-                  >
-                    <h5 className="custom-h5 text-center">{item.title}</h5>
-                    <p>{item.title}</p>
-                  </div>
-                ))}
-              </Fragment>
-            ))}
-          </div>
-        )}
+        <Tabs defaultValue="in_progress" className="w-auto">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="completed">Completed</TabsTrigger>
+            <TabsTrigger value="in_progress">In Progress</TabsTrigger>
+            <TabsTrigger value="not_started">Not Started</TabsTrigger>
+          </TabsList>
+          <TabsContent value="completed">
+            {frCompletedQuery &&
+              frCompletedQuery.data?.map((fr) => (
+                <Card key={fr.id}>
+                  <CardHeader className="flex flex-row items-center gap-1">
+                    <div className="flex flex-col items-center md:w-20">
+                      <ArrowBigUp className="h-16 w-8" />
+                      <span className="text-2xl">{fr.votes}</span>
+                      <ArrowBigDown className="h-16 w-8" />
+                    </div>
+                    <div>
+                      <CardTitle>{fr.title}</CardTitle>
+                      <CardDescription>{fr.description}</CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+          </TabsContent>
+          <TabsContent value="in_progress">
+            {frInProgressQuery &&
+              frInProgressQuery.data?.map((fr) => (
+                <Card key={fr.id}>
+                  <CardHeader className="flex flex-row items-center gap-1">
+                    <div className="flex flex-col items-center md:w-20">
+                      <ArrowBigUp className="h-16 w-8" />
+                      <span className="text-2xl">{fr.votes}</span>
+                      <ArrowBigDown className="h-16 w-8" />
+                    </div>
+                    <div>
+                      <CardTitle>{fr.title}</CardTitle>
+                      <CardDescription>{fr.description}</CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+          </TabsContent>
+          <TabsContent value="not_started" className="flex flex-col gap-2">
+            {frNotStartedQuery &&
+              frNotStartedQuery.data?.map((fr) => (
+                <Card key={fr.id}>
+                  <CardHeader className="flex flex-row items-center gap-1">
+                    <div className="flex flex-col items-center md:w-20">
+                      <ArrowBigUp className="h-16 w-8" />
+                      <span className="text-2xl">{fr.votes}</span>
+                      <ArrowBigDown className="h-16 w-8" />
+                    </div>
+                    <div>
+                      <CardTitle>{fr.title}</CardTitle>
+                      <CardDescription>{fr.description}</CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+          </TabsContent>
+        </Tabs>
       </UserMenu>
     </>
   );
@@ -125,7 +176,6 @@ export const getServerSideProps = async (
   const { ssg, session } = await ssgHelper(context);
 
   if (session && session.user) {
-
     return {
       props: {
         trpcState: ssg.dehydrate(),

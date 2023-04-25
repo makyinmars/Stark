@@ -27,7 +27,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "src/components/ui/dialog";
-import { useExerciseState } from "src/utils/zustand";
+import { useExerciseStore } from "src/utils/zustand";
 import {
   Tooltip,
   TooltipContent,
@@ -54,7 +54,7 @@ const Exercises = () => {
     addExercise,
     removeExercise,
     exercises: exercisesState,
-  } = useExerciseState();
+  } = useExerciseStore();
 
   return (
     <div className="flex flex-col gap-4">
@@ -68,14 +68,14 @@ const Exercises = () => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={openType}
-                    className="justify-between w-full"
+                    className="w-full justify-between"
                   >
                     {typeValue
                       ? exercisesTypes?.data?.find(
                           (type) => type.toLowerCase() === typeValue
                         )
                       : "Select type..."}
-                    <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full">
@@ -112,14 +112,14 @@ const Exercises = () => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={openMuscle}
-                    className="justify-between w-full"
+                    className="w-full justify-between"
                   >
                     {muscleValue
                       ? exercisesMuscles?.data?.find(
                           (muscle) => muscle.toLowerCase() === muscleValue
                         )
                       : "Select muscle..."}
-                    <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
@@ -203,10 +203,10 @@ const Exercises = () => {
                               height={70}
                               alt={exercise.name}
                               loading="lazy"
-                              className="w-24 h-auto rounded"
+                              className="h-auto w-24 rounded"
                             />
                           ) : (
-                            <p className="flex items-center justify-center w-24 rounded h-14 bg-primary text-primary-foreground">
+                            <p className="flex h-14 w-14 items-center justify-center rounded bg-primary text-primary-foreground">
                               {exercise.name.charAt(0)}
                             </p>
                           )}
@@ -215,7 +215,7 @@ const Exercises = () => {
 
                             <Dialog>
                               <DialogTrigger>
-                                <Info className="w-4 h-4" />
+                                <Info className="h-4 w-4" />
                               </DialogTrigger>
                               <DialogContent className="flex flex-col gap-2">
                                 <DialogHeader>
@@ -229,7 +229,7 @@ const Exercises = () => {
                                       height={70}
                                       alt={exercise.name}
                                       loading="lazy"
-                                      className="w-full h-full mx-auto rounded"
+                                      className="mx-auto h-full w-full rounded"
                                     />
                                   )}
                                   <DialogDescription>
@@ -274,18 +274,18 @@ const Exercises = () => {
                                   (e) => e.id === exercise.id
                                 ) ? (
                                   <Button
-                                    className="w-10 p-0 rounded-full"
+                                    className="w-10 rounded-full p-0"
                                     onClick={() => removeExercise(exercise)}
                                   >
-                                    <Minus className="w-4 h-4" />
+                                    <Minus className="h-4 w-4" />
                                     <span className="sr-only">Remove</span>
                                   </Button>
                                 ) : (
                                   <Button
-                                    className="w-10 p-0 rounded-full"
+                                    className="w-10 rounded-full p-0"
                                     onClick={() => addExercise(exercise)}
                                   >
-                                    <Plus className="w-4 h-4" />
+                                    <Plus className="h-4 w-4" />
                                     <span className="sr-only">Add</span>
                                   </Button>
                                 )}
