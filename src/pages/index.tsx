@@ -23,6 +23,7 @@ import {
   CardHeader,
   CardTitle,
 } from "src/components/ui/card";
+import ModeToggle from "src/components/mode-toggle";
 
 const Home: NextPage = () => {
   const utils = api.useContext();
@@ -42,6 +43,7 @@ const Home: NextPage = () => {
           <div className="text-2xl font-extrabold uppercase md:text-4xl">
             Stark
           </div>
+          <ModeToggle />
           <Dialog>
             <DialogTrigger asChild>
               <Button>{session ? "Account" : "Get Started"}</Button>
