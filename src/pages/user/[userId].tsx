@@ -85,7 +85,7 @@ const User = ({
     },
   });
 
-  const userWorkoutsData = utils.workout.getWorkoutsByUserId.getData({
+  const userWorkoutsData = api.workout.getWorkoutsByUserId.useQuery({
     userId,
   });
 
@@ -164,7 +164,7 @@ const User = ({
             )}
 
             <h4 className="custom-h4 self-center">
-              Workouts: ({userWorkoutsData ? userWorkoutsData.length : 0})
+              Workouts: ({userWorkoutsData ? userWorkoutsData.data?.length : 0})
             </h4>
 
             <div className="flex justify-around">
@@ -272,8 +272,8 @@ const User = ({
 
             <h4 className="custom-h4 self-center">Workout History</h4>
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
-              {userWorkoutsData &&
-                userWorkoutsData.map((w, i) => (
+              {userWorkoutsData.data &&
+                userWorkoutsData.data.map((w, i) => (
                   <WorkoutBox
                     key={i}
                     id={w.id}
