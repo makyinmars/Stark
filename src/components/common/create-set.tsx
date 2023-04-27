@@ -25,9 +25,7 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
   const { register, control } = useForm<SetInputs>({
     defaultValues: {
       exerciseId: exerciseId,
-      sets: [{ weight: 0, reps: 0, rest: 0, time: 0 }],
     },
-    mode: "onBlur",
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -63,7 +61,6 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
             <p>{index + 1}</p>
             <Input
               type="number"
-              defaultValue={set.reps ?? 0}
               className="h-6 w-12 p-0 text-center"
               {...register(`sets.${index}.reps` as const, {
                 required: true,
@@ -72,7 +69,6 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
             />
             <Input
               type="number"
-              defaultValue={set.weight ?? 0}
               className="h-6 w-12 p-0 text-center"
               {...register(`sets.${index}.weight` as const, {
                 required: true,
@@ -83,7 +79,12 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
               <Button
                 variant="ghost"
                 className="w-10 rounded-full p-0"
-                onClick={() => addSet({ ...set, exerciseId, id: set.id })}
+                onClick={() =>
+                  addSet({
+                    ...set,
+                    exerciseId: exerciseId,
+                  })
+                }
               >
                 <Check className="text-green-600" />
               </Button>

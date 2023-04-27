@@ -24,7 +24,22 @@ const getWorkoutById = Prisma.validator<Prisma.WorkoutSelect>()({
   description: true,
   copyCount: true,
   notes: true,
-  exercises: true,
+  exercises: {
+    select: {
+      id: true,
+      name: true,
+      instructions: true,
+      difficulty: true,
+      equipment: true,
+      set: {
+        select: {
+          id: true,
+          reps: true,
+          weight: true,
+        },
+      },
+    },
+  },
   userId: true,
 });
 

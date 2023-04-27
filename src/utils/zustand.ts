@@ -45,13 +45,14 @@ export const useSetStore = create<SetState>()(
     persist(
       (set, get) => ({
         sets: [],
-        addSet: (setX: Set) =>
-          // Only add set if it doesn't already exist
-          set((state) => ({
-            sets: state.sets.find((s) => s.id === setX.id)
-              ? state.sets
-              : [...state.sets, setX],
-          })),
+        addSet: (setX: Set) => {
+          const setExists = get().sets.find((s) => s.id === setX.id);
+          if (!setExists) {
+            set((state) => ({
+              sets: [...state.sets, setX],
+            }));
+          }
+        },
         removeSet: (setId: string) =>
           set((state) => ({
             sets: state.sets.filter((s) => s.id !== setId),
