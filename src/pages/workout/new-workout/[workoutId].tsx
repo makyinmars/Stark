@@ -47,6 +47,14 @@ const NewWorkout = ({
   const { toast } = useToast();
 
   const { sets, reset: resetSet, removeSets } = useSetStore();
+  const {
+    exercises,
+    removeExercise,
+    reset: resetExercise,
+  } = useExerciseStore();
+
+  console.log("sets", sets);
+  console.log("Exercises", exercises);
 
   const utils = api.useContext();
 
@@ -116,12 +124,6 @@ const NewWorkout = ({
       name: workoutData ? workoutData.name : "",
     },
   });
-
-  const {
-    exercises,
-    removeExercise,
-    reset: resetExercise,
-  } = useExerciseStore();
 
   const onUpdateQuickWorkout = async () => {
     try {
@@ -245,7 +247,7 @@ const NewWorkout = ({
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CreateSet key={exercise.id} exerciseId={exercise.id} />
+                    <CreateSet key={i} exerciseId={exercise.id} />
                   </CardContent>
                 </Card>
               ))}

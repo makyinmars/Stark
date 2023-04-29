@@ -36,7 +36,6 @@ interface SetState {
   addSet: (setX: Set) => void;
   removeSet: (setId: string) => void;
   removeSets: (exerciseId: string) => void;
-  getSets: () => Set[];
   reset: () => void;
 }
 
@@ -45,14 +44,10 @@ export const useSetStore = create<SetState>()(
     persist(
       (set, get) => ({
         sets: [],
-        addSet: (setX: Set) => {
-          const setExists = get().sets.find((s) => s.id === setX.id);
-          if (!setExists) {
-            set((state) => ({
-              sets: [...state.sets, setX],
-            }));
-          }
-        },
+        addSet: (setX: Set) =>
+          set((state) => ({
+            sets: [...state.sets, setX],
+          })),
         removeSet: (setId: string) =>
           set((state) => ({
             sets: state.sets.filter((s) => s.id !== setId),
@@ -61,7 +56,6 @@ export const useSetStore = create<SetState>()(
           set((state) => ({
             sets: state.sets.filter((s) => s.exerciseId !== exerciseId),
           })),
-        getSets: () => get().sets,
         reset: () => set({ sets: [] }),
       }),
       {

@@ -1,5 +1,5 @@
-import { Check, XCircle } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { XCircle } from "lucide-react";
+import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "src/components/ui/button";
 import { Input } from "src/components/ui/input";
@@ -22,7 +22,7 @@ interface SetInputs {
 const CreateSet = ({ exerciseId }: CreateSetProps) => {
   const { addSet, removeSet, sets } = useSetStore();
 
-  const { register, control } = useForm<SetInputs>({
+  const { register, control, handleSubmit } = useForm<SetInputs>({
     defaultValues: {
       exerciseId: exerciseId,
     },
@@ -38,6 +38,22 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
     remove(index);
   };
 
+  const onSubmit: SubmitHandler<SetInputs> = (data) => {
+    const { sets } = data;
+    sets.forEach((set) => {
+      if (set.reps > 0 && set.weight > 0) {
+        addSet({
+          exerciseId: exerciseId,
+          reps: set.reps,
+          weight: set.weight,
+          rest: set.rest,
+          time: set.time,
+          id: Math.random().toString(36),
+        });
+      }
+    });
+  };
+
   return (
     <div>
       <div className="flex items-center justify-around">
@@ -49,45 +65,26 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
         <div />
       </div>
       <div className="flex flex-col gap-2">
-        {fields.map((set, index) => (
-          <div
-            className={`flex items-center justify-around ${
-              sets && sets.find((s) => s.id === set.id)
-                ? "rounded bg-primary text-primary-foreground"
-                : ""
-            }`}
-            key={set.id}
-          >
-            <p>{index + 1}</p>
-            <Input
-              type="number"
-              className="h-6 w-12 p-0 text-center"
-              {...register(`sets.${index}.reps` as const, {
-                required: true,
-                valueAsNumber: true,
-              })}
-            />
-            <Input
-              type="number"
-              className="h-6 w-12 p-0 text-center"
-              {...register(`sets.${index}.weight` as const, {
-                required: true,
-                valueAsNumber: true,
-              })}
-            />
-            <div>
-              <Button
-                variant="ghost"
-                className="w-10 rounded-full p-0"
-                onClick={() =>
-                  addSet({
-                    ...set,
-                    exerciseId: exerciseId,
-                  })
-                }
-              >
-                <Check className="text-green-600" />
-              </Button>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+          {fields.map((set, index) => (
+            <div className="flex items-center justify-around" key={set.id}>
+              <p>{index + 1}</p>
+              <Input
+                type="number"
+                className="h-6 w-12 p-0 text-center"
+                {...register(`sets.${index}.reps` as const, {
+                  required: true,
+                  valueAsNumber: true,
+                })}
+              />
+              <Input
+                type="number"
+                className="h-6 w-12 p-0 text-center"
+                {...register(`sets.${index}.weight` as const, {
+                  required: true,
+                  valueAsNumber: true,
+                })}
+              />
               <Button
                 variant="ghost"
                 className="w-10 rounded-full p-0"
@@ -96,8 +93,10 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
                 <XCircle className="text-red-600" />
               </Button>
             </div>
-          </div>
-        ))}
+          ))}
+          <Button variant="beneficial">Complete</Button>
+        </form>
+
         <Button
           className="w-full"
           onClick={() =>
