@@ -15,8 +15,13 @@ export const useExerciseStore = create<ExerciseState>()(
     persist(
       (set, get) => ({
         exercises: [],
-        addExercise: (exercise: Exercise) =>
-          set((state) => ({ exercises: [...state.exercises, exercise] })),
+        addExercise: (exercise: Exercise) => {
+          set((state) => ({
+            exercises: state.exercises.find((e) => e.id === exercise.id)
+              ? state.exercises
+              : [...state.exercises, exercise],
+          }));
+        },
         removeExercise: (exercise: Exercise) =>
           set((state) => ({
             exercises: state.exercises.filter((e) => e.id !== exercise.id),
@@ -42,12 +47,16 @@ interface SetState {
 export const useSetStore = create<SetState>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         sets: [],
-        addSet: (setX: Set) =>
+        addSet: (setX: Set) => {
+          // Only add the set if it doesn't already exist
           set((state) => ({
-            sets: [...state.sets, setX],
-          })),
+            sets: state.sets.find((s) => s.id === setX.id)
+              ? state.sets
+              : [...state.sets, setX],
+          }));
+        },
         removeSet: (setId: string) =>
           set((state) => ({
             sets: state.sets.filter((s) => s.id !== setId),

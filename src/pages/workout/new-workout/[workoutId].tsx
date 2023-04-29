@@ -128,6 +128,7 @@ const NewWorkout = ({
   const onUpdateQuickWorkout = async () => {
     try {
       if (user && workoutId) {
+        console.log("exercise", exercises);
         await updateQuickWorkout.mutateAsync({
           workoutId,
           name:
@@ -136,6 +137,7 @@ const NewWorkout = ({
           description: watch("description"),
           userId: user.data?.id as string,
           exercises: exercises.map((exercise) => ({
+            id: exercise.id,
             name: exercise.name,
             instructions: exercise.instructions,
             type: exercise.type,

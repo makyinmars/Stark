@@ -69,7 +69,25 @@ export const workoutRouter = createTRPCRouter({
         });
       }
 
-      return workout;
+      // Only return workouts that have exercises and sets
+      const exercises = workout.exercises.filter((e) => {
+        // Return the whole exercise if it has sets
+        if (e.set.length > 0) {
+          return e;
+        }
+      });
+
+      const updatedWorkout = {
+        id: workout.id,
+        name: workout.name,
+        description: workout.description,
+        copyCount: workout.copyCount,
+        notes: workout.notes,
+        userId: workout.userId,
+        exercises,
+      };
+
+      return updatedWorkout;
     }),
 
   copyWorkoutById: protectedProcedure
@@ -309,6 +327,7 @@ export const workoutRouter = createTRPCRouter({
         userId: z.string(),
         exercises: z.array(
           z.object({
+            id: z.string(),
             name: z.string(),
             instructions: z.string(),
             type: z.string(),
@@ -320,6 +339,7 @@ export const workoutRouter = createTRPCRouter({
             image: z.string().nullable().default(null),
             sets: z.array(
               z.object({
+                exerciseId: z.string(),
                 reps: z.number().nullable().default(10),
                 weight: z.number().nullable().default(20),
                 time: z.number().nullable().default(null),
@@ -352,63 +372,140 @@ export const workoutRouter = createTRPCRouter({
         });
       }
 
-      if (updateWorkout) {
-        for (const exercise of input.exercises) {
-          const newExercise = await ctx.prisma.exercise.create({
-            data: {
-              name: exercise.name,
-              instructions: exercise.instructions,
-              type: exercise.type,
-              muscle: exercise.muscle,
-              equipment: exercise.equipment,
-              equipmentNeeded: exercise.equipmentNeeded,
-              difficulty: exercise.difficulty,
-              time: exercise.time,
-              image: exercise.image,
-              workoutId: updateWorkout.id,
-            },
-            select: {
-              id: true,
-            },
-          });
-
-          if (!newExercise) {
-            throw new TRPCError({
-              code: "BAD_REQUEST",
-              message: "Could not create exercise",
-            });
-          }
-
-          if (newExercise) {
-            for (const set of exercise.sets) {
-              const newSet = await ctx.prisma.set.create({
-                data: {
-                  reps: set.reps,
-                  weight: set.weight,
-                  time: set.time,
-                  rest: set.rest,
-                  exerciseId: newExercise.id,
-                },
-              });
-
-              if (!newSet) {
-                throw new TRPCError({
-                  code: "BAD_REQUEST",
-                  message: "Could not create set",
-                });
-              }
+      const exercisesWithSets = input.exercises.filter((exe) => {
+        // Check if the exercise has sets in it
+        if (exe.sets.length > 0) {
+          // Then match with the sets from the input
+          exe.sets.filter((set) => {
+            // Check if the set has an exerciseId
+            if (set.exerciseId) {
+              // Then match with the exerciseId from the input
+              return set.exerciseId === exe.id;
             }
-          }
-          if (!newExercise) {
-            throw new TRPCError({
-              code: "BAD_REQUEST",
-              message: "Could not create exercise",
-            });
-          }
+          });
+          return exe;
         }
+      });
+
+      for (const exercise of exercisesWithSets) {
+        // Create the exercise and set for that exercise
+        const newExercise = await ctx.prisma.exercise.create({
+          data: {
+            name: exercise.name,
+            instructions: exercise.instructions,
+            type: exercise.type,
+            muscle: exercise.muscle,
+            equipment: exercise.equipment,
+            equipmentNeeded: exercise.equipmentNeeded,
+            difficulty: exercise.difficulty,
+            time: exercise.time,
+            image: exercise.image,
+            workout: {
+              connect: {
+                id: updateWorkout.id,
+              },
+            },
+            set: {
+              createMany: {
+                data: exercise.sets.map((set) => {
+                  return {
+                    reps: set.reps,
+                    weight: set.weight,
+                    time: set.time,
+                    rest: set.rest,
+                  };
+                }),
+              },
+            },
+          },
+          select: {
+            set: true,
+          },
+        });
+
+        console.log("NEW", newExercise);
       }
 
-      return updateWorkout;
+      // Return the updated workout
+      const newWorkout = await ctx.prisma.workout.findFirst({
+        where: {
+          id: updateWorkout.id,
+        },
+        include: {
+          exercises: {
+            include: {
+              set: {
+                where: {
+                  reps: {
+                    not: null,
+                  },
+                  weight: {
+                    not: null,
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return newWorkout;
+
+      // if (updateWorkout) {
+      //   for (const exercise of input.exercises) {
+      //     const newExercise = await ctx.prisma.exercise.create({
+      //       data: {
+      //         name: exercise.name,
+      //         instructions: exercise.instructions,
+      //         type: exercise.type,
+      //         muscle: exercise.muscle,
+      //         equipment: exercise.equipment,
+      //         equipmentNeeded: exercise.equipmentNeeded,
+      //         difficulty: exercise.difficulty,
+      //         time: exercise.time,
+      //         image: exercise.image,
+      //         workoutId: updateWorkout.id,
+      //       },
+      //       select: {
+      //         id: true,
+      //       },
+      //     });
+
+      //     if (!newExercise) {
+      //       throw new TRPCError({
+      //         code: "BAD_REQUEST",
+      //         message: "Could not create exercise",
+      //       });
+      //     }
+
+      //     if (newExercise) {
+      //       for (const set of exercise.sets) {
+      //         const newSet = await ctx.prisma.set.create({
+      //           data: {
+      //             reps: set.reps,
+      //             weight: set.weight,
+      //             time: set.time,
+      //             rest: set.rest,
+      //             exerciseId: newExercise.id,
+      //           },
+      //         });
+
+      //         if (!newSet) {
+      //           throw new TRPCError({
+      //             code: "BAD_REQUEST",
+      //             message: "Could not create set",
+      //           });
+      //         }
+      //       }
+      //     }
+      //     if (!newExercise) {
+      //       throw new TRPCError({
+      //         code: "BAD_REQUEST",
+      //         message: "Could not create exercise",
+      //       });
+      //     }
+      //   }
+      // }
     }),
 
   deleteWorkoutById: protectedProcedure

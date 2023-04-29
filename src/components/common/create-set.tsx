@@ -40,7 +40,8 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
 
   const onSubmit: SubmitHandler<SetInputs> = (data) => {
     const { sets } = data;
-    sets.forEach((set) => {
+
+    sets.forEach((set, i) => {
       if (set.reps > 0 && set.weight > 0) {
         addSet({
           exerciseId: exerciseId,
@@ -48,7 +49,7 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
           weight: set.weight,
           rest: set.rest,
           time: set.time,
-          id: Math.random().toString(36),
+          id: `${exerciseId}-${i}`,
         });
       }
     });
