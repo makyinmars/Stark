@@ -3,7 +3,7 @@ import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "src/components/ui/button";
 import { Input } from "src/components/ui/input";
-import { useSetStore } from "src/utils/zustand";
+import { useExerciseSetStore, useSetStore } from "src/utils/zustand";
 
 interface CreateSetProps {
   exerciseId: string;
@@ -21,6 +21,7 @@ interface SetInputs {
 
 const CreateSet = ({ exerciseId }: CreateSetProps) => {
   const { addSet, removeSet, sets } = useSetStore();
+  const { addSetsToExerciseSet } = useExerciseSetStore();
 
   const { register, control, handleSubmit } = useForm<SetInputs>({
     defaultValues: {
@@ -53,6 +54,15 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
         });
       }
     });
+
+    // Add exerciseId to each set
+    const setsWithExerciseId = sets.map((set, i) => ({
+      ...set,
+      exerciseId: exerciseId,
+      id: `${exerciseId}-${i}`,
+    }));
+
+    addSetsToExerciseSet(exerciseId, setsWithExerciseId);
   };
 
   return (

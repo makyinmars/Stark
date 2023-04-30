@@ -2,6 +2,56 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type { Exercise, Set } from "@prisma/client";
 
+type ExerciseSet = Exercise & {
+  sets?: Set[];
+};
+
+interface ExerciseSetState {
+  exerciseSets: ExerciseSet[];
+  addExerciseSet: (exerciseSet: ExerciseSet) => void;
+  addSetsToExerciseSet: (exerciseId: string, sets: Set[]) => void;
+  removeExerciseSet: (exerciseSet: ExerciseSet) => void;
+  getExerciseSets: () => ExerciseSet[];
+  resetExerciseSet: () => void;
+}
+
+export const useExerciseSetStore = create<ExerciseSetState>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        exerciseSets: [],
+        addExerciseSet: (exerciseSet: ExerciseSet) => {
+          set((state) => ({
+            exerciseSets: state.exerciseSets.find(
+              (e) => e.id === exerciseSet.id
+            )
+              ? state.exerciseSets
+              : [...state.exerciseSets, exerciseSet],
+          }));
+        },
+        addSetsToExerciseSet: (exerciseId: string, sets: Set[]) => {
+          set((state) => ({
+            exerciseSets: state.exerciseSets.map((e) =>
+              e.id === exerciseId ? { ...e, sets } : e
+            ),
+          }));
+        },
+        removeExerciseSet: (exerciseSet: ExerciseSet) =>
+          set((state) => ({
+            exerciseSets: state.exerciseSets.filter(
+              (e) => e.id !== exerciseSet.id
+            ),
+          })),
+        getExerciseSets: () => get().exerciseSets,
+        resetExerciseSet: () => set({ exerciseSets: [] }),
+      }),
+      {
+        name: "exerciseSets-state",
+      }
+    )
+  )
+);
+
 interface ExerciseState {
   exercises: Exercise[];
   addExercise: (exercise: Exercise) => void;

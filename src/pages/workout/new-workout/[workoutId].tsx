@@ -13,7 +13,11 @@ import { Button } from "src/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "src/components/ui/dialog";
 import Exercises from "src/components/common/exercises";
 import { ssgHelper } from "src/utils/ssg";
-import { useExerciseStore, useSetStore } from "src/utils/zustand";
+import {
+  useExerciseSetStore,
+  useExerciseStore,
+  useSetStore,
+} from "src/utils/zustand";
 import { api } from "src/utils/api";
 import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
@@ -52,9 +56,9 @@ const NewWorkout = ({
     removeExercise,
     reset: resetExercise,
   } = useExerciseStore();
+  const { exerciseSets, resetExerciseSet } = useExerciseSetStore();
 
-  console.log("sets", sets);
-  console.log("Exercises", exercises);
+  console.log("Exercises sets", exerciseSets);
 
   const utils = api.useContext();
 
@@ -108,6 +112,7 @@ const NewWorkout = ({
       });
       resetExercise();
       resetSet();
+      resetExerciseSet();
       await utils.workout.getWorkoutsByUserId.invalidate({
         userId: user?.data && user?.data?.id,
       });
@@ -128,7 +133,6 @@ const NewWorkout = ({
   const onUpdateQuickWorkout = async () => {
     try {
       if (user && workoutId) {
-        console.log("exercise", exercises);
         await updateQuickWorkout.mutateAsync({
           workoutId,
           name:
@@ -136,19 +140,7 @@ const NewWorkout = ({
           notes: watch("notes"),
           description: watch("description"),
           userId: user.data?.id as string,
-          exercises: exercises.map((exercise) => ({
-            id: exercise.id,
-            name: exercise.name,
-            instructions: exercise.instructions,
-            type: exercise.type,
-            muscle: exercise.muscle,
-            equipment: exercise.equipment,
-            equipmentNeeded: exercise.equipmentNeeded,
-            difficulty: exercise.difficulty,
-            time: exercise.time,
-            image: exercise.image,
-            sets: sets,
-          })),
+          exercises: exerciseSets,
         });
       }
     } catch {}

@@ -26,7 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from "src/components/ui/card";
-import { useExerciseStore } from "src/utils/zustand";
+import { useExerciseStore, useExerciseSetStore } from "src/utils/zustand";
 import { Loader2 } from "lucide-react";
 
 const Dashboard = ({
@@ -200,6 +200,7 @@ const ExampleWorkout = ({
   const { toast } = useToast();
   const router = useRouter();
   const { reset, addExercise } = useExerciseStore();
+  const { addExerciseSet } = useExerciseSetStore();
 
   const createExampleWorkout = api.workout.createExampleWorkout.useMutation({
     onMutate: (variables) => {
@@ -220,6 +221,9 @@ const ExampleWorkout = ({
         if (data.exercises) {
           for (const e of data.exercises) {
             addExercise(e);
+          }
+          for (const e of data.exercises) {
+            addExerciseSet(e);
           }
         }
         await utils.workout.getWorkoutsByUserId.invalidate({
