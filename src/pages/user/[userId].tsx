@@ -28,6 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "src/components/ui/popover";
+import SkeletonCard from "src/components/common/skeleton-card";
 
 const User = ({
   userId,
@@ -102,7 +103,7 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-    } catch {}
+    } catch { }
   };
 
   const onUnfollowUser = async () => {
@@ -111,7 +112,7 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-    } catch {}
+    } catch { }
   };
 
   return (
@@ -142,8 +143,8 @@ const User = ({
             {session?.id !== userData.id && (
               <div className="flex flex-col items-center justify-center gap-1">
                 {session &&
-                userFollowersData &&
-                userFollowersData.find((u) => u.id === session.id) ? (
+                  userFollowersData &&
+                  userFollowersData.find((u) => u.id === session.id) ? (
                   <Button
                     className="w-40"
                     onClick={() => void onUnfollowUser()}
@@ -293,11 +294,11 @@ const User = ({
           </UserMenu>
         </>
       ) : (
-        <div>
+        <div className="m-4">
           <Head>
             <title>User Not Found</title>
           </Head>
-          {userIsLoading && <Spinner />}
+          {userIsLoading && <SkeletonCard length={4} />}
           {userIsError && <Error message={userError.message} />}
         </div>
       )}

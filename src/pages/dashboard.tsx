@@ -12,7 +12,6 @@ import { api } from "src/utils/api";
 import WorkoutBox from "src/components/common/workout-box";
 import { useToast } from "src/hooks/useToast";
 import Error from "src/components/common/error";
-import Spinner from "src/components/common/spinner";
 import {
   Accordion,
   AccordionContent,
@@ -28,6 +27,7 @@ import {
 } from "src/components/ui/card";
 import { useExerciseStore, useExerciseSetStore } from "src/utils/zustand";
 import { Loader2 } from "lucide-react";
+import SkeletonCard from "src/components/common/skeleton-card";
 
 const Dashboard = ({
   userId,
@@ -100,7 +100,7 @@ const Dashboard = ({
       await createQuickWorkout.mutateAsync({
         userId: user && user.id,
       });
-    } catch {}
+    } catch { }
   };
 
   return (
@@ -116,7 +116,9 @@ const Dashboard = ({
           Start an Empty Workout
         </Button>
         <h3 className="custom-h3 text-center">Workouts</h3>
-        {myWorkoutsIsLoading && <Spinner />}
+        {myWorkoutsIsLoading &&
+          <SkeletonCard length={2} />
+        }
         {myWorkoutsData && myWorkoutsData.length > 0 && (
           <Card>
             <CardHeader>
@@ -242,7 +244,7 @@ const ExampleWorkout = ({
       await createExampleWorkout.mutateAsync({
         muscle,
       });
-    } catch {}
+    } catch { }
   };
 
   return (

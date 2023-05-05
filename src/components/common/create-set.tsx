@@ -20,7 +20,7 @@ interface SetInputs {
 }
 
 const CreateSet = ({ exerciseId }: CreateSetProps) => {
-  const { addSet, removeSet, sets } = useSetStore();
+  const { addSet, removeSet } = useSetStore();
   const { addSetsToExerciseSet } = useExerciseSetStore();
 
   const { register, control, handleSubmit } = useForm<SetInputs>({

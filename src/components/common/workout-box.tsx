@@ -64,6 +64,7 @@ const WorkoutBox = ({
   const deleteWorkoutById = api.workout.deleteWorkoutById.useMutation({
     onSettled: async () => {
       await utils.workout.getWorkoutsByUserId.invalidate({ userId });
+      await utils.workout.getAllWorkouts.invalidate()
     },
     onSuccess: (variables) => {
       if (variables) {
@@ -81,13 +82,13 @@ const WorkoutBox = ({
         workoutId,
         userId,
       });
-    } catch {}
+    } catch { }
   };
 
   const onDeleteWorkoutById = async (workoutId: string) => {
     try {
       await deleteWorkoutById.mutateAsync({ workoutId });
-    } catch {}
+    } catch { }
   };
 
   return (
@@ -121,14 +122,14 @@ const WorkoutBox = ({
                 {(router.pathname.includes("/dashboard") ||
                   router.pathname.includes("/history") ||
                   showDelete) && (
-                  <DropdownMenuItem
-                    className="flex items-center justify-around gap-2"
-                    onClick={() => void onDeleteWorkoutById(id)}
-                  >
-                    <Trash size={14} />
-                    <p>Delete Workout</p>
-                  </DropdownMenuItem>
-                )}
+                    <DropdownMenuItem
+                      className="flex items-center justify-around gap-2"
+                      onClick={() => void onDeleteWorkoutById(id)}
+                    >
+                      <Trash size={14} />
+                      <p>Delete Workout</p>
+                    </DropdownMenuItem>
+                  )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

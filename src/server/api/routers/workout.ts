@@ -4,7 +4,6 @@ import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { getTimeOfDay } from "src/utils/date";
-import { create } from "domain";
 
 const workoutsByUserId = Prisma.validator<Prisma.WorkoutSelect>()({
   id: true,

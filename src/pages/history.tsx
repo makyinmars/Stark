@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext } from "next";
-import Spinner from "src/components/common/spinner";
+import SkeletonCard from "src/components/common/skeleton-card";
 
 import UserMenu from "src/components/common/user-menu";
 import WorkoutBox from "src/components/common/workout-box";
@@ -14,7 +14,7 @@ const History = () => {
   return (
     <UserMenu>
       <h2 className="custom-h2 text-center">Workouts History</h2>
-      {isLoading && <Spinner />}
+      {isLoading && <SkeletonCard length={3} />}
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
         {data &&
           data.map((w, i) => (

@@ -4,7 +4,6 @@ import type {
 } from "next";
 import { useEffect, useState } from "react";
 
-import Spinner from "src/components/common/spinner";
 import Error from "src/components/common/error";
 import { api } from "src/utils/api";
 import { ssgHelper } from "src/utils/ssg";
@@ -14,19 +13,15 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "src/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "src/components/ui/accordion";
 import Chart from "src/components/common/chart";
 import type { ChartData } from "src/utils/type";
 import { Alert, AlertDescription, AlertTitle } from "src/components/ui/alert";
 import { Terminal } from "lucide-react";
+import SkeletonCard from "src/components/common/skeleton-card";
 
 const WorkoutId = ({
   workoutId,
@@ -54,10 +49,6 @@ const WorkoutId = ({
     }
   }, [data]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
-
   if (isError) {
     return <Error message={error.message} />;
   }
@@ -67,6 +58,7 @@ const WorkoutId = ({
       <Head>
         <title>{data ? data.name : "Workout"}</title>
       </Head>
+      {isLoading && <SkeletonCard length={5} />}
       {data && (
         <Card>
           <CardHeader>
@@ -85,20 +77,11 @@ const WorkoutId = ({
                 <Card key={exercise.id}>
                   <CardHeader>
                     <CardTitle>{exercise.name}</CardTitle>
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>
-                          <p className="text-sm">{exercise.name} Information</p>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <CardDescription className="flex flex-col gap-1">
-                            <div>Difficulty: {exercise.difficulty}</div>
-                            <div>Equipment: {exercise.equipment}</div>
-                            <div>Instructions: {exercise.instructions}</div>
-                          </CardDescription>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                    <CardDescription className="flex flex-col gap-1">
+                      <div>Difficulty: {exercise.difficulty}</div>
+                      <div>Equipment: {exercise.equipment}</div>
+                      <div>Instructions: {exercise.instructions}</div>
+                    </CardDescription>
                   </CardHeader>
                   {exercise.set.length > 0 && (
                     <CardContent className="flex flex-col gap-2">
@@ -121,6 +104,9 @@ const WorkoutId = ({
               ))}
             </CardContent>
           )}
+          <CardFooter>
+
+          </CardFooter>
         </Card>
       )}
       <div className="flex flex-col items-center gap-4">
