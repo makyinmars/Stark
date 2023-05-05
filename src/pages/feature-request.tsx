@@ -2,6 +2,7 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import SkeletonCard from "src/components/common/skeleton-card";
 
 import UserMenu from "src/components/common/user-menu";
 import { Button } from "src/components/ui/button";
@@ -78,7 +79,7 @@ const FeatureRequest = () => {
   const onSubmit: SubmitHandler<FeatureRequestInputs> = async (data) => {
     try {
       await createFeatureRequest.mutateAsync(data);
-    } catch {}
+    } catch { }
   };
 
   return (
@@ -106,60 +107,66 @@ const FeatureRequest = () => {
             <TabsTrigger value="in_progress">In Progress</TabsTrigger>
             <TabsTrigger value="not_started">Not Started</TabsTrigger>
           </TabsList>
-          <TabsContent value="completed">
-            {frCompletedQuery &&
-              frCompletedQuery.data?.map((fr) => (
-                <Card key={fr.id}>
-                  <CardHeader className="flex flex-row items-center gap-1">
-                    <div className="flex flex-col items-center md:w-20">
-                      <ArrowBigUp className="h-16 w-8" />
-                      <span className="text-2xl">{fr.votes}</span>
-                      <ArrowBigDown className="h-16 w-8" />
-                    </div>
-                    <div>
-                      <CardTitle>{fr.title}</CardTitle>
-                      <CardDescription>{fr.description}</CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
-          </TabsContent>
-          <TabsContent value="in_progress">
-            {frInProgressQuery &&
-              frInProgressQuery.data?.map((fr) => (
-                <Card key={fr.id}>
-                  <CardHeader className="flex flex-row items-center gap-1">
-                    <div className="flex flex-col items-center md:w-20">
-                      <ArrowBigUp className="h-16 w-8" />
-                      <span className="text-2xl">{fr.votes}</span>
-                      <ArrowBigDown className="h-16 w-8" />
-                    </div>
-                    <div>
-                      <CardTitle>{fr.title}</CardTitle>
-                      <CardDescription>{fr.description}</CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
-          </TabsContent>
-          <TabsContent value="not_started" className="flex flex-col gap-2">
-            {frNotStartedQuery &&
-              frNotStartedQuery.data?.map((fr) => (
-                <Card key={fr.id}>
-                  <CardHeader className="flex flex-row items-center gap-1">
-                    <div className="flex flex-col items-center md:w-20">
-                      <ArrowBigUp className="h-16 w-8" />
-                      <span className="text-2xl">{fr.votes}</span>
-                      <ArrowBigDown className="h-16 w-8" />
-                    </div>
-                    <div>
-                      <CardTitle>{fr.title}</CardTitle>
-                      <CardDescription>{fr.description}</CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
-          </TabsContent>
+          {frCompletedQuery.isLoading ? (
+            <SkeletonCard length={2} />
+          ) : (
+            <>
+              <TabsContent value="completed">
+                {frCompletedQuery &&
+                  frCompletedQuery.data?.map((fr) => (
+                    <Card key={fr.id}>
+                      <CardHeader className="flex flex-row items-center gap-1">
+                        <div className="flex flex-col items-center md:w-20">
+                          <ArrowBigUp className="h-16 w-8" />
+                          <span className="text-2xl">{fr.votes}</span>
+                          <ArrowBigDown className="h-16 w-8" />
+                        </div>
+                        <div>
+                          <CardTitle>{fr.title}</CardTitle>
+                          <CardDescription>{fr.description}</CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  ))}
+              </TabsContent>
+              <TabsContent value="in_progress">
+                {frInProgressQuery &&
+                  frInProgressQuery.data?.map((fr) => (
+                    <Card key={fr.id}>
+                      <CardHeader className="flex flex-row items-center gap-1">
+                        <div className="flex flex-col items-center md:w-20">
+                          <ArrowBigUp className="h-16 w-8" />
+                          <span className="text-2xl">{fr.votes}</span>
+                          <ArrowBigDown className="h-16 w-8" />
+                        </div>
+                        <div>
+                          <CardTitle>{fr.title}</CardTitle>
+                          <CardDescription>{fr.description}</CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  ))}
+              </TabsContent>
+              <TabsContent value="not_started" className="flex flex-col gap-2">
+                {frNotStartedQuery &&
+                  frNotStartedQuery.data?.map((fr) => (
+                    <Card key={fr.id}>
+                      <CardHeader className="flex flex-row items-center gap-1">
+                        <div className="flex flex-col items-center md:w-20">
+                          <ArrowBigUp className="h-16 w-8" />
+                          <span className="text-2xl">{fr.votes}</span>
+                          <ArrowBigDown className="h-16 w-8" />
+                        </div>
+                        <div>
+                          <CardTitle>{fr.title}</CardTitle>
+                          <CardDescription>{fr.description}</CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  ))}
+              </TabsContent>
+            </>
+          )}
         </Tabs>
       </UserMenu>
     </>
