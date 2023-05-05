@@ -320,8 +320,8 @@ export const workoutRouter = createTRPCRouter({
             sets: z
               .array(
                 z.object({
-                  reps: z.number().nullish(),
-                  weight: z.number().nullish(),
+                  reps: z.number(),
+                  weight: z.number()
                 })
               )
               .nullish(),

@@ -50,15 +50,13 @@ const NewWorkout = ({
   const router = useRouter();
   const { toast } = useToast();
 
-  const { sets, reset: resetSet, removeSets } = useSetStore();
+  const { reset: resetSet, removeSets } = useSetStore();
   const {
     exercises,
     removeExercise,
     reset: resetExercise,
   } = useExerciseStore();
   const { exerciseSets, resetExerciseSet } = useExerciseSetStore();
-
-  console.log("Exercises sets", exerciseSets);
 
   const utils = api.useContext();
 

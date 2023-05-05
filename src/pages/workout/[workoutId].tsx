@@ -2,6 +2,7 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
+import { useEffect, useState } from "react";
 
 import Spinner from "src/components/common/spinner";
 import Error from "src/components/common/error";
@@ -22,6 +23,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "src/components/ui/accordion";
+import Chart from "src/components/common/chart";
+import type { ChartData } from "src/utils/type";
+import { Alert, AlertDescription, AlertTitle } from "src/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 const WorkoutId = ({
   workoutId,
@@ -30,6 +35,24 @@ const WorkoutId = ({
     api.workout.getWorkoutById.useQuery({
       workoutId: workoutId as string,
     });
+
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      const chartData = data.exercises.map((exercise) => {
+        const volume = exercise.set.reduce((acc, set) => {
+          return acc + set.reps * set.weight * exercise.set.length;
+        }, 0);
+        return {
+          name: exercise.name,
+          volume,
+        };
+      });
+
+      setChartData(chartData);
+    }
+  }, [data]);
 
   if (isLoading) {
     return <Spinner />;
@@ -100,6 +123,23 @@ const WorkoutId = ({
           )}
         </Card>
       )}
+      <div className="flex flex-col items-center gap-4">
+        <Chart chartData={chartData} />
+        <Alert>
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>What is volume?</AlertTitle>
+          <AlertDescription>
+            <span className="font-bold">
+              {`"`}Volume{`"`}
+            </span>{" "}
+            in a workout is the total work done over a period of time, measured
+            by multiplying sets, reps, and weight. For example, 3 sets of 10
+            reps with 50 pounds is a volume of 1,500 pounds. It can be used to
+            track progress and adjust workout intensity, but other factors like
+            exercise selection, rest periods, and intensity are also important.
+          </AlertDescription>
+        </Alert>
+      </div>
     </UserMenu>
   );
 };
