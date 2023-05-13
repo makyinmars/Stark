@@ -129,7 +129,7 @@ const Home: NextPage = () => {
           </CardFooter>
         </Card>
         <h2 className="custom-h2 text-center">Previews</h2>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
           <PreviewCard
             title="Dashboard Page"
             description="View your workouts and stats"
