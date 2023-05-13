@@ -38,6 +38,7 @@ const SearchUser = () => {
         <title>User Search</title>
       </Head>
       <UserMenu>
+        <h2 className="custom-h2 text-center">User Search</h2>
         <div className="flex items-center gap-4">
           <Input
             type="text"

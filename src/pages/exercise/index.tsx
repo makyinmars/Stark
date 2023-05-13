@@ -12,6 +12,7 @@ const Exercise = () => {
         <title>Exercise</title>
       </Head>
       <UserMenu>
+        <h2 className="custom-h2 text-center">Exercise List</h2>
         <Exercises />
       </UserMenu>
     </>

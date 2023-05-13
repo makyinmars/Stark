@@ -59,6 +59,7 @@ const WorkoutId = ({
         <title>{data ? data.name : "Workout"}</title>
       </Head>
       {isLoading && <SkeletonCard length={5} />}
+      {data && <h2 className="custom-h2 text-center">{data.name}</h2>}
       {data && (
         <Card>
           <CardHeader>
@@ -104,12 +105,11 @@ const WorkoutId = ({
               ))}
             </CardContent>
           )}
-          <CardFooter>
-
-          </CardFooter>
+          <CardFooter></CardFooter>
         </Card>
       )}
       <div className="flex flex-col items-center gap-4">
+        <Chart chartData={chartData} />
         <Alert>
           <Terminal className="h-4 w-4" />
           <AlertTitle>What is volume?</AlertTitle>
@@ -124,7 +124,6 @@ const WorkoutId = ({
             exercise selection, rest periods, and intensity are also important.
           </AlertDescription>
         </Alert>
-        <Chart chartData={chartData} />
       </div>
     </UserMenu>
   );

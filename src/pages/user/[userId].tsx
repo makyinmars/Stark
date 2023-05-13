@@ -103,7 +103,7 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-    } catch { }
+    } catch {}
   };
 
   const onUnfollowUser = async () => {
@@ -112,7 +112,7 @@ const User = ({
         followerId: session?.id as string,
         followingId: userData?.id as string,
       });
-    } catch { }
+    } catch {}
   };
 
   return (
@@ -123,6 +123,7 @@ const User = ({
             <title>{userData && userData.name}</title>
           </Head>
           <UserMenu>
+            <h2 className="custom-h2 text-center">User Profile</h2>
             <div className="flex flex-col gap-4">
               <Image
                 src={userData.image as string}
@@ -143,8 +144,8 @@ const User = ({
             {session?.id !== userData.id && (
               <div className="flex flex-col items-center justify-center gap-1">
                 {session &&
-                  userFollowersData &&
-                  userFollowersData.find((u) => u.id === session.id) ? (
+                userFollowersData &&
+                userFollowersData.find((u) => u.id === session.id) ? (
                   <Button
                     className="w-40"
                     onClick={() => void onUnfollowUser()}

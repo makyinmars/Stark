@@ -26,6 +26,26 @@ const CreateSet = ({ exerciseId }: CreateSetProps) => {
   const { register, control, handleSubmit } = useForm<SetInputs>({
     defaultValues: {
       exerciseId: exerciseId,
+      sets: [
+        {
+          weight: 0,
+          reps: 0,
+          time: 0,
+          rest: 0,
+        },
+        {
+          weight: 0,
+          reps: 0,
+          time: 0,
+          rest: 0,
+        },
+        {
+          weight: 0,
+          reps: 0,
+          time: 0,
+          rest: 0,
+        },
+      ],
     },
   });
 

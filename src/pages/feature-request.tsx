@@ -79,7 +79,7 @@ const FeatureRequest = () => {
   const onSubmit: SubmitHandler<FeatureRequestInputs> = async (data) => {
     try {
       await createFeatureRequest.mutateAsync(data);
-    } catch { }
+    } catch {}
   };
 
   return (
@@ -88,7 +88,7 @@ const FeatureRequest = () => {
         <title>Feature Request</title>
       </Head>
       <UserMenu>
-        <h1 className="custom-h1 text-center">Feature Request</h1>
+        <h2 className="custom-h2 text-center">Feature Request</h2>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
           <Input placeholder="Title" {...register("title")} />

@@ -62,6 +62,7 @@ const Upgrade = () => {
         <title>Upgrade</title>
       </Head>
       <UserMenu>
+        <h2 className="custom-h2 text-center">Upgrade Account</h2>
         {!isLoading && subscriptionStatus !== null && (
           <Card className="flex flex-col">
             <CardHeader>

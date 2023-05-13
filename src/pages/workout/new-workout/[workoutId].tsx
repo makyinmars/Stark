@@ -162,6 +162,9 @@ const NewWorkout = ({
         <title>New Workout</title>
       </Head>
       <UserMenu>
+        <h2 className="custom-h2 text-center">
+          New Workout - {workoutData && workoutData.name}
+        </h2>
         <Card className="flex flex-col gap-2">
           <CardHeader>
             <CardTitle className="flex flex-col gap-2">

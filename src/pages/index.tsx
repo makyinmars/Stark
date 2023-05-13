@@ -24,6 +24,7 @@ import {
   CardTitle,
 } from "src/components/ui/card";
 import ModeToggle from "src/components/mode-toggle";
+import PreviewCard from "src/components/common/preview-card";
 
 const Home: NextPage = () => {
   const utils = api.useContext();
@@ -127,6 +128,49 @@ const Home: NextPage = () => {
             </Button>
           </CardFooter>
         </Card>
+        <h2 className="custom-h2 text-center">Previews</h2>
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <PreviewCard
+            title="Dashboard Page"
+            description="View your workouts and stats"
+            src="/assets/dashboard-page.png"
+          />
+          <PreviewCard
+            title="New Workout Page"
+            description="Create a new workout routine and add exercises"
+            src="/assets/new-workout-page.png"
+          />
+          <PreviewCard
+            title="Workout Page"
+            description="View your workout and volume progress"
+            src="/assets/workout-page.png"
+          />
+          <PreviewCard
+            title="Exercise Page"
+            description="View list of exercises and add them to your workout"
+            src="/assets/exercise-page.png"
+          />
+          <PreviewCard
+            title="User Page"
+            description="View your profile and edit your settings"
+            src="/assets/user-page.png"
+          />
+          <PreviewCard
+            title="User Search Page"
+            description="Search for other users, view their profile and follow them"
+            src="/assets/user-search-page.png"
+          />
+          <PreviewCard
+            title="Payment Page"
+            description="Subscribe to a premium plan to unlock more features"
+            src="/assets/payment-page.png"
+          />
+          <PreviewCard
+            title="Feature Request Page"
+            description="Request a new feature or up vote an existing one"
+            src="/assets/feature-request-page.png"
+          />
+        </div>
 
         <Card>
           <CardHeader>
